@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breast Cancer TNM – Dr Hi</title>
+<meta name="description" content="TNM classification and anatomic stage group of breast cancer (UICC 9th edition / AJCC 8th). Educational tool by Dr I. Haraoubia, CPMC Algiers.">
+<meta name="theme-color" content="#C2185B">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TNM sein">
+<style>
+html{color-scheme:light!important}
+input,select,textarea,button{color-scheme:light}
+/* Fonts bundled with the app (SIL Open Font License) so it works offline */
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/serif-400.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/serif-600.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/serif-700.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:italic;font-weight:400;font-display:swap;src:url('../fonts/serif-400i.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/plex-400.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url('../fonts/plex-500.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/plex-600.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/plex-700.woff2') format('woff2');}
+</style>
+<style>
+/* Dr Hi · TNM sein — same beige paper and type as the ECOG tool, pink as the accent of this tool */
+:root{
+  --paper:#F5F0E6; --ivory:#FFFFFF; --sand:#E8DFCF; --sand-2:#D8CBB4;
+  --ink:#1D2433; --ink-2:#434A58; --muted:#6B6A66;
+  --pink:#C2185B; --pink-2:#E2557F; --pink-ink:#8E1446; --pink-mist:#FCEEF3; --pink-line:#F3C6D6;
+  --err-bg:#FFF0F0; --err-line:#C62828; --err-ink:#8E1C1C;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --shadow:0 1px 0 rgba(90,70,30,.04),0 18px 40px -26px rgba(90,70,30,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 24px 48px}
+button,input,select{font:inherit}
+:focus-visible{outline:3px solid var(--pink-2);outline-offset:3px;border-radius:6px}
+
+/* Header */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid var(--sand)}
+.brand{display:flex;align-items:center;gap:18px;min-width:0}
+.brand .logo{width:72px;height:auto;flex:none}
+.brand h1{margin:0;font-family:var(--serif);font-weight:600;font-size:36px;line-height:1.1;letter-spacing:-.01em;color:var(--pink)}
+.brand .sub{margin:6px 0 0;font-size:15.5px;color:var(--muted)}
+.lang{display:flex;padding:4px;gap:2px;background:var(--ivory);border:1px solid var(--sand);border-radius:999px}
+.lang button{min-height:40px;min-width:48px;padding:6px 14px;border:0;border-radius:999px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:600;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--pink);color:#fff}
+.disclaimer{margin:16px 0 26px;font-size:15.5px;color:var(--ink-2);padding-inline-start:12px;border-inline-start:3px solid var(--sand-2)}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}
+.inputs{display:flex;flex-direction:column;gap:20px;min-width:0}
+.aside{position:sticky;top:20px}
+
+/* Steps */
+fieldset{margin:0;border:1px solid var(--sand);background:var(--ivory);border-radius:22px;padding:20px 24px 24px;box-shadow:var(--shadow);min-width:0}
+legend{float:left;width:100%;padding:0;margin:0 0 14px;font-family:var(--serif);font-weight:600;font-size:23px;line-height:1.25;color:var(--ink)}
+legend + *{clear:both}
+.step{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--pink-mist);color:var(--pink);font-family:var(--serif);font-weight:700;font-size:17px;margin-inline-end:10px;vertical-align:2px}
+.hint{font-size:15.5px;color:var(--ink-2);margin:4px 0 14px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opts.row{flex-direction:row;flex-wrap:wrap}
+.row .opt{flex:1 1 190px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1.5px solid var(--sand);border-radius:14px;cursor:pointer;background:var(--ivory);min-height:48px;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--sand-2)}
+.opt input{margin:3px 0 0;width:19px;height:19px;accent-color:var(--pink);flex:none}
+.opt:has(input:checked){border-color:var(--pink);background:var(--pink-mist)}
+.opt .t{font-size:16.5px;line-height:1.4}
+.opt .code{font-weight:700;font-size:14px;color:var(--pink-ink);background:var(--ivory);border:1px solid var(--pink-line);border-radius:7px;padding:1px 7px;margin-inline-start:8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.sub{font-size:14.5px;color:var(--muted);display:block;margin-top:3px}
+.note{font-size:15.5px;color:var(--ink-2);background:var(--paper);border-radius:12px;padding:10px 14px;margin:12px 0 0;line-height:1.5}
+.note[hidden]{display:none}
+select{width:100%;padding:10px 12px;min-height:46px;border:1.5px solid var(--sand-2);border-radius:12px;background:var(--ivory);color:var(--ink)}
+input[type="number"]{width:100%;max-width:220px;padding:10px 12px;min-height:48px;border:1.5px solid var(--sand-2);border-radius:12px;background:var(--ivory);color:var(--ink);font-size:18px}
+.sizebox{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sizeout{font-weight:700;color:var(--pink-ink)}
+.sep{font-size:15.5px;font-weight:600;color:var(--ink-2);margin:18px 0 8px}
+.chk{display:flex;align-items:flex-start;gap:10px;margin-top:14px;font-size:16px;line-height:1.4}
+.chk input{width:19px;height:19px;accent-color:var(--pink);margin-top:2px;flex:none}
+.chk[hidden]{display:none}
+.n-alert{background:var(--pink-mist);border:1px solid var(--pink-line);border-inline-start:4px solid var(--pink);border-radius:12px;padding:12px 16px;font-size:16px;color:var(--ink);margin:0 0 14px;line-height:1.5}
+.n-alert[hidden]{display:none}
+.n-alert ul{margin:8px 0 0;padding-inline-start:20px;display:flex;flex-direction:column;gap:4px}
+.n-alert b{color:var(--pink-ink)}
+.symlink{display:inline-block;margin-top:12px;font-size:15.5px;font-weight:600;color:var(--pink)}
+
+/* Result */
+.result{background:var(--ivory);color:var(--ink);border:1px solid var(--sand);border-top:10px solid var(--pink-2);border-radius:22px;padding:22px 24px;box-shadow:var(--shadow)}
+.result .lbl{font-size:14px;font-weight:600;color:var(--muted)}
+.result .stage{font-family:var(--serif);font-weight:700;font-size:76px;line-height:1;margin:8px 0 6px;letter-spacing:-.02em;color:var(--pink)}
+.stage.small{font-size:36px;line-height:1.2}
+.result .tnm{font-size:19px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.ladder[hidden],.ladder-l[hidden]{display:none}
+.ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:20px 0 6px}
+.ladder div{height:6px;border-radius:3px;background:var(--sand)}
+.ladder div.on{background:var(--pink-2)}
+.ladder-l{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;font-size:14px;color:var(--muted);margin-bottom:14px}
+.why{border-top:1px solid var(--sand);padding-top:14px;font-size:16px;color:var(--ink-2);line-height:1.5}
+.why b{color:var(--ink)}
+.why ul{margin:6px 0 0;padding-inline-start:20px}
+.why li{margin:3px 0}
+.err{background:var(--err-bg);border:1.5px solid var(--err-line);color:var(--err-ink);border-radius:12px;padding:10px 12px;font-size:15.5px;font-weight:600;margin-top:12px}
+.summary{margin-top:14px;font-size:15px;line-height:1.45;background:var(--paper);border-radius:12px;padding:10px 12px;color:var(--ink);word-break:break-word}
+.summary:empty{display:none}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.actions .btn{flex:1 1 auto;white-space:nowrap}
+.btn{min-height:50px;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:15.5px;font-weight:600;border:1.5px solid var(--sand-2);background:var(--ivory);color:var(--ink)}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#fff}
+.btn:hover{border-color:var(--pink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* Visual guide (concept: Dr Hi) */
+.guide{margin-top:44px}
+.gh{margin:0;font-family:var(--serif);font-weight:600;font-size:26px;color:var(--ink)}
+.glead{margin:6px 0 18px;font-size:16px;color:var(--muted)}
+.gcards{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-areas:"t m" "n n";gap:18px;align-items:stretch}
+#g-n{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);column-gap:22px;align-items:start}
+#g-n figcaption{grid-column:1 / -1}
+#g-n .nanat{margin-bottom:0}
+#g-m .mmap{grid-template-columns:1fr}
+@media (max-width: 960px){ #g-n{grid-template-columns:minmax(0,1fr)} #g-n .nanat{margin-bottom:14px} }
+.nmap.ngrid{grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);grid-auto-rows:auto;align-content:space-between;gap:8px 6px;background:var(--paper);border-radius:14px;padding:12px}
+.nh{font-size:15px;font-weight:700;color:var(--ink);padding-bottom:4px;border-bottom:1px solid var(--sand-2)}
+.nh small{font-weight:500;color:var(--muted)}
+.nside{display:flex;flex-direction:column;gap:5px;align-self:center;transition:opacity .25s}
+.nh.off,.nside.off{opacity:.45}
+.nnum{font-family:var(--serif);font-weight:700;font-size:30px;line-height:1;color:var(--pink-2);text-align:center;align-self:center}
+.ngrid .chip{font-size:14px;padding:6px 9px}
+#g-t{grid-area:t}
+#g-n{grid-area:n}
+#g-m{grid-area:m}
+.gcard{margin:0;background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:18px 20px 20px;box-shadow:var(--shadow);min-width:0}
+.gcard figcaption{display:flex;align-items:baseline;gap:10px;font-family:var(--serif);font-weight:600;font-size:19px;color:var(--ink);margin-bottom:10px}
+.gcard .gl{font-family:var(--serif);font-weight:700;font-size:34px;line-height:1;color:var(--pink)}
+#gauge{display:block;width:100%;height:auto}
+#gauge text{font-family:var(--sans)}
+#gauge .seg{transition:opacity .25s}
+.t4leg:empty{display:none}
+.t4leg{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr;gap:6px;font-size:15px;color:var(--ink-2)}
+.t4leg li{display:flex;align-items:center;gap:6px}
+.t4leg li b{color:var(--pink-ink)}
+.t4leg li.on{color:var(--ink);font-weight:600}
+.gnote{margin:10px 0 0;font-size:14.5px;color:var(--muted)}
+.gnote:empty{display:none}
+.nanat{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
+.side{display:inline-flex;align-self:start;justify-self:start;padding:3px;gap:2px;background:var(--paper);border:1px solid var(--sand);border-radius:999px}
+.side button{min-height:36px;padding:4px 14px;border:0;border-radius:999px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:600;cursor:pointer}
+.side button[aria-pressed="true"]{background:var(--pink);color:#fff}
+#nanat{display:block;width:100%;height:auto}
+#nanat text{font-family:var(--sans)}
+.nleg{font-size:14px;color:var(--ink-2);line-height:1.3}
+.nleg .lcols{display:grid;grid-template-columns:auto auto;justify-content:start;gap:4px 18px;align-items:start}
+.nleg table{border-collapse:separate;border-spacing:0 4px}
+.nleg td{padding:5px 6px;vertical-align:middle;transition:background .2s}
+.nleg td.d{width:12px;padding-inline-end:4px}
+.nleg td.d i{width:12px;height:12px;border-radius:50%;display:block}
+.nleg td.c{font-weight:700;color:var(--ink);white-space:nowrap;padding-inline-start:2px}
+.nleg tr.on td{background:var(--pink-mist)}
+.nleg tr.on td:first-child{border-radius:8px 0 0 8px}
+.nleg tr.on td:last-child{border-radius:0 8px 8px 0}
+.nleg tr.dim{opacity:.45}
+.nleg .memo{margin:4px 0 0;font-style:italic;color:var(--muted)}
+@media (max-width: 760px){ .nleg .lcols{grid-template-columns:minmax(0,1fr);gap:0} .nleg table{border-spacing:0 2px} }
+.nmap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ncol{border-radius:14px;padding:10px;background:var(--paper);transition:opacity .25s}
+.ncol.off{opacity:.45}
+.ncol h4{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--ink)}
+.ncol h4 small{font-weight:500;color:var(--muted)}
+.nrow{display:grid;grid-template-columns:22px 1fr;gap:6px;align-items:start;margin-top:6px}
+.nrow .num{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.3;color:var(--pink-2);text-align:center}
+.nrow .chips{display:flex;flex-direction:column;gap:4px}
+.chip{background:var(--ivory);border:1px solid var(--sand);border-radius:9px;padding:4px 8px;font-size:13.5px;line-height:1.3;color:var(--ink-2)}
+.chip b{color:var(--pink-ink);margin-inline-end:4px}
+.chip.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.chip.on b{color:#fff}
+.mmap{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+#g-t,#g-m{align-self:stretch}
+.mbox{border:1.5px solid var(--sand);border-radius:14px;padding:12px 14px;background:var(--paper)}
+.mbox .mn{font-family:var(--serif);font-weight:700;font-size:26px;color:var(--pink-2);line-height:1}
+.mbox p{margin:6px 0 0;font-size:14.5px;color:var(--ink-2);line-height:1.4}
+.mbox.on{background:var(--pink-mist);border-color:var(--pink)}
+.mbox.on .mn{color:var(--pink)}
+.gcredit{margin:12px 0 0;font-size:14px;color:var(--muted);font-style:italic}
+@media (max-width: 760px){ .gcards{grid-template-columns:minmax(0,1fr);grid-template-areas:"t" "n" "m"} .nmap{grid-template-columns:1fr} }
+@media (max-width: 420px){ .mmap{grid-template-columns:1fr} }
+
+/* Symbols */
+.symbols{margin-top:44px;background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:26px 28px 28px;box-shadow:var(--shadow)}
+.sym-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}
+.sym-badge{flex:none;width:46px;height:46px;border-radius:50%;background:var(--pink);color:#fff;font-family:var(--serif);font-weight:700;font-size:26px;display:flex;align-items:center;justify-content:center}
+.sym-head h2{margin:0 0 4px;font-family:var(--serif);font-weight:600;font-size:26px;color:var(--ink)}
+.sym-head p{margin:0;font-size:16px;color:var(--ink-2)}
+.symbols .alerts{display:flex;flex-direction:column;gap:8px;margin:4px 0 16px}
+.symbols .alert{background:var(--pink-mist);border-inline-start:4px solid var(--pink);border-radius:10px;padding:10px 14px;font-size:16px;color:var(--ink)}
+.symbols .alert b{color:var(--pink-ink)}
+.symbols summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:10px 18px;border-radius:12px;background:var(--pink);color:#fff;font-weight:700;font-size:15.5px}
+.symbols summary:hover{background:var(--pink-ink)}
+.symbols summary::-webkit-details-marker{display:none}
+.symbols summary::after{content:'▾';font-size:15px;transition:transform .2s}
+.symbols details[open] summary::after{transform:rotate(180deg)}
+.symbols details[open] .tw{margin-top:16px}
+.symbols .tw{overflow-x:auto}
+.symbols table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:540px}
+.symbols th{text-align:start;font-size:14px;font-weight:600;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--sand-2)}
+.symbols td{padding:10px;border-bottom:1px solid var(--sand);vertical-align:top}
+.symbols td.sym{font-weight:700;color:var(--pink);white-space:nowrap}
+.symbols td.ex{white-space:nowrap;font-weight:600}
+.symbols td.pg{color:var(--muted);white-space:nowrap}
+.symbols .src{font-size:14.5px;color:var(--muted);margin:12px 0 0}
+
+/* Install */
+.tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.install{min-height:44px;padding:8px 16px;border:1.5px solid var(--pink);border-radius:999px;background:var(--ivory);color:var(--pink-ink);font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.install:hover{background:var(--pink-mist)}
+.install[hidden],.ios-hint[hidden]{display:none}
+.ios-hint{margin:10px 0 0;padding:10px 14px;border-radius:12px;background:var(--pink-mist);color:var(--ink);font-size:15.5px}
+
+/* Footer */
+footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--sand);display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;font-size:14.5px;line-height:1.6;color:var(--muted)}
+footer h4{margin:0 0 6px;font-family:var(--serif);font-weight:600;font-size:16px;color:var(--ink)}
+footer .refs div{margin-bottom:6px}
+footer a{color:var(--pink)}
+footer strong{color:var(--ink)}
+.offline{margin-top:6px;color:#00754A;font-weight:600}
+.offline[hidden]{display:none}
+
+/* Small screens */
+.mini{display:none}
+@media (max-width: 960px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .aside{position:static;scroll-margin-top:70px}
+  footer{grid-template-columns:1fr;gap:18px}
+  .mini{display:flex;position:sticky;top:0;z-index:10;margin:0 -16px 18px;padding:10px 16px;background:var(--ivory);color:var(--ink);border-bottom:4px solid var(--pink-2);align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 16px -10px rgba(90,70,30,.4)}
+  .mini .s{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--pink)}
+  .mini .c{font-size:14.5px;color:var(--ink-2);font-weight:600}
+  .mini a{color:var(--pink);font-size:14.5px;font-weight:600}
+}
+@media (max-width: 640px){
+  .wrap{padding:18px 16px 36px}
+  .brand .logo{width:56px}
+  .brand h1{font-size:27px}
+  fieldset{padding:18px 16px 20px;border-radius:18px}
+  legend{font-size:21px}
+  .symbols{padding:22px 18px}
+  .result .stage{font-size:64px}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="../img/drhi.png" alt="Dr Hi">
+      <div>
+        <h1 data-i="title"></h1>
+        <p class="sub" data-i="kicker"></p>
+      </div>
+    </div>
+    <div class="tools">
+      <button type="button" class="install" id="install" hidden onclick="installApp()" data-i="install"></button>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" id="l-en" onclick="setLang('en')">EN</button>
+        <button type="button" id="l-fr" onclick="setLang('fr')">FR</button>
+      </div>
+    </div>
+  </header>
+  <p class="ios-hint" id="ios-hint" hidden data-i="iosHint"></p>
+
+  <p class="disclaimer" data-i="disclaimer"></p>
+
+  <div class="mini" aria-hidden="true">
+    <span><span class="s" id="mini-stage">–</span> &nbsp;<span class="c" id="mini-tnm"></span></span>
+    <a href="#result" data-i="details"></a>
+  </div>
+
+  <div class="layout">
+    <form class="inputs" id="f" onsubmit="return false">
+
+      <fieldset>
+        <legend><span class="step">1</span><span data-i="s1"></span></legend>
+        <div class="opts row">
+          <label class="opt"><input type="radio" name="basis" value="c" checked><span class="t"><span data-i="bC"></span><span class="code">cTNM</span></span></label>
+          <label class="opt"><input type="radio" name="basis" value="p"><span class="t"><span data-i="bP"></span><span class="code">pTNM</span></span></label>
+          <label class="opt"><input type="radio" name="basis" value="yp"><span class="t"><span data-i="bY"></span><span class="code">ypTNM</span></span></label>
+        </div>
+        <p class="note" id="basis-note"></p>
+        <a class="symlink" href="#symbols" onclick="openSym()" data-i="symLink"></a>
+        <div id="yp-box" class="note" hidden>
+          <label for="initStage" style="display:block;font-weight:600;margin-bottom:6px" data-i="initLbl"></label>
+          <select id="initStage" name="initStage">
+            <option value="" data-i="initNone"></option>
+            <option>0</option><option>IA</option><option>IB</option><option>IIA</option><option>IIB</option>
+            <option>IIIA</option><option>IIIB</option><option>IIIC</option><option>IV</option>
+          </select>
+          <p style="margin:10px 0 0;font-weight:600" data-i="ypRule"></p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="step">2</span><span data-i="s2"></span></legend>
+        <label for="size" style="display:block;font-weight:600;font-size:15px;margin-bottom:6px" data-i="sizeLbl"></label>
+        <div class="sizebox">
+          <input type="number" id="size" name="size" step="0.01" min="0" inputmode="decimal" placeholder="1.5">
+          <span class="sizeout" id="sizeout"></span>
+        </div>
+        <p class="hint" style="margin-top:8px" id="size-hint"></p>
+        <div class="sep" data-i="orCat"></div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="tcat" value="Tis(DCIS)"><span class="t"><span data-i="tDCIS"></span><span class="code">Tis (DCIS)</span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="Tis(LCIS)"><span class="t"><span data-i="tLCIS"></span><span class="code">Tis (LCIS)</span><span class="sub" data-i="tLCISs"></span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="Tis(Paget)"><span class="t"><span data-i="tPaget"></span><span class="code">Tis (Paget)</span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="T0"><span class="t"><span data-i="t0"></span><span class="code">T0</span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="T4a"><span class="t"><span data-i="t4a"></span><span class="code">T4a</span><span class="sub" data-i="t4as"></span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="T4b"><span class="t"><span data-i="t4b"></span><span class="code">T4b</span><span class="sub" data-i="t4bs"></span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="T4c"><span class="t"><span data-i="t4c"></span><span class="code">T4c</span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="T4d"><span class="t"><span data-i="t4d"></span><span class="code">T4d</span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="TX"><span class="t"><span data-i="tX"></span><span class="code">TX</span></span></label>
+        </div>
+        <label class="chk"><input type="checkbox" name="multi"><span data-i="multi"></span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="step">3</span><span data-i="s3"></span></legend>
+        <p class="hint" id="n-hint"></p>
+        <div class="n-alert" id="n-alert"></div>
+        <div class="opts" id="n-options"></div>
+        <label class="chk" id="suffix-f"><input type="checkbox" name="fsuffix"><span data-i="fsuf"></span></label>
+        <label class="chk" id="suffix-sn" hidden><input type="checkbox" name="snsuffix"><span data-i="snsuf"></span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="step">4</span><span data-i="s4"></span></legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="m" value="M0" checked><span class="t"><span data-i="m0"></span><span class="code">cM0</span></span></label>
+          <label class="opt"><input type="radio" name="m" value="M1"><span class="t"><span data-i="m1c"></span><span class="code">M1</span></span></label>
+        </div>
+        <label class="chk" id="pm-box" hidden><input type="checkbox" name="pm"><span data-i="m1p"></span></label>
+        <p class="note" data-i="mNote"></p>
+      </fieldset>
+    </form>
+
+    <aside class="aside" id="result" aria-live="polite">
+      <div class="result">
+        <div class="lbl" id="res-lbl"></div>
+        <div class="stage" id="stage">–</div>
+        <div class="tnm" id="tnm"></div>
+        <div class="ladder five" aria-hidden="true"><div id="ld0"></div><div id="ld1"></div><div id="ld2"></div><div id="ld3"></div><div id="ld4"></div></div>
+        <div class="ladder-l five" aria-hidden="true"><span>0</span><span>I</span><span>II</span><span>III</span><span>IV</span></div>
+        <div class="why" id="why"></div>
+        <div class="err" id="err" hidden></div>
+        <div class="summary" id="summary"></div>
+        <div class="actions">
+          <button type="button" class="btn primary" id="copy" onclick="copySummary()"></button>
+          <button type="button" class="btn" id="reset" onclick="resetForm()"></button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="guide" id="guide" aria-labelledby="g-h">
+    <h2 class="gh" id="g-h" data-i="gT"></h2>
+    <p class="glead" data-i="gLead"></p>
+    <div class="gcards">
+      <figure class="gcard" id="g-t">
+        <figcaption><span class="gl">T</span><span data-i="gTt"></span></figcaption>
+        <svg id="gauge" viewBox="-16 -4 572 230" role="img" aria-labelledby="gauge-t"><title id="gauge-t" data-i="gTt"></title></svg>
+        <ul class="t4leg" id="t4leg"></ul>
+        <p class="gnote" id="g-tnote"></p>
+      </figure>
+      <figure class="gcard" id="g-n">
+        <figcaption><span class="gl">N</span><span data-i="gNt"></span></figcaption>
+        <div class="nanat"><div class="side" role="group" aria-label="Side"><button type="button" data-side="L" onclick="setSide('L')"></button><button type="button" data-side="R" onclick="setSide('R')"></button></div><svg id="nanat" viewBox="0 0 340 262" role="img"></svg><div class="nleg" id="nleg"></div></div>
+        <div class="nmap" id="nmap"></div>
+      </figure>
+      <figure class="gcard" id="g-m">
+        <figcaption><span class="gl">M</span><span data-i="gMt"></span></figcaption>
+        <div class="mmap" id="mmap"></div>
+      </figure>
+    </div>
+    <p class="gcredit" data-i="gCredit"></p>
+  </section>
+
+  <section class="symbols" id="symbols" aria-labelledby="sym-h">
+    <div class="sym-head">
+      <span class="sym-badge" aria-hidden="true">?</span>
+      <div>
+        <h2 id="sym-h" data-i="symT"></h2>
+        <p data-i="symTeaser"></p>
+      </div>
+    </div>
+    <div class="alerts" id="sym-alerts"></div>
+    <details id="sym">
+      <summary><span id="sym-btn"></span></summary>
+      <div class="tw"><table>
+        <thead><tr><th data-i="thSym"></th><th data-i="thMean"></th><th data-i="thEx"></th><th data-i="thPg"></th></tr></thead>
+        <tbody id="sym-body"></tbody>
+      </table></div>
+      <p class="src" data-i="symSrc"></p>
+    </details>
+  </section>
+
+  <footer>
+    <div class="refs">
+    <h4 data-i="refs"></h4>
+    <div>Brierley J, Giuliani M, O'Sullivan B, Rous B, Van Eycken E (eds). <i>UICC TNM Classification of Malignant Tumours</i>, 9th ed. Wiley, 2025 – Breast tumours, pp. 151–157 (definitions correspond to the AJCC 8th edition).</div>
+    <div>Amin MB et al. (eds). <i>AJCC Cancer Staging Manual</i>, 8th ed. Springer, 2017 – Breast.</div>
+    <div>Référentiel SENORIF « Cancers et pathologies du sein », septembre 2026 – critères échographiques de suspicion ganglionnaire (d'après INCa 2012 ; Mainiero MB et al. <i>AJR</i> 2010;195:1261–7).</div>
+    <div>Varman PM et al. Is it time to redefine clinical nodal staging for breast cancer? <i>Ann Surg Oncol</i> 2026;33(11):9719–27. <a href="https://doi.org/10.1245/s10434-026-20128-y" target="_blank" rel="noopener">doi:10.1245/s10434-026-20128-y</a> · Author reflections: 33(11):9728–9. <a href="https://doi.org/10.1245/s10434-026-20179-1" target="_blank" rel="noopener">doi:10.1245/s10434-026-20179-1</a></div>
+    </div>
+    <div>
+    <h4><span data-i="madeby"></span> Dr Ismahene Haraoubia</h4>
+    <div data-i="affil"></div>
+    <div><a href="mailto:ismaheneharaoubia@gmail.com">ismaheneharaoubia@gmail.com</a></div>
+    <div><a href="../" data-i="allTools"></a></div>
+    <div>v2.12 · <span data-i="version"></span></div>
+    <div class="offline" id="offline" hidden data-i="offline"></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ---------- Text (EN / FR) ---------- */
+const T = window.T = {
+ en:{ install:"Install the app", iosHint:"On iPhone or iPad: tap Share, then “Add to Home Screen”.",
+  gNa:{I:"I",II:"II",III:"III",SC:"supraclav.",MI:"int. mammary",CL:"M1",pec:"pectoralis minor",br:"affected breast",im:"intramammary|coded as level I"},
+  gNlev:"Axillary levels (pectoralis minor muscle): I lateral to its lateral border; II between its two borders, including interpectoral (Rotter) nodes; III medial to its medial border (= infraclavicular).",
+  gNleg:[["12","Axillary levels I–⁠II","N1 · N2a"],["MI","Internal mammary only","N2b"],["III","Level III =<br>infraclavicular","N3a"],["MI12","Internal mammary + axillary","N3b"],["SC","Supraclavicular","N3c"],["CL","Cervical,<br><span style=\"white-space:nowrap\">contralateral int. mammary</span>","M1"]],
+  gSideL:"Left breast", gSideR:"Right breast", gNmemo:"The further from the breast, the higher the N.|Axillary I–II: movable = N1; fixed together = N2a.", gNfix:"fixed", gNmob:"movable",
+  gT:"Visual guide", gLead:"The diagrams follow what you enter.", gTt:"Primary tumour", gNt:"Regional lymph nodes", gMt:"Distant metastasis",
+  gCredit:"Diagram concept and design: Dr Hi. Content: UICC TNM 9th edition (2025).",
+  gCm:"cm", gExt:"extension", gSize:"size (cm)", gT4:[["a","Chest wall"],["b","Skin: ulceration,|nodules, peau d'orange"],["c","a + b"],["d","Inflammatory"]],
+  gTis:"Tis: carcinoma in situ, no size to measure.", gT0:"T0: no evidence of primary tumour.", gTX:"TX: tumour cannot be assessed.",
+  gCn:"cN", gCnS:"clinical", gPn:"pN", gPnS:"after surgery",
+  gNc:[["0",[["N0","none"]]],["1",[["N1","movable level I–II axillary"]]],["2",[["N2a","fixed level I–II axillary"],["N2b","internal mammary only, clinically detected"]]],["3",[["N3a","infraclavicular (level III)"],["N3b","internal mammary + axillary"],["N3c","supraclavicular"]]]],
+  gNp:[["0",[["N0","none"],["N0(i+)","isolated cells ≤ 0.2 mm"]]],["1",[["N1mi","micrometastases > 0.2 to 2 mm"],["N1a","1 to 3 axillary"],["N1b","non-clinical internal mammary (sentinel)"],["N1c","N1a + N1b"]]],["2",[["N2a","4 to 9 axillary"],["N2b","clinical internal mammary, no axillary"]]],["3",[["N3a","≥ 10 axillary, or infraclavicular (level III)"],["N3b","clinical IM + positive axillary, or > 3 axillary + IM (sentinel)"],["N3c","supraclavicular"]]]],
+  gM0:"No distant metastasis. Always \"cM0\": pM0 does not exist.", gM1:"Distant metastasis, including any other node (cervical, contralateral internal mammary). Examination or imaging is enough: cM1. Confirmed under the microscope: pM1.",
+  offline:"✓ Available offline on this device", kicker:"UICC TNM 9th edition (2025), identical to the AJCC 8th for the anatomic stage", title:"Breast cancer TNM staging",
+  disclaimer:"Educational decision-support tool: it does not replace the pathology report, the tumour board or clinical judgement.",
+  details:"Details", s1:"Basis of classification",
+  symT:"TNM symbols: what the UICC says", symTeaser:"Each symbol has one precise meaning: mixing them up causes errors.", symOpen:"Show the 12 symbols and their page in the UICC book", symClose:"Hide the table", symLink:"c, p, y, r… what do these symbols mean? ↓", thSym:"Symbol", thMean:"Official meaning", thEx:"Example", thPg:"UICC 9th",
+  symSrc:"Source: UICC TNM Classification of Malignant Tumours, 9th ed. (2025), Introduction and Breast chapter. The y, r, a and m symbols do not change the stage group; they flag cases for separate analysis. The \"p.\" numbers are those printed at the top of the book pages. In a PDF reader, add 22 (book p. 3 = PDF page 25).",
+  symAlerts:["<b>r ≠ radiological.</b> There is no “radiological” prefix: imaging is part of the clinical classification. Write cT2 (and say “on MRI” in the text), not rT2.","<b>r ≠ R.</b> Prefix r = recurrence (rT2). Capital R = residual tumour after treatment (R0, R1, R2)."],
+  sym:[["c","Clinical: everything known before treatment (examination, imaging, endoscopy, biopsy, surgical exploration)","cT2 cN1 cM0","p. 3"],
+   ["p","Pathological: clinical data supplemented by surgery and examination of the resected specimen","pT2 pN1a","p. 3–4"],
+   ["y","Classified during or after multimodality therapy (e.g., neoadjuvant); only viable tumour cells count","ypT1c ypN0","p. 9"],
+   ["r","Recurrence classified after a disease-free interval (or progression after watchful waiting)","rT2 rN0","p. 9"],
+   ["a","Classification first determined at autopsy","aT3","p. 9"],
+   ["(m)","Multiple primary tumours at a single site","pT2(m)","p. 9"],
+   ["(sn)","Sentinel lymph node","pN1(sn)","p. 7"],
+   ["(i+) (mol+)","Isolated tumour cells (≤ 0.2 mm) found by histology / molecular methods: still N0","pN0(i+)","p. 7–8"],
+   ["(f)","Breast: node confirmed by fine-needle aspiration, without excision","cN1(f)","p. 153"],
+   ["R0 R1 R2","Residual tumour after treatment: none / microscopic / macroscopic","R0","p. 10"],
+   ["L V LV Pn","Lymphatic, venous, lymphovascular, perineural invasion (optional descriptors)","L1 V0 Pn0","p. 9–10"],
+   ["G","Histological grade (breast: Nottingham score)","G2","p. 8, 156"]],
+  bC:"Clinical (examination, imaging, biopsy)", bP:"Pathological (surgical specimen)", bY:"After neoadjuvant therapy",
+  noteC:"cTNM: everything known before treatment. Node removed but breast tumour not yet operated on: N stays clinical (cN1, not pN1).",
+  noteP:"pTNM = after surgery, on the surgical specimen. pT: the tumour must be completely removed to the naked eye (a margin involved only microscopically is accepted). pN: level I axillary nodes must be examined. Even if fewer than 6 are examined, if all are negative: pN0.",
+  noteY:"ypTNM: residual disease after neoadjuvant therapy. ypT = largest residual invasive focus, treatment fibrosis excluded.",
+  initLbl:"Stage at diagnosis (before treatment)", initNone:"Not specified",
+  ypRule:"The reference stage remains the one at diagnosis: it never changes after treatment (UICC rule 3).",
+  s2:"T – Primary tumour", sizeLbl:"Size of the invasive component, greatest dimension (cm)",
+  sizeHint:"Invasive component only, not the in situ component. Several foci: the largest, not the sum.",
+  orCat:"Or choose a specific category",
+  tDCIS:"Ductal carcinoma in situ", tLCIS:"Lobular carcinoma in situ", tLCISs:"Included by the UICC; the AJCC 8th excludes LCIS.",
+  tPaget:"Paget disease of the nipple without underlying invasive carcinoma or DCIS/LCIS", t0:"No evidence of primary tumour",
+  t4a:"Extension to chest wall", t4as:"Ribs, intercostal muscles, serratus anterior. Pectoral muscle invasion alone is NOT T4a.",
+  t4b:"Ulceration, ipsilateral satellite skin nodules or skin oedema (incl. peau d'orange)", t4bs:"Invasion of the dermis alone, dimpling or nipple retraction do NOT qualify as T4.",
+  t4c:"Both T4a and T4b", t4d:"Inflammatory carcinoma", tX:"Primary tumour cannot be assessed",
+  multi:"Multiple simultaneous tumours in the same breast: classify the largest and add (m)",
+  s3:"N – Regional lymph nodes",
+  nHintC:"Clinically detected = highly suspicious on examination or imaging (not lymphoscintigraphy), or proven by FNA. Suspicious ultrasound (SENORIF 2026): cortex ≥ 3 mm, absent or eccentric hilum, round shape, irregular contour.",
+  nAlert:"<b>cN does not depend on the number of nodes.</b><ul><li>Suspicious but <b>movable</b> nodes, even 4 or more: <b>cN1</b>.</li><li><b>Published evidence:</b> the Cleveland Clinic classifies patients with 4 or more suspicious movable nodes as cN1 (618 patients; Varman, <i>Ann Surg Oncol</i> 2026). The authors only propose to study a subcategory, without changing the rule.</li><li>Nodes <b>fixed</b> to one another or to other structures: <b>cN2a</b>.</li><li>The thresholds 1–3, 4–9 and ≥ 10 belong to <b>pN</b> only.</li><li><b>Mainiero 2</b> (indeterminate): sample it. Positive and movable: cN1(f); negative: cN0.</li><li>Record the number of suspicious nodes: it guides the strategy without changing cN.</li><li><b>Classifying correctly does not prevent treating more aggressively</b> (UICC rule 4), provided it is written down.</li></ul>",
+  nHintP:"Only metastases > 0.2 mm count; isolated tumour cells (≤ 0.2 mm) do not.",
+  fsuf:"Confirmed by fine-needle aspiration only, without excision → suffix (f)",
+  snsuf:"Nodal status from sentinel node biopsy only → suffix (sn)",
+  s4:"M – Distant metastasis",
+  m0:"No distant metastasis", m1c:"Distant metastasis, on examination or imaging (stage IV)", m1p:"Confirmed under the microscope (biopsy or cytology) → pM1 instead of cM1 (still stage IV)",
+  mNote:"Any other node is M1 (cervical, contralateral internal mammary). Intramammary nodes = axillary level I.",
+  resLbl:"Anatomic stage group", resLblY:"Residual disease after treatment",
+  copy:"Copy summary", copied:"Copied ✓", reset:"Reset", why:"Determined by",
+  errNoT:"Enter the size of the invasive component or choose a T category.",
+  errTisN:"Tis with nodal metastasis is not a valid combination: look for an invasive component.",
+  naT0N0:"T0 N0 M0: no stage group (no evidence of tumour).",
+  naX:"Stage group cannot be assigned while T or N is not assessable (TX / NX).",
+  progNote:"AJCC prognostic stage (grade, ER, PR, HER2) not calculated.",
+  ypNote:"Stage of reference",
+  refs:"References", madeby:"Designed by", affil:"Resident in Medical Oncology, Medical Oncology Department, CPMC, Algiers, Algeria",
+  allTools:"← All Dr Hi tools", version:"Updated November 2026", stage:"stage", toSize:"→",
+  nC:[
+   ["N0","cN0","No regional lymph node metastasis"],
+   ["N1","cN1","Movable ipsilateral level I–II axillary node(s)"],
+   ["N2a","cN2a","Level I–II axillary nodes fixed to one another (matted) or to other structures"],
+   ["N2b","cN2b","Clinically detected internal mammary node(s) only, without clinically detected axillary nodes"],
+   ["N3a","cN3a","Infraclavicular (level III axillary) node(s)"],
+   ["N3b","cN3b","Internal mammary AND axillary nodes"],
+   ["N3c","cN3c","Supraclavicular node(s)"],
+   ["NX","cNX","Regional nodes cannot be assessed (e.g., previously removed)"]],
+  nP:[
+   ["N0","pN0","No regional lymph node metastasis"],
+   ["N0(i+)","pN0(i+)","Isolated tumour cells only (≤ 0.2 mm or < 200 cells)"],
+   ["N1mi","pN1mi","Micrometastases (> 0.2 mm and/or > 200 cells, none > 2 mm)"],
+   ["N1a","pN1a","1–3 axillary nodes, at least one metastasis > 2 mm"],
+   ["N1b","pN1b","Internal mammary nodes detected by sentinel biopsy, not clinically detected"],
+   ["N1c","pN1c","1–3 axillary nodes AND internal mammary nodes not clinically detected"],
+   ["N2a","pN2a","4–9 axillary nodes, at least one > 2 mm"],
+   ["N2b","pN2b","Clinically detected internal mammary node(s), without axillary metastasis"],
+   ["N3a","pN3a","≥ 10 axillary nodes (at least one > 2 mm) or infraclavicular / level III nodes"],
+   ["N3b","pN3b","Clinically detected internal mammary nodes with positive axillary node(s); or > 3 axillary nodes with internal mammary nodes detected by sentinel biopsy"],
+   ["N3c","pN3c","Ipsilateral supraclavicular node(s)"],
+   ["NX","pNX","Regional nodes cannot be assessed (previously removed or not removed)"]],
+  tLabel:{T1mi:"microinvasion ≤ 0.1 cm",T1a:"> 0.1 to 0.5 cm",T1b:"> 0.5 to 1 cm",T1c:"> 1 to 2 cm",T2:"> 2 to 5 cm",T3:"> 5 cm"}
+ },
+ fr:{ install:"Installer l'app", iosHint:"Sur iPhone ou iPad : touchez Partager, puis « Sur l'écran d'accueil ».",
+  gNa:{I:"I",II:"II",III:"III",SC:"sus-clav.",MI:"mammaire int.",CL:"M1",pec:"petit pectoral",br:"sein atteint",im:"intramammaire|codé niveau I"},
+  gNlev:"Niveaux axillaires (muscle petit pectoral) : I en dehors de son bord latéral ; II entre ses deux bords, ganglions interpectoraux de Rotter compris ; III en dedans de son bord médial (= sous-claviculaires).",
+  gNleg:[["12","Axillaires niveaux I–⁠II","N1 · N2a"],["MI","Mammaires internes seules","N2b"],["III","Niveau III =<br><span style=\"white-space:nowrap\">sous-claviculaires</span>","N3a"],["MI12","Mammaires internes + axillaires","N3b"],["SC","Sus-claviculaires","N3c"],["CL","Cervicaux,<br><span style=\"white-space:nowrap\">mammaires int. controlatéraux</span>","M1"]],
+  gSideL:"Sein gauche", gSideR:"Sein droit", gNmemo:"Plus on s'éloigne du sein, plus le N monte.|Axillaires I–II : mobiles = N1 ; fixés entre eux = N2a.", gNfix:"fixés", gNmob:"mobiles",
+  gT:"Guide visuel", gLead:"Les schémas suivent votre saisie.", gTt:"Tumeur primitive", gNt:"Ganglions régionaux", gMt:"Métastases à distance",
+  gCredit:"Concept et design des schémas : Dr Hi. Contenu : UICC TNM 9e édition (2025).",
+  gCm:"cm", gExt:"extension", gSize:"taille (cm)", gT4:[["a","Paroi thoracique"],["b","Peau : ulcération,|nodules, peau d'orange"],["c","a + b"],["d","Inflammatoire"]],
+  gTis:"Tis : carcinome in situ, pas de taille à mesurer.", gT0:"T0 : pas de tumeur primitive décelable.", gTX:"TX : tumeur non évaluable.",
+  gCn:"cN", gCnS:"clinique", gPn:"pN", gPnS:"après chirurgie",
+  gNc:[["0",[["N0","aucun"]]],["1",[["N1","axillaires I–II mobiles"]]],["2",[["N2a","axillaires I–II fixés"],["N2b","mammaires internes seuls, cliniquement détectés"]]],["3",[["N3a","sous-claviculaires (niveau III)"],["N3b","mammaires internes + axillaires"],["N3c","sus-claviculaires"]]]],
+  gNp:[["0",[["N0","aucun"],["N0(i+)","cellules isolées ≤ 0,2 mm"]]],["1",[["N1mi","micrométastases > 0,2 à 2 mm"],["N1a","1 à 3 axillaires"],["N1b","mammaires internes non cliniques (sentinelle)"],["N1c","N1a + N1b"]]],["2",[["N2a","4 à 9 axillaires"],["N2b","mammaires internes cliniques, sans axillaire"]]],["3",[["N3a","≥ 10 axillaires, ou sous-claviculaires (niveau III)"],["N3b","MI cliniques + axillaires positifs, ou > 3 axillaires + MI (sentinelle)"],["N3c","sus-claviculaires"]]]],
+  gM0:"Pas de métastase à distance. Toujours « cM0 » : le pM0 n'existe pas.", gM1:"Métastase à distance, y compris tout autre ganglion (cervical, mammaire interne controlatéral). L'examen ou l'imagerie suffit : cM1. Confirmée au microscope : pM1.",
+  offline:"✓ Disponible hors connexion sur cet appareil", kicker:"UICC TNM 9e édition (2025), identique à l'AJCC 8e pour le stade anatomique", title:"Classification TNM du cancer du sein",
+  disclaimer:"Outil pédagogique d'aide à la décision : il ne remplace ni le compte rendu d'anatomopathologie, ni la RCP, ni le jugement clinique.",
+  details:"Détails", s1:"Base de la classification",
+  symT:"Symboles TNM : ce que dit l'UICC", symTeaser:"Chaque symbole a un sens précis : les confondre crée des erreurs.", symOpen:"Voir les 12 symboles et leur page dans le livre UICC", symClose:"Masquer le tableau", symLink:"c, p, y, r… que signifient ces symboles ? ↓", thSym:"Symbole", thMean:"Sens officiel", thEx:"Exemple", thPg:"UICC 9e",
+  symSrc:"Source : UICC TNM Classification of Malignant Tumours, 9e éd. (2025), Introduction et chapitre Sein. Les symboles y, r, a et m ne modifient pas le stade ; ils signalent des cas à analyser à part. Les numéros « p. » sont ceux écrits en haut des pages du livre. Dans le lecteur PDF, ajoutez 22 (p. 3 du livre = page 25 du PDF).",
+  symAlerts:["<b>r ≠ radiologique.</b> Il n'existe pas de préfixe « radiologique » : l'imagerie fait partie de la classification clinique. Écrire cT2 (et préciser « à l'IRM » dans le texte), pas rT2.","<b>r ≠ R.</b> Préfixe r = récidive (rT2). R majuscule = résidu tumoral après traitement (R0, R1, R2)."],
+  sym:[["c","Clinique : tout ce qui est connu avant traitement (examen, imagerie, endoscopie, biopsie, exploration chirurgicale)","cT2 cN1 cM0","p. 3"],
+   ["p","Pathologique : données cliniques complétées par la chirurgie et l'examen de la pièce opératoire","pT2 pN1a","p. 3–4"],
+   ["y","Classification pendant ou après un traitement multimodal (ex. néoadjuvant) ; seules les cellules tumorales viables comptent","ypT1c ypN0","p. 9"],
+   ["r","Récidive classée après un intervalle libre de maladie (ou progression après surveillance)","rT2 rN0","p. 9"],
+   ["a","Classification établie pour la première fois à l'autopsie","aT3","p. 9"],
+   ["(m)","Tumeurs primitives multiples sur un même site","pT2(m)","p. 9"],
+   ["(sn)","Ganglion sentinelle","pN1(sn)","p. 7"],
+   ["(i+) (mol+)","Cellules tumorales isolées (≤ 0,2 mm) détectées en histologie / biologie moléculaire : restent N0","pN0(i+)","p. 7–8"],
+   ["(f)","Sein : ganglion confirmé par cytoponction, sans exérèse","cN1(f)","p. 153"],
+   ["R0 R1 R2","Résidu tumoral après traitement : aucun / microscopique / macroscopique","R0","p. 10"],
+   ["L V LV Pn","Invasion lymphatique, veineuse, lymphovasculaire, périnerveuse (descripteurs optionnels)","L1 V0 Pn0","p. 9–10"],
+   ["G","Grade histologique (sein : score de Nottingham)","G2","p. 8, 156"]],
+  bC:"Clinique (examen, imagerie, biopsie)", bP:"Pathologique (pièce opératoire)", bY:"Après traitement néoadjuvant",
+  noteC:"cTNM : tout ce qu'on sait avant le traitement. Ganglion enlevé mais tumeur du sein pas encore opérée : le N reste clinique (cN1, pas pN1).",
+  noteP:"pTNM = après chirurgie, sur la pièce opératoire. pT : la tumeur doit être enlevée en entier à l'œil nu (une marge atteinte seulement au microscope est acceptée). pN : il faut analyser les ganglions axillaires de niveau I. Même s'il y en a moins de 6, s'ils sont tous négatifs : pN0.",
+  noteY:"ypTNM : maladie résiduelle après traitement néoadjuvant. ypT = plus grand foyer infiltrant résiduel, fibrose post-thérapeutique exclue.",
+  initLbl:"Stade au diagnostic (avant traitement)", initNone:"Non précisé",
+  ypRule:"Le stade de référence reste celui du diagnostic : il ne change jamais après traitement (UICC, règle 3).",
+  s2:"T – Tumeur primitive", sizeLbl:"Taille de la composante infiltrante, plus grand diamètre (cm)",
+  sizeHint:"Composante infiltrante seule, pas la composante in situ. Plusieurs foyers : le plus grand, pas la somme.",
+  orCat:"Ou choisissez une catégorie particulière",
+  tDCIS:"Carcinome canalaire in situ", tLCIS:"Carcinome lobulaire in situ", tLCISs:"Inclus par l'UICC ; l'AJCC 8e exclut le CLIS.",
+  tPaget:"Maladie de Paget du mamelon sans carcinome infiltrant ni CCIS/CLIS sous-jacent", t0:"Pas de tumeur primitive décelable",
+  t4a:"Extension à la paroi thoracique", t4as:"Côtes, muscles intercostaux, grand dentelé. L'atteinte du seul muscle pectoral n'est PAS un T4a.",
+  t4b:"Ulcération, nodules cutanés satellites homolatéraux ou œdème cutané (y compris peau d'orange)", t4bs:"L'envahissement du derme seul, une rétraction cutanée ou du mamelon ne sont PAS un T4.",
+  t4c:"T4a et T4b", t4d:"Carcinome inflammatoire", tX:"Tumeur primitive non évaluable",
+  multi:"Tumeurs multiples simultanées dans le même sein : classer la plus grande et ajouter (m)",
+  s3:"N – Ganglions régionaux",
+  nHintC:"Cliniquement détecté = très suspect à l'examen ou à l'imagerie (hors lymphoscintigraphie), ou prouvé par cytoponction. Échographie suspecte (SENORIF 2026) : cortex ≥ 3 mm, hile absent ou excentré, forme ronde, contour irrégulier.",
+  nAlert:"<b>Le cN ne dépend pas du nombre de ganglions.</b><ul><li>Ganglions suspects mais <b>mobiles</b>, même 4 ou plus : <b>cN1</b>.</li><li><b>Preuve publiée :</b> la Cleveland Clinic classe cN1 les patientes avec 4 ganglions suspects mobiles ou plus (618 patientes ; Varman, <i>Ann Surg Oncol</i> 2026). Les auteurs proposent seulement d'étudier une sous-catégorie, sans changer la règle.</li><li>Ganglions <b>fixés</b> entre eux ou aux structures voisines : <b>cN2a</b>.</li><li>Les seuils 1–3, 4–9 et ≥ 10 sont réservés au <b>pN</b>.</li><li><b>Mainiero 2</b> (indéterminé) : à prélever. Positif et mobile : cN1(f) ; négatif : cN0.</li><li>Notez le nombre de ganglions suspects : il guide la stratégie sans changer le cN.</li><li><b>Classer juste n'empêche pas de traiter plus fort</b> (UICC, règle 4), à condition de l'écrire.</li></ul>",
+  nHintP:"Seules les métastases > 0,2 mm comptent ; les cellules tumorales isolées (≤ 0,2 mm) ne comptent pas.",
+  fsuf:"Confirmation par cytoponction seule, sans exérèse → suffixe (f)",
+  snsuf:"Statut ganglionnaire obtenu par ganglion sentinelle seul → suffixe (sn)",
+  s4:"M – Métastases à distance",
+  m0:"Pas de métastase à distance", m1c:"Métastase à distance, à l'examen ou à l'imagerie (stade IV)", m1p:"Confirmée au microscope (biopsie ou cytologie) → pM1 au lieu de cM1 (toujours stade IV)",
+  mNote:"Tout autre ganglion est M1 (cervical, mammaire interne controlatéral). Ganglions intramammaires = axillaires de niveau I.",
+  resLbl:"Stade anatomique", resLblY:"Maladie résiduelle après traitement",
+  copy:"Copier le résumé", copied:"Copié ✓", reset:"Réinitialiser", why:"Déterminé par",
+  errNoT:"Saisissez la taille de la composante infiltrante ou choisissez une catégorie T.",
+  errTisN:"Un Tis avec atteinte ganglionnaire n'est pas une combinaison valide : recherchez une composante infiltrante.",
+  naT0N0:"T0 N0 M0 : pas de stade (aucune tumeur décelable).",
+  naX:"Le stade ne peut pas être attribué tant que T ou N n'est pas évaluable (TX / NX).",
+  progNote:"Stade pronostique AJCC (grade, RE, RP, HER2) non calculé.",
+  ypNote:"Stade de référence",
+  refs:"Références", madeby:"Conçu par", affil:"Résidente en oncologie médicale, service d'oncologie médicale, CPMC, Alger, Algérie",
+  allTools:"← Tous les outils Dr Hi", version:"Mis à jour en novembre 2026", stage:"stade", toSize:"→",
+  nC:[
+   ["N0","cN0","Pas de métastase ganglionnaire régionale"],
+   ["N1","cN1","Ganglion(s) axillaire(s) homolatéral(aux) mobile(s), niveaux I–II"],
+   ["N2a","cN2a","Ganglions axillaires I–II fixés entre eux (en paquet) ou aux structures voisines"],
+   ["N2b","cN2b","Ganglion(s) mammaire(s) interne(s) cliniquement détecté(s) seul(s), sans ganglion axillaire cliniquement détecté"],
+   ["N3a","cN3a","Ganglion(s) sous-claviculaire(s) (axillaire niveau III)"],
+   ["N3b","cN3b","Ganglions mammaires internes ET axillaires"],
+   ["N3c","cN3c","Ganglion(s) sus-claviculaire(s)"],
+   ["NX","cNX","Ganglions régionaux non évaluables (p. ex. déjà enlevés)"]],
+  nP:[
+   ["N0","pN0","Pas de métastase ganglionnaire régionale"],
+   ["N0(i+)","pN0(i+)","Cellules tumorales isolées seulement (≤ 0,2 mm ou < 200 cellules)"],
+   ["N1mi","pN1mi","Micrométastases (> 0,2 mm et/ou > 200 cellules, aucune > 2 mm)"],
+   ["N1a","pN1a","1 à 3 ganglions axillaires, dont au moins une métastase > 2 mm"],
+   ["N1b","pN1b","Ganglions mammaires internes détectés par le sentinelle, non cliniquement détectés"],
+   ["N1c","pN1c","1 à 3 ganglions axillaires ET ganglions mammaires internes non cliniquement détectés"],
+   ["N2a","pN2a","4 à 9 ganglions axillaires, dont au moins un > 2 mm"],
+   ["N2b","pN2b","Ganglion(s) mammaire(s) interne(s) cliniquement détecté(s), sans métastase axillaire"],
+   ["N3a","pN3a","≥ 10 ganglions axillaires (dont au moins un > 2 mm) ou ganglions sous-claviculaires / niveau III"],
+   ["N3b","pN3b","Ganglions mammaires internes cliniquement détectés avec ganglion(s) axillaire(s) positif(s) ; ou > 3 ganglions axillaires avec mammaires internes détectés par le sentinelle"],
+   ["N3c","pN3c","Ganglion(s) sus-claviculaire(s) homolatéral(aux)"],
+   ["NX","pNX","Ganglions régionaux non évaluables (déjà enlevés ou non prélevés)"]],
+  tLabel:{T1mi:"micro-invasion ≤ 0,1 cm",T1a:"> 0,1 à 0,5 cm",T1b:"> 0,5 à 1 cm",T1c:"> 1 à 2 cm",T2:"> 2 à 5 cm",T3:"> 5 cm"}
+ }
+};
+
+/* ---------- Staging logic (pure functions, UICC 9th = AJCC 8th anatomic) ---------- */
+function tFromSize(cm){
+  if (isNaN(cm) || cm <= 0) return null;
+  if (cm <= 0.1) return 'T1mi';
+  if (cm <= 0.5) return 'T1a';
+  if (cm <= 1)   return 'T1b';
+  if (cm <= 2)   return 'T1c';
+  if (cm <= 5)   return 'T2';
+  return 'T3';
+}
+// Stage group from T, N, M codes. Returns {stage, group} or {stage:null, reason}
+function stageFor(T, N, M){
+  if (M !== 'M0') return {stage:'IV', group:4};
+  const tg = T.startsWith('Tis') ? 'Tis' : T.startsWith('T1') ? 'T1' : T.startsWith('T4') ? 'T4' : T;   // T0 T1 T2 T3 T4 TX Tis
+  const ng = N === 'N0(i+)' ? 'N0' : N === 'N1mi' ? 'N1mi' : N.startsWith('N1') ? 'N1' : N.startsWith('N2') ? 'N2' : N.startsWith('N3') ? 'N3' : N; // N0 N1mi N1 N2 N3 NX
+  if (ng === 'N3') return {stage:'IIIC', group:3};
+  if (tg === 'Tis') return ng === 'N0' ? {stage:'0', group:0} : (ng === 'NX' ? {stage:null, reason:'naX'} : {stage:null, reason:'errTisN', error:true});
+  if (tg === 'TX' || ng === 'NX') return {stage:null, reason:'naX'};
+  const table = {
+    T0:{N0:null,  N1mi:'IB',  N1:'IIA',  N2:'IIIA'},
+    T1:{N0:'IA',  N1mi:'IB',  N1:'IIA',  N2:'IIIA'},
+    T2:{N0:'IIA', N1mi:'IIB', N1:'IIB',  N2:'IIIA'},
+    T3:{N0:'IIB', N1mi:'IIIA',N1:'IIIA', N2:'IIIA'},
+    T4:{N0:'IIIB',N1mi:'IIIB',N1:'IIIB', N2:'IIIB'}
+  };
+  const st = table[tg][ng];
+  if (!st) return {stage:null, reason:'naT0N0'};
+  return {stage:st, group: st === '0' ? 0 : st.startsWith('III') ? 3 : st.startsWith('II') ? 2 : 1};
+}
+
+/* ---------- Visual guide (concept: Dr Hi) ---------- */
+const NARROW = window.matchMedia('(max-width: 760px)');
+const GC = {cx:178, cy:200, ro:152, ri:98};
+const SEGCOL = ['#F8D0DE','#EF9EBC','#DC5784','#A3124A'];   // pink grows darker as T increases; the active segment is outlined
+function pt(r, deg){ const a = deg * Math.PI / 180; return [GC.cx + r * Math.cos(a), GC.cy - r * Math.sin(a)]; }
+function arc(a0, a1, ro, ri){   // degrees, a0 > a1 (counter-clockwise from left to right)
+  const [x0,y0]=pt(ro,a0),[x1,y1]=pt(ro,a1),[x2,y2]=pt(ri,a1),[x3,y3]=pt(ri,a0);
+  return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${ro} ${ro} 0 0 1 ${x1.toFixed(1)} ${y1.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)} A${ri} ${ri} 0 0 0 ${x3.toFixed(1)} ${y3.toFixed(1)}Z`;
+}
+// needle angle (deg, 180 = left) for a T code and size
+function tAngle(T, cm){
+  const sub = {T1mi:0, T1a:1, T1b:2, T1c:3}, lo = [0,0.1,0.5,1], hi = [0.1,0.5,1,2];
+  if (T in sub){ const i = sub[T], f = isNaN(cm) ? .5 : Math.min(.85, Math.max(.15, (cm - lo[i]) / (hi[i] - lo[i]))); return 180 - (i + f) * 11.25; }
+  if (T === 'T2') return 135 - (isNaN(cm) ? .5 : Math.min(.92, Math.max(.08, (cm - 2) / 3))) * 45;
+  if (T === 'T3') return 90 - (isNaN(cm) ? .4 : Math.min(.9, Math.max(.08, (cm - 5) / 10))) * 45;
+  const t4 = {T4a:0, T4b:1, T4c:2, T4d:3}; if (T in t4) return 45 - (t4[T] + .5) * 11.25;
+  return null;
+}
+// small pink icons for the T4 extensions (drawn at x, y = top-left, 18 px box)
+function t4Icon(k, x, y){   // 20 px icons: rib cage (chest wall), orange (peau d'orange), flame (inflammatory)
+  const ribs = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})" fill="none" stroke-linecap="round">
+      <path d="M10 1.5v17" stroke="#8E1446" stroke-width="2"/>
+      <g stroke="#8E1446" stroke-width="1.6"><path d="M9 4.5C6 4 3 5 2 7.5"/><path d="M9 8C5.5 7.5 2.5 9 1.6 11.8"/><path d="M9 11.5C6 11.2 3.4 12.6 2.6 15.2"/>
+      <path d="M11 4.5c3-.5 6 .5 7 3"/><path d="M11 8c3.5-.5 6.5 1 7.4 3.8"/><path d="M11 11.5c3-.3 5.6 1.1 6.4 3.7"/></g></g>`;
+  const orange = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><circle cx="10" cy="11.5" r="7.6" fill="#F4A13A" stroke="#C46A12" stroke-width="1.2"/>
+      <g fill="#D27A1C"><circle cx="7.4" cy="9.6" r=".8"/><circle cx="11.6" cy="9" r=".8"/><circle cx="9.4" cy="13.2" r=".8"/><circle cx="13.4" cy="12.6" r=".8"/><circle cx="6.8" cy="14" r=".8"/></g>
+      <path d="M10 4.2c.6-2 2.6-3 4.8-2.6-.6 2-2.6 3-4.8 2.6z" fill="#4E9A3A"/></g>`;
+  const flame = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><path d="M10 1c1.4 4.4 7 6.6 7 12a7 7 0 0 1-14 0c0-3.3 2.2-4.8 3.4-7 .1 2.2 1 3.4 2.3 3.6C8.4 6.6 7.8 3.6 10 1z" fill="#EF5A3C"/>
+      <path d="M10 10.5c.9 2 3.3 2.9 3.3 5.2a3.3 3.3 0 0 1-6.6 0c0-1.5 1-2.3 1.6-3.3.3 1 .7 1.4 1.3 1.5-.2-1.3 0-2.5.4-3.4z" fill="#FFC93C"/></g>`;
+  if (k === 'a') return ribs(x, y, 1);
+  if (k === 'b') return orange(x, y, 1);
+  if (k === 'c') return ribs(x - 6, y + 2, .8) + orange(x + 9, y + 2, .8);
+  return flame(x, y, 1);
+}
+function drawGauge(T, cm){
+  const t = window.T[lang], g = $('gauge'), narrow = NARROW.matches, F = v => v.toFixed(1);
+  const act = T ? (T.startsWith('T1') ? 0 : T === 'T2' ? 1 : T === 'T3' ? 2 : T.startsWith('T4') ? 3 : -1) : -1;
+  const GAP = 2.4, ink = '#1D2433';
+  g.setAttribute('viewBox', narrow ? '-16 -4 374 230' : '-16 -4 572 230');
+  let h = `<title>${t.gTt}</title>`;
+  // four separated segments, pink darker as T increases (ChatGPT-assisted design, Dr Hi concept)
+  ['T1','T2','T3','T4'].forEach((lab, i) => {
+    const a0 = 180 - i * 45, a1 = a0 - 45, on = act === i;
+    h += `<path class="seg" d="${arc(a0 - (i ? GAP : 0), a1 + (i < 3 ? GAP : 0), GC.ro, GC.ri)}" fill="${SEGCOL[i]}" ${on ? `stroke="${ink}" stroke-width="3.5" stroke-linejoin="round"` : ''} opacity="${act === -1 || on ? 1 : .5}"/>`;
+    const [lx, ly] = pt(i === 0 ? GC.ri + 19 : (GC.ro + GC.ri) / 2, a0 - 22.5);
+    h += `<text x="${F(lx)}" y="${F(ly + 8)}" text-anchor="middle" font-size="${on ? 26 : 23}" font-weight="700" fill="${i === 3 ? '#fff' : ink}">${lab}</text>`;
+  });
+  // T1: thin ticks 0,1 / 0,5 / 1 and sub-categories mi a b c inside the band
+  [[168.75, '0,1'], [157.5, '0,5'], [146.25, '1']].forEach(([a, v]) => {
+    const [x0, y0] = pt(GC.ro - 16, a), [x1, y1] = pt(GC.ro + 4, a), [tx, ty] = pt(GC.ro + 15, a);
+    h += `<line x1="${F(x0)}" y1="${F(y0)}" x2="${F(x1)}" y2="${F(y1)}" stroke="#6B6A66" stroke-width="1.2"/>`;
+    h += `<text x="${F(tx)}" y="${F(ty + 4)}" text-anchor="middle" font-size="12" fill="#434A58">${lang === 'en' ? v.replace(',', '.') : v}</text>`;
+  });
+  ['mi','a','b','c'].forEach((s, i) => { const [x, y] = pt(GC.ro - 9, 180 - (i + .5) * 11.25), on = T === 'T1' + s;
+    h += `<text x="${F(x)}" y="${F(y + 4)}" text-anchor="middle" font-size="${on ? 13 : 11.5}" font-weight="700" fill="${on ? '#C2185B' : ink}">${s}</text>`; });
+  // major limits: thick navy ticks in the gaps, labels on the side they belong to
+  [[135, 0], [90, 1]].forEach(([a, i]) => { const [x0, y0] = pt(GC.ri, a), [x1, y1] = pt(GC.ro + 20, a), [cx2, cy2] = pt(GC.ro + 22, a), dk = ['#C77E9A','#B94F78'][i];
+    // flush with the inner edge, ends level with its label, finished by a round "pin head"
+    h += `<line x1="${F(x0)}" y1="${F(y0)}" x2="${F(x1)}" y2="${F(y1)}" stroke="${dk}" stroke-width="12" stroke-linecap="butt"/>`;
+    h += `<line x1="${F(x0)}" y1="${F(y0)}" x2="${F(x1)}" y2="${F(y1)}" stroke="${SEGCOL[i]}" stroke-width="9" stroke-linecap="butt"/>`;
+    h += `<circle cx="${F(cx2)}" cy="${F(cy2)}" r="8.5" fill="${SEGCOL[i]}" stroke="${dk}" stroke-width="1.8"/>`;
+    h += `<circle cx="${F(cx2 - 2.2)}" cy="${F(cy2 - 2.4)}" r="2.4" fill="#fff" opacity=".85"/>`; });
+  // labels on the side of the category they belong to, ending (or starting) at the tip of the tick
+  const [t2x, t2y] = pt(GC.ro + 22, 135), [t5x, t5y] = pt(GC.ro + 22, 90);   // same centre as the pin heads
+  h += `<text x="${F(t2x - 14)}" y="${F(t2y)}" dominant-baseline="central" text-anchor="end" font-size="16" font-weight="700" fill="${ink}">≤ 2 cm</text>`;
+  h += `<text x="${F(t5x - 14)}" y="${F(t5y)}" dominant-baseline="central" text-anchor="end" font-size="16" font-weight="700" fill="${ink}">≤ 5 cm</text>`;
+  h += `<text x="${F(t5x + 14)}" y="${F(t5y)}" dominant-baseline="central" text-anchor="start" font-size="16" font-weight="700" fill="${ink}">&gt; 5 cm</text>`;
+  // size | extension divider
+  const [d0x, d0y] = pt(30, 45), [d1x, d1y] = pt(GC.ro + 6, 45);
+  h += `<line x1="${F(d0x)}" y1="${F(d0y)}" x2="${F(d1x)}" y2="${F(d1y)}" stroke="#6B6A66" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  const rs = GC.ri - 24, [sx, sy] = pt(rs, 178), [ex, ey] = pt(rs, 47);
+  h += `<path id="sizepath" d="M${F(sx)} ${F(sy)} A${rs} ${rs} 0 0 1 ${F(ex)} ${F(ey)}" fill="none"/>`;
+  h += `<path d="M${F(sx)} ${F(sy)} A${rs} ${rs} 0 0 1 ${F(ex)} ${F(ey)}" fill="none" stroke="#D8CBB4" stroke-width="1" stroke-dasharray="1 4"/>`;
+  h += `<text font-size="15" font-weight="700" fill="${ink}" letter-spacing="4"><textPath href="#sizepath" startOffset="50%" text-anchor="middle">← ${t.gSize} →</textPath></text>`;
+  h += `<text x="${GC.cx + 26}" y="${GC.cy - 9}" font-size="14" font-weight="700" fill="${ink}">${t.gExt}</text>`;
+  // T4: four parts with thin white lines, letters outside
+  [33.75, 22.5, 11.25].forEach(a => { const [x0, y0] = pt(GC.ro - 14, a), [x1, y1] = pt(GC.ro - 2, a); h += `<line x1="${F(x0)}" y1="${F(y0)}" x2="${F(x1)}" y2="${F(y1)}" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`; });
+  t.gT4.forEach(([k, v], i) => {
+    const [x, y] = pt(GC.ro + 13, 45 - GAP - (i + .5) * (45 - GAP) / 4), on = T === 'T4' + k, col = on ? '#C2185B' : ink;
+    h += `<text x="${F(x)}" y="${F(y + 5)}" text-anchor="middle" font-size="${on ? 17 : 15}" font-weight="700" fill="${col}">${k}</text>`;
+    if (narrow) return;
+    const ix = 368, lines = v.split('|');
+    h += `<line x1="${F(x + 9)}" y1="${F(y)}" x2="${ix - 4}" y2="${F(y)}" stroke="#DC5784" stroke-width="1" stroke-dasharray="2 3"/>`;
+    h += `<g transform="translate(${k === 'c' ? ix + 6 : ix} ${F(y - 11)}) scale(1.1)">${t4Icon(k, 0, 0)}</g>`;
+    lines.forEach((ln, j) => { h += `<text x="${k === 'c' ? ix + 40 : ix + 30}" y="${F(y + 5 + j * 13.5 - (lines.length - 1) * 6.75)}" font-size="13.5" font-weight="${on ? 700 : 500}" fill="${col}">${ln}</text>`; });
+  });
+  // needle (rests at the start when there is no size) and hub
+  const ang = (T && tAngle(T, cm) !== null) ? tAngle(T, cm) : 180;
+  const [nx, ny] = pt(GC.ri - 8, ang), [ax, ay] = pt(GC.ri + 4, ang), [lx2, ly2] = pt(GC.ri - 10, ang + 5), [rx, ry] = pt(GC.ri - 10, ang - 5);
+  h += `<line x1="${GC.cx}" y1="${GC.cy}" x2="${F(nx)}" y2="${F(ny)}" stroke="${ink}" stroke-width="5" stroke-linecap="round"/>`;
+  h += `<path d="M${F(ax)} ${F(ay)} L${F(lx2)} ${F(ly2)} L${F(rx)} ${F(ry)}Z" fill="${ink}"/>`;
+  h += `<circle cx="${GC.cx}" cy="${GC.cy}" r="21" fill="${ink}"/><text x="${GC.cx}" y="${GC.cy + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${T && !/^(Tis|T0|TX)/.test(T) ? T : ''}</text>`;
+  g.innerHTML = h;
+  $('t4leg').innerHTML = narrow ? t.gT4.map(([k, v]) => `<li class="${T === 'T4' + k ? 'on' : ''}"><svg viewBox="-6 0 32 22" width="32" height="22" aria-hidden="true">${t4Icon(k, 0, 1)}</svg><b>T4${k}</b> ${v.replace('|', ' ')}</li>`).join('') : '';
+  $('g-tnote').textContent = !T ? '' : T.startsWith('Tis') ? t.gTis : T === 'T0' ? t.gT0 : T === 'TX' ? t.gTX : '';
+}
+function drawN(basis, n){
+  const t = window.T[lang], clin = basis === 'c';
+  const chips = (list, on) => list.map(([code, lab]) => `<span class="chip ${on && code === n ? 'on' : ''}"><b>${code}</b>${lab}</span>`).join('');
+  if (NARROW.matches){   // phone: cN block then pN block
+    const col = (rows, head, sub, on) => `<div class="ncol ${on ? '' : 'off'}"><h4>${head} <small>${sub}</small></h4>` +
+      rows.map(([num, list]) => `<div class="nrow"><span class="num">${num}</span><span class="chips">${chips(list, on)}</span></div>`).join('') + '</div>';
+    $('nmap').className = 'nmap'; $('nmap').innerHTML = col(t.gNc, t.gCn, t.gCnS, clin) + col(t.gNp, t.gPn, t.gPnS, !clin);
+    return;
+  }
+  // wide screen: cN | number | pN, rows aligned (Dr Hi's original layout)
+  let h = `<div class="nh ${clin ? '' : 'off'}">${t.gCn} <small>${t.gCnS}</small></div><div></div><div class="nh ${clin ? 'off' : ''}">${t.gPn} <small>${t.gPnS}</small></div>`;
+  t.gNc.forEach(([num, cl], i) => {
+    const pl = t.gNp[i][1];
+    h += `<div class="nside ${clin ? '' : 'off'}">${chips(cl, clin)}</div><div class="nnum">${num}</div><div class="nside ${clin ? 'off' : ''}">${chips(pl, !clin)}</div>`;
+  });
+  $('nmap').className = 'nmap ngrid'; $('nmap').innerHTML = h;
+}
+NARROW.addEventListener('change', () => renderGuide());
+/* Anatomical N map (concept: Dr Hi). Stations: I, II (axillary), III (infraclavicular), SC (supraclavicular), MI (internal mammary). */
+const LEG1 = window.matchMedia('(max-width: 1200px)');   // one-column legend below this width
+LEG1.addEventListener('change', () => renderGuide());
+let NSIDE = 'L'; try { NSIDE = localStorage.getItem('drhi-side') || 'L'; } catch(e){}
+function setSide(v){ NSIDE = v; try { localStorage.setItem('drhi-side', v); } catch(e){} renderGuide(); }
+const NCOL = {1:'#EF9EBC', 2:'#DC5784', 3:'#A3124A'};
+const STLEV = {I:1, II:1, MI:2, III:3, SC:3};
+const NSTAT = {
+  c:{N0:[],N1:['I','II'],N2a:['I','II'],N2b:['MI'],N3a:['III'],N3b:['MI','I','II'],N3c:['SC'],NX:[]},
+  p:{N0:[],'N0(i+)':[],N1mi:['I'],N1a:['I','II'],N1b:['MI'],N1c:['I','II','MI'],N2a:['I','II'],N2b:['MI'],N3a:['I','II','III'],N3b:['I','II','MI'],N3c:['SC'],NX:[]}
+};
+const NLEG = {c:{N1:'12',N2a:'12',N2b:'MI',N3a:'III',N3b:'MI12',N3c:'SC'}, p:{N1mi:'12',N1a:'12',N1b:'MI',N1c:'MI12',N2a:'12',N2b:'MI',N3a:'III',N3b:'MI12',N3c:'SC'}};
+const PCOUNT = {N1a:'1–3', N2a:'4–9', N3a:'≥ 10'};
+function drawNanat(basis, n){
+  const t = window.T[lang], k = basis === 'c' ? 'c' : 'p', act = (NSTAT[k][n] || []), any = act.length > 0, ink = '#1D2433';
+  const matted = k === 'c' && n === 'N2a';
+  const col = st => matted && (st === 'I' || st === 'II') ? NCOL[2] : NCOL[STLEV[st]];
+  const W = 340, R = NSIDE === 'R', X = x => R ? W - x : x, A = a => R ? ({start:'end', end:'start', middle:'middle'})[a] : a;
+  let h = '', tt = '';   // h: shapes (mirrored as a group); tt: texts (re-positioned, never mirrored)
+  // body outline: neck, shoulder, arm, torso side; sternum; clavicle
+  h += `<path d="M58 0 C60 22 64 36 70 44 M128 0 C132 20 150 34 196 40 C236 44 268 50 290 66 C312 82 322 120 326 160 L332 262" fill="none" stroke="#D8CBB4" stroke-width="2"/>`;
+  h += `<path d="M270 118 C262 150 256 200 258 262" fill="none" stroke="#D8CBB4" stroke-width="2"/>`;
+  h += `<rect x="52" y="56" width="18" height="190" rx="8" fill="#EFE7D8" stroke="#D8CBB4"/>`;
+  h += `<path d="M70 58 C120 50 190 46 252 56" fill="none" stroke="#D8CBB4" stroke-width="9" stroke-linecap="round"/>`;
+  // pectoralis minor (oblique band from coracoid to ribs)
+  h += `<path d="M236 70 L254 76 L198 196 L172 190 Z" fill="#E3D6BF" stroke="#C9B898" stroke-width="1.2"/>`;
+  h += `<line x1="247" y1="92" x2="262" y2="92" stroke="#9C8E74" stroke-width="1"/>`; tt += `<text x="${X(265)}" y="96" text-anchor="${A('start')}" font-size="10.5" font-style="italic" fill="#6B6A66">${t.gNa.pec}</text>`;
+  // breast
+  h += `<path d="M100 196 C104 160 150 150 186 158 C226 166 252 196 246 224 C238 252 196 260 156 254 C118 248 98 228 100 196 Z" fill="#FCEEF3" stroke="#F3C6D6" stroke-width="2"/>`;
+  
+  tt += `<text x="${X(174)}" y="200" text-anchor="middle" font-size="12" font-weight="600" fill="#B07A90">${t.gNa.br}</text>`;
+  // nodes per station
+  const NODES = {I:[[262,150],[252,172],[268,176]], II:[[216,124],[226,140]], III:[[168,84],[186,92]], SC:[[128,30],[150,36]], MI:[[80,104],[80,134],[80,164]]};
+  const LAB = {I:[284,170,'start'], II:[240,118,'start'], III:[176,110,'middle'], SC:[139,16,'middle'], MI:[90,120,'start']};
+  // intramammary node: coded as axillary level I (UICC)
+  { const on = act.includes('I'), fade = any && !on;
+    h += `<ellipse cx="222" cy="184" rx="${on ? 7.5 : 6}" ry="${on ? 6.2 : 5}" fill="${NCOL[1]}" stroke="${on ? ink : '#fff'}" stroke-width="${on ? 2 : 1.4}" opacity="${fade ? .3 : 1}"/>`;
+    tt += `<text x="${X(174)}" y="228" text-anchor="middle" font-size="10.5" font-style="italic" fill="#8E6A78" opacity="${fade ? .5 : 1}">${t.gNa.im.split('|').map((w, j) => `<tspan x="${X(174)}" dy="${j ? 12.5 : 0}">${w}</tspan>`).join('')}</text>`;
+    h += `<line x1="206" y1="216" x2="219" y2="190" stroke="#B98EA0" stroke-width="1.2"/>`; }
+  if (matted){ h += `<path d="M248 140 C262 128 286 146 280 168 C276 188 250 192 242 178 C230 166 214 152 210 130 C206 112 230 112 236 126 Z" fill="${NCOL[2]}" stroke="${ink}" stroke-width="2.5"/>`; }
+  Object.entries(NODES).forEach(([st, pts]) => {
+    const on = act.includes(st), fade = any && !on;
+    if (!(matted && (st === 'I' || st === 'II'))) pts.forEach(([x, y]) => {
+      h += `<ellipse cx="${x}" cy="${y}" rx="${on ? 8.5 : 7}" ry="${on ? 7 : 5.8}" fill="${col(st)}" stroke="${on ? ink : '#fff'}" stroke-width="${on ? 2.2 : 1.5}" opacity="${fade ? .3 : 1}"/>`;
+    });
+    const [lx, ly, an] = LAB[st];
+    const parts = t.gNa[st].split(' ');
+    tt += `<text x="${X(lx)}" y="${ly}" text-anchor="${A(an)}" font-size="${on ? 13 : 12}" font-weight="700" fill="${on ? ink : '#6B6A66'}" opacity="${fade ? .5 : 1}">${st === 'MI' ? parts.map((w, j) => `<tspan x="${X(lx)}" dy="${j ? 14 : 0}">${w}</tspan>`).join('') : t.gNa[st]}</text>`;
+  });
+  if (matted) tt += `<text x="${X(292)}" y="150" text-anchor="${A('start')}" font-size="12" font-weight="700" fill="${ink}">${t.gNfix}</text>`;
+  if (k === 'c' && n === 'N1') tt += `<text x="${X(292)}" y="150" text-anchor="${A('start')}" font-size="12" font-weight="700" fill="${ink}">${t.gNmob}</text>`;
+  if (k === 'p' && PCOUNT[n]){ h += `<rect x="282" y="132" width="50" height="22" rx="11" fill="${ink}"/>`; tt += `<text x="${X(307)}" y="147" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">${PCOUNT[n]}</text>`; }
+  // contralateral internal mammary = M1 (grey)
+  h += `<ellipse cx="42" cy="134" rx="6" ry="5" fill="#C9C4BA"/>`; tt += `<text x="${X(36)}" y="152" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8A8F98">${t.gNa.CL}</text>`;
+  $('nanat').innerHTML = `<g transform="${R ? 'translate(340 0) scale(-1 1)' : ''}">${h}</g>${tt}`;
+  document.querySelectorAll('.side button').forEach(b => { b.setAttribute('aria-pressed', b.dataset.side === NSIDE); b.textContent = b.dataset.side === 'L' ? t.gSideL : t.gSideR; });
+  const lk = (NLEG[k] || {})[n];
+  const dot = c => `<i style="background:${c}"></i>`;
+  const cols = {'12':NCOL[1], MI:NCOL[2], III:NCOL[3], MI12:NCOL[3], SC:NCOL[3], CL:'#C9C4BA'};
+  const row = ([id, lab, cat]) => `<tr class="${lk === id ? 'on' : (lk ? 'dim' : '')}"><td class="d">${dot(cols[id])}</td><td>${lab}</td><td class="c">${cat}</td></tr>`;
+  const L0 = t.gNleg.filter((_, i) => i % 2 === 0), L1 = t.gNleg.filter((_, i) => i % 2 === 1);
+  const tables = LEG1.matches ? `<table>${t.gNleg.map(row).join('')}</table>` : `<table>${L0.map(row).join('')}</table><table>${L1.map(row).join('')}</table>`;
+  $('nleg').innerHTML = `<div class="lcols">${tables}</div><p class="memo">${t.gNmemo.split('|').map(x => `<span style="white-space:nowrap">${x}</span>`).join('<br>')}</p>`;
+}
+function drawM(m, pm){
+  const t = window.T[lang];
+  $('mmap').innerHTML = `<div class="mbox ${m === 'M0' ? 'on' : ''}"><span class="mn">cM0</span><p>${t.gM0}</p></div><div class="mbox ${m !== 'M0' ? 'on' : ''}"><span class="mn">${m !== 'M0' && pm ? 'pM1' : 'cM1'}</span><p>${t.gM1}</p></div>`;
+}
+function renderGuide(){
+  const s = readState(), T0 = s.tcat || tFromSize(s.size);
+  drawGauge(T0, s.tcat ? NaN : s.size); drawNanat(s.basis, s.n); drawN(s.basis, s.n); drawM(s.m, s.pm);
+}
+
+/* ---------- UI ---------- */
+let lang = 'en';
+try { const saved = localStorage.getItem('drhi-lang'); if (saved) lang = saved; else if ((navigator.language||'').startsWith('fr')) lang = 'fr'; } catch(e){ if ((navigator.language||'').startsWith('fr')) lang = 'fr'; }
+const $ = id => document.getElementById(id);
+let lastBasis = null;
+
+function buildN(basis){
+  const list = basis === 'c' ? T[lang].nC : T[lang].nP;
+  const prev = (document.querySelector('input[name="n"]:checked')||{}).value;
+  const keep = list.some(r => r[0] === prev) ? prev : 'N0';
+  $('n-options').innerHTML = list.map(r => `<label class="opt"><input type="radio" name="n" value="${r[0]}" ${r[0]===keep?'checked':''}><span class="t">${r[2]}<span class="code">${basis + r[0]}</span></span></label>`).join('');
+}
+
+function readState(){
+  const f = $('f'), v = n => (f.querySelector(`input[name="${n}"]:checked`)||{}).value, c = n => f.querySelector(`input[name="${n}"]`).checked;
+  return { basis:v('basis'), size:parseFloat($('size').value), tcat:v('tcat')||null, multi:c('multi'), n:v('n')||'N0', f:c('fsuffix'), sn:c('snsuffix'), m:v('m'), pm:c('pm'), initStage:$('initStage').value };
+}
+
+function codes(s){
+  const T0 = s.tcat || tFromSize(s.size);
+  if (!T0) return null;
+  const px = s.basis;                         // c, p or yp
+  const tTxt = px + T0.replace('(', ' (') + (s.multi && /^T[1-4]/.test(T0) ? '(m)' : '');
+  let nTxt = px + s.n;
+  if (px === 'c' && s.f && s.n !== 'N0' && s.n !== 'NX') nTxt += '(f)';
+  if (px !== 'c' && s.sn && s.n !== 'NX') nTxt += '(sn)';
+  const mTxt = s.m === 'M0' ? 'cM0' : (s.pm ? 'pM1' : 'cM1');
+  return { T:T0, tTxt, nTxt, mTxt };
+}
+
+function render(){ renderCore(); renderGuide(); }
+function renderCore(){
+  const s = readState(), t = T[lang], yp = s.basis === 'yp';
+  if (s.basis !== lastBasis){ buildN(s.basis); lastBasis = s.basis; s.n = (document.querySelector('input[name="n"]:checked')||{}).value; }
+  $('basis-note').textContent = s.basis === 'c' ? t.noteC : s.basis === 'p' ? t.noteP : t.noteY;
+  $('yp-box').hidden = !yp;
+  $('n-hint').textContent = s.basis === 'c' ? t.nHintC : t.nHintP;
+  $('n-alert').innerHTML = t.nAlert; $('n-alert').hidden = s.basis !== 'c';
+  $('pm-box').hidden = s.m === 'M0';
+  $('suffix-f').hidden = s.basis !== 'c'; $('suffix-sn').hidden = s.basis === 'c';
+  const tsz = tFromSize(s.size);
+  $('sizeout').textContent = (!s.tcat && tsz) ? `${t.toSize} ${tsz} (${t.tLabel[tsz]})` : '';
+  $('res-lbl').textContent = yp ? t.resLblY : t.resLbl;
+  $('stage').classList.toggle('small', yp);
+  document.querySelector('.ladder').hidden = yp; document.querySelector('.ladder-l').hidden = yp;
+
+  const err = $('err'), k = codes(s);
+  const clear = msg => { $('stage').textContent = '–'; $('mini-stage').textContent = '–'; $('tnm').textContent = ''; $('mini-tnm').textContent = ''; $('why').innerHTML = ''; $('summary').textContent = ''; $('copy').disabled = true; err.textContent = msg; err.hidden = !msg; for (let i=0;i<5;i++) $('ld'+i).classList.remove('on'); };
+  if (!k){ clear(t.errNoT); return; }
+  const tnm = `${k.tTxt} ${k.nTxt} ${k.mTxt}`;
+  const res = stageFor(k.T, s.n, s.m === 'M0' ? 'M0' : 'M1');
+
+  if (yp){
+    err.hidden = true; err.textContent = ''; $('copy').disabled = false;
+    $('stage').textContent = `${k.tTxt} ${k.nTxt}${s.m !== 'M0' ? ' ' + k.mTxt : ''}`; $('mini-stage').textContent = $('stage').textContent;
+    const sep = lang === 'fr' ? ' : ' : ': ';
+    $('tnm').textContent = `${t.ypNote}${sep}${s.initStage || t.initNone}`; $('mini-tnm').textContent = s.initStage ? s.initStage : '';
+    $('why').innerHTML = `<div>${t.ypRule}</div>`;
+    $('summary').textContent = `${t.title} – ${t.bY.toLowerCase()}${sep}${$('stage').textContent} · ${t.ypNote}${sep}${s.initStage || t.initNone}`;
+    return;
+  }
+  if (res.error){ clear(t[res.reason]); $('tnm').textContent = tnm; return; }
+  err.hidden = true; err.textContent = ''; $('copy').disabled = !res.stage;
+  $('tnm').textContent = tnm; $('mini-tnm').textContent = tnm;
+  if (!res.stage){
+    $('stage').textContent = '–'; $('mini-stage').textContent = '–';
+    $('why').innerHTML = `<div>${t[res.reason]}</div>`; $('summary').textContent = '';
+    for (let i=0;i<5;i++) $('ld'+i).classList.remove('on');
+    return;
+  }
+  $('stage').textContent = res.stage; $('mini-stage').textContent = (lang==='fr'?'Stade ':'Stage ') + res.stage;
+  for (let i=0;i<5;i++) $('ld'+i).classList.toggle('on', res.group >= i);
+  const tDesc = t.tLabel[k.T] ? ` (${t.tLabel[k.T]})` : '';
+  const nRow = (s.basis==='c' ? t.nC : t.nP).find(r => r[0] === s.n);
+  $('why').innerHTML = `<b>${t.why}${lang==='fr' ? ' :' : ':'}</b><ul><li>${k.tTxt}${tDesc}</li><li>${k.nTxt}${lang==='fr' ? ' : ' : ': '}${nRow ? nRow[2].charAt(0).toLowerCase() + nRow[2].slice(1) : ''}</li><li>${k.mTxt}</li></ul><div style="margin-top:8px">${t.progNote}</div>`;
+  $('summary').textContent = `${t.title} – ${tnm} – ${t.resLbl.toLowerCase()} ${res.stage} (${lang==='fr' ? 'UICC 9e / AJCC 8e' : 'UICC 9th / AJCC 8th'})`;
+}
+
+function setLang(l){
+  lang = l;
+  try { localStorage.setItem('drhi-lang', l); } catch(e){}
+  document.documentElement.lang = l;
+  const t = T[l];
+  document.querySelectorAll('[data-i]').forEach(el => { const k = el.getAttribute('data-i'); if (typeof t[k] === 'string') el.textContent = t[k]; });
+  $('size-hint').textContent = t.sizeHint;
+  symBtn();
+  $('sym-alerts').innerHTML = t.symAlerts.map(a => `<div class="alert">${a}</div>`).join('');
+  $('sym-body').innerHTML = t.sym.map(r => `<tr><td class="sym">${r[0]}</td><td>${r[1]}</td><td class="ex">${r[2]}</td><td class="pg">${r[3]}</td></tr>`).join('');
+  $('l-en').setAttribute('aria-pressed', l === 'en'); $('l-fr').setAttribute('aria-pressed', l === 'fr');
+  $('copy').textContent = t.copy; $('reset').textContent = t.reset;
+  document.title = t.title + ' – Dr Hi';
+  lastBasis = null; render();
+}
+function copySummary(){
+  const txt = $('summary').textContent, b = $('copy');
+  const done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copy, 1600); };
+  try { navigator.clipboard.writeText(txt).then(done, () => fallback(txt, done)); } catch(e){ fallback(txt, done); }
+}
+function fallback(txt, done){ const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch(e){} ta.remove(); }
+function resetForm(){ $('f').reset(); lastBasis = null; render(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+$('size').addEventListener('input', () => { document.querySelectorAll('input[name="tcat"]').forEach(r => r.checked = false); render(); });
+function symBtn(){ $('sym-btn').textContent = $('sym').open ? T[lang].symClose : T[lang].symOpen; }
+function openSym(){ $('sym').open = true; symBtn(); }
+$('sym').addEventListener('toggle', symBtn);
+$('f').addEventListener('change', e => { if (e.target.name === 'tcat') $('size').value = ''; render(); });
+setLang(lang);
+</script>
+<script id="sw-reg">
+/* Offline: cache the app on first visit (only when served over http/https) */
+/* Install button: Android/desktop Chrome prompt; iPhone/iPad shows the Home Screen hint */
+let deferredInstall = null;
+const isStandalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) document.getElementById('install').hidden = false; });
+window.addEventListener('appinstalled', () => { document.getElementById('install').hidden = true; });
+if (isIOS && !isStandalone && /^https?:$/.test(location.protocol)) document.getElementById('install').hidden = false;
+function installApp(){
+  if (deferredInstall){ deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; document.getElementById('install').hidden = true; }); }
+  else { const h = document.getElementById('ios-hint'); h.hidden = !h.hidden; }
+}
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => { const o = document.getElementById('offline'); if (o) o.hidden = false; }).catch(() => {});
+}
+</script>
+</body>
+</html>

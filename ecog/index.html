@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECOG Performance Status – Dr Hi</title>
+<meta name="description" content="ECOG / WHO performance status: guided assessment, illustrated scale and Karnofsky equivalence (Oken 1982). Educational tool by Dr I. Haraoubia, CPMC Algiers.">
+<meta name="theme-color" content="#3A6BB3">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ECOG">
+<style>
+html{color-scheme:light!important}
+input,select,textarea,button{color-scheme:light}
+/* Fonts bundled with the app (SIL Open Font License) so it works offline */
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/serif-400.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/serif-600.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/serif-700.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:italic;font-weight:400;font-display:swap;src:url('../fonts/serif-400i.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/plex-400.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url('../fonts/plex-500.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/plex-600.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/plex-700.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/plexar-400.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+200C-200E,U+2010-2011,U+FB50-FDFF,U+FE70-FEFF;}
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/plexar-600.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+200C-200E,U+2010-2011,U+FB50-FDFF,U+FE70-FEFF;}
+@font-face{font-family:'IBM Plex Sans Arabic';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/plexar-700.woff2') format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+200C-200E,U+2010-2011,U+FB50-FDFF,U+FE70-FEFF;}
+</style>
+<style>
+/* Dr Hi · ECOG — beige paper of the illustrations, deep brand teal, one pink signature on the result numeral */
+/* grade colour of the current result (set by JS) */
+:root{--cur:var(--sand-2);--curt:var(--ink)}
+:root{
+  /* ECOG = bleu nuit (FIGO ovaire = vert/teal, TNM sein = rose) */
+  --paper:#F5F0E6; --ivory:#FFFFFF; --sand:#E8DFCF; --sand-2:#D8CBB4;
+  --ink:#1D2433; --ink-2:#434A58; --muted:#6B6A66;
+  --teal:#3A6BB3; --teal-2:#6E9BDB; --teal-ink:#2A4F8A; --teal-mist:#EAF1FB;
+  --pink:#E2557F; --pink-dk:#B3194F;
+  --amber-bg:#FFF4D8; --amber-line:#E8C46A; --amber-ink:#62440A;
+  --g0:#7BC943; --g1:#00A859; --g2:#F2B233; --g3:#F08A2C; --g4:#E5484D; --g5:#8A8F98;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --shadow:0 1px 0 rgba(90,70,30,.04),0 18px 40px -26px rgba(90,70,30,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+html[dir="rtl"] body{font-family:'IBM Plex Sans Arabic',var(--sans)}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 24px 48px}
+button{font:inherit}
+:focus-visible{outline:3px solid var(--teal-2);outline-offset:3px;border-radius:6px}
+
+/* Header */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid var(--sand)}
+.brand{display:flex;align-items:center;gap:18px;min-width:0}
+.brand .logo{width:72px;height:auto;flex:none}
+.brand h1{margin:0;font-family:var(--serif);font-weight:600;font-size:36px;line-height:1.1;letter-spacing:-.01em;color:var(--teal-ink)}
+.brand .sub{margin:6px 0 0;font-size:15px;color:var(--muted)}
+.lang{display:flex;padding:4px;gap:2px;background:var(--ivory);border:1px solid var(--sand);border-radius:999px}
+.lang button{min-height:40px;min-width:48px;padding:6px 14px;border:0;border-radius:999px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:600;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--teal);color:#fff}
+.disclaimer{margin:16px 0 26px;font-size:15.5px;color:var(--ink-2);padding-inline-start:12px;border-inline-start:3px solid var(--sand-2)}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;grid-template-areas:"q aside" "scale aside";column-gap:28px;row-gap:36px;align-items:start}
+.layout > .q{grid-area:q;min-width:0}
+.layout > .scale{grid-area:scale;min-width:0}
+.aside{grid-area:aside;position:sticky;top:20px;align-self:start}
+h2.h{margin:0;font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.2;color:var(--ink)}
+.lead{margin:6px 0 0;font-size:16.5px;color:var(--muted);max-width:62ch}
+
+/* Guided assessment */
+.q{background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:26px 28px 28px;box-shadow:var(--shadow)}
+.prog{display:flex;gap:6px;margin:18px 0 22px}
+.prog span{flex:1;height:3px;border-radius:2px;background:var(--sand)}
+.prog span.on{background:var(--teal-2)}
+#qbox{transition:background .2s}
+.qtext{font-family:var(--serif);font-size:25px;line-height:1.35;font-weight:600;color:var(--ink);max-width:36ch;min-height:68px}
+.qhelp{margin:10px 0 22px;font-size:17.5px;line-height:1.5;color:var(--ink-2);max-width:60ch}
+.qbtns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.qbtns button{min-height:50px;min-width:124px;padding:10px 22px;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;border:1.5px solid var(--teal)}
+.qbtns .yes{background:var(--teal);color:#fff}
+.qbtns .yes:hover{background:var(--teal-ink)}
+.qbtns .no{background:var(--ivory);color:var(--teal)}
+.qbtns .no:hover{background:var(--teal-mist)}
+.qbtns .ghost{border-color:transparent;background:transparent;color:var(--muted);min-width:0;padding-inline:12px}
+.qbtns .ghost:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+#qend .ghost{border-color:var(--sand-2);color:var(--ink);padding-inline:20px}
+.qdone{margin:0 0 16px;font-size:16px;color:var(--ink-2)}
+#qbox.tie{background:var(--paper);border:1px solid var(--sand-2);border-radius:16px;padding:18px 20px;margin:0 -8px}
+#qbox.tie .qtext{color:var(--ink)}
+#qbox.tie .qhelp{color:var(--ink-2)}
+
+/* Illustrated scale */
+.barleg{display:flex;align-items:center;gap:12px;margin:14px 0 0;font-size:15.5px;color:var(--muted);line-height:1.45}
+.bl-bar{flex:none;width:58px;height:10px;border-radius:999px;background:#CFCBC4;overflow:hidden;display:block}
+.bl-up{display:block;width:62%;height:100%;background:#F6C02A}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+.card{--gc:var(--teal);display:flex;flex-direction:column;text-align:start;color:inherit;background:var(--ivory);border:1px solid var(--sand);border-radius:20px;padding:10px 10px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}
+.card:hover{border-color:var(--sand-2);transform:translateY(-2px)}
+.card[aria-pressed="true"]{border-color:var(--gc);box-shadow:0 0 0 3px color-mix(in srgb,var(--gc) 28%,transparent),var(--shadow)}
+.pic{position:relative;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:#F5F0E6;display:flex;align-items:center;justify-content:center}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.pic .badge{display:none;width:58%;aspect-ratio:1/1;border-radius:50%;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;font-size:32px;color:var(--ink);border:10px solid currentColor;background:#fff}
+.pic.noimg .badge{display:flex}
+.card .gt{display:flex;flex-direction:column;gap:2px;margin:14px 6px 0}
+.card .gn{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--ink);white-space:nowrap}
+.card .gn::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gc);margin-inline-end:8px;vertical-align:2px}
+.card .gl{font-weight:600;font-size:16px;color:var(--ink-2);line-height:1.3}
+.card .gd{margin:8px 6px 0;font-size:15.5px;line-height:1.5;color:var(--ink-2);flex:1}
+.card .kps{margin:12px 6px 0;padding-top:10px;border-top:1px solid var(--sand);font-size:14.5px;color:var(--muted)}
+
+/* Result */
+.result{perspective:1600px}
+.flipper{display:grid;transition:transform .7s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.result.flipped .flipper{transform:rotateY(180deg)}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--ivory);color:var(--ink);border:1px solid var(--sand);border-top:10px solid var(--cur);border-radius:22px;padding:22px 24px 22px;box-shadow:var(--shadow);transition:border-color .25s}
+.face.back{transform:rotateY(180deg);display:flex;flex-direction:column}
+/* only the visible face sets the card height (no empty space under the shorter face) */
+.flipper{position:relative}
+.face.back{position:absolute;top:0;left:0;right:0}
+.result.flipped .face.back{position:relative}
+.result.flipped .face.front{position:absolute;top:0;left:0;right:0}
+html[dir="rtl"] .result.flipped .flipper{transform:rotateY(-180deg)}
+html[dir="rtl"] .face.back{transform:rotateY(-180deg)}
+@media (prefers-reduced-motion: reduce){ .flipper{transition:none} }
+.rpic-btn{position:relative;flex:none;padding:0;border:0;background:none;cursor:zoom-in;border-radius:16px}
+.rpic-btn[hidden],.btn.see[hidden]{display:none}
+.btn.see{color:var(--teal);border-color:var(--teal)}
+.btn.see:hover{background:var(--teal-mist)}
+.rpic-btn .zoom{position:absolute;inset-inline-end:-6px;bottom:-6px;width:28px;height:28px;border-radius:50%;background:var(--ivory);color:var(--curt);border:2px solid var(--cur);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.rpic-btn:hover .rpic{transform:scale(1.04)}
+.rpic{transition:transform .2s}
+.bhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.bps{font-family:var(--serif);font-weight:700;font-size:30px;color:var(--curt)}
+.bname{font-weight:700;font-size:15px;color:var(--curt)}
+.bimg{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:16px;margin-top:12px;background:var(--paper)}
+.bt{margin:16px 0 0;font-family:var(--serif);font-weight:600;font-size:18px;color:var(--ink)}
+html[dir="rtl"] .bt,html[dir="rtl"] .bps{font-family:'IBM Plex Sans Arabic',var(--sans);font-weight:700}
+.bexp{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:16px;line-height:1.45;color:var(--ink-2)}
+.bexp li{position:relative;padding-inline-start:18px}
+.bexp li::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--cur)}
+.bexp b{color:var(--ink)}
+.face.back{cursor:pointer}
+.btn.back-btn{margin-top:14px;align-self:flex-start;border:0;background:none;padding:6px 0;min-height:0;color:var(--muted);font-weight:500;font-size:15px}
+.btn.back-btn:hover{color:var(--ink);border:0}
+.result .lbl{font-size:14px;font-weight:600;color:var(--muted)}
+.rhead{display:flex;align-items:center;gap:16px;margin-top:6px}
+.rpic{display:block;width:96px;height:96px;border-radius:16px;object-fit:cover;border:3px solid var(--cur);background:var(--paper)}
+.result .stage{font-family:var(--serif);font-weight:700;font-size:72px;line-height:1;letter-spacing:-.02em;color:var(--curt);transition:color .25s}
+html[dir="rtl"] .result .stage{font-family:'IBM Plex Sans Arabic',var(--sans);font-size:58px}
+.result .gname{margin-top:4px;font-weight:700;font-size:16px;color:var(--curt)}
+.empty{margin:10px 0 4px;font-family:var(--serif);font-size:19px;line-height:1.45;color:var(--ink-2)}
+.empty[hidden],.stage[hidden]{display:none}
+.kpsline{font-size:16.5px;color:var(--muted);margin-top:2px}
+.lim{display:inline-block;margin-top:14px;padding:3px 12px;border-radius:999px;border:1.5px solid var(--ink-2);color:var(--ink);font-weight:700;font-size:14px}
+.lim[hidden],.limnote[hidden]{display:none}
+.ladder{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;margin:20px 0 6px}
+.ladder div{height:6px;border-radius:3px;background:var(--sand);transition:background .25s}
+.ladder div.on{background:var(--cur)}
+.ladder-l{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;font-size:14px;color:var(--muted)}
+.defn{margin-top:18px;padding-top:16px;border-top:1px solid var(--sand);font-family:var(--serif);font-size:17px;line-height:1.5;color:var(--ink)}
+html[dir="rtl"] .defn{font-family:'IBM Plex Sans Arabic',var(--sans);font-size:16px}
+.limnote{margin-top:14px;font-size:15.5px;line-height:1.5;color:var(--ink-2);border-inline-start:3px solid var(--ink-2);padding-inline-start:12px}
+.path{font-size:13.5px;color:var(--muted);margin-top:12px}
+.summary{margin-top:14px;font-size:15px;line-height:1.45;background:var(--paper);border-radius:12px;padding:10px 12px;color:var(--ink);word-break:break-word;direction:ltr;text-align:left}
+.summary:empty{display:none}
+.actions{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;margin-top:16px}
+.actions .btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:68px;padding:8px 6px;font-size:15px;line-height:1.2;text-align:center}
+.actions .btn[hidden]{display:none}
+.btn{min-height:46px;padding:10px 18px;border-radius:12px;cursor:pointer;font-size:15px;font-weight:600;border:1.5px solid var(--sand-2);background:var(--ivory);color:var(--ink)}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.btn:hover{border-color:var(--teal)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* Pitfalls + Karnofsky */
+.traps{margin-top:48px;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start;background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:30px 30px 32px;box-shadow:var(--shadow)}
+.traps ul{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:14px;font-size:16.5px;line-height:1.55;color:var(--ink-2)}
+.traps li{position:relative;padding-inline-start:20px;max-width:72ch}
+.traps li::before{content:"";position:absolute;inset-inline-start:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--ink-2)}
+.traps li b{color:var(--ink)}
+.kpst{background:var(--paper);border-radius:16px;padding:18px 18px 10px}
+.kpst h3{margin:0 0 4px;font-family:var(--serif);font-weight:600;font-size:19px;color:var(--teal-ink)}
+.kpst p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.kpst table{border-collapse:collapse;width:100%;font-size:15px}
+.kpst th{font-size:13px;font-weight:600;color:var(--muted);text-align:start;padding:6px 4px;border-bottom:1px solid var(--sand-2)}
+.kpst td{padding:9px 4px;border-bottom:1px solid var(--sand);text-align:start}
+.kpst tr:last-child td{border-bottom:0}
+.kpst td.n i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:10px;vertical-align:1px}
+.kpst td.n{font-weight:600;color:var(--ink)}
+
+/* Install */
+.tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.install{min-height:44px;padding:8px 16px;border:1.5px solid var(--teal);border-radius:999px;background:var(--ivory);color:var(--teal-ink);font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.install:hover{background:var(--teal-mist)}
+.install[hidden],.ios-hint[hidden]{display:none}
+.ios-hint{margin:10px 0 0;padding:10px 14px;border-radius:12px;background:var(--teal-mist);color:var(--ink);font-size:15.5px}
+
+/* Footer */
+footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--sand);display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;font-size:14.5px;line-height:1.6;color:var(--muted)}
+footer h4{margin:0 0 6px;font-family:var(--serif);font-weight:600;font-size:16px;color:var(--ink)}
+footer .refs div{margin-bottom:6px}
+footer a{color:var(--teal)}
+footer strong{color:var(--ink)}
+.offline{margin-top:6px;color:var(--g1);font-weight:600}
+.offline[hidden]{display:none}
+html[dir="rtl"] h2.h,html[dir="rtl"] .brand h1,html[dir="rtl"] .qtext,html[dir="rtl"] .kpst h3,html[dir="rtl"] footer h4,html[dir="rtl"] .card .gn{font-family:'IBM Plex Sans Arabic',var(--sans);font-weight:700}
+
+/* Small screens */
+.mini{display:none}
+@media (max-width: 960px){
+  .layout{grid-template-columns:minmax(0,1fr);grid-template-areas:"q" "aside" "scale";row-gap:24px}
+  .aside{position:static;scroll-margin-top:70px}
+  .traps{grid-template-columns:1fr}
+  .mini{display:flex;position:sticky;top:0;z-index:10;margin:0 -16px 18px;padding:10px 16px;background:var(--ivory);color:var(--ink);border-bottom:4px solid var(--cur,var(--sand-2));align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 16px -10px rgba(90,70,30,.4)}
+  .mini .s{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--curt,var(--ink))}
+  .mini .c{font-size:14px;color:var(--muted)}
+  .mini a{color:var(--teal);font-size:14px;font-weight:600}
+}
+@media (max-width: 640px){
+  .wrap{padding:18px 16px 36px}
+  .brand .logo{width:56px}
+  .brand h1{font-size:27px}
+  .q{padding:20px 18px 22px;border-radius:18px}
+  .qtext{font-size:22px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .card .gn{font-size:18px}
+  .traps{padding:22px 18px}
+  footer{grid-template-columns:1fr;gap:18px}
+  .result .stage{font-size:68px}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="../img/drhi.png" alt="Dr Hi">
+      <div>
+        <h1 data-i="title"></h1>
+        <p class="sub" data-i="sub"></p>
+      </div>
+    </div>
+    <div class="tools">
+      <button type="button" class="install" id="install" hidden onclick="installApp()" data-i="install"></button>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" id="l-fr" onclick="setLang('fr')">FR</button>
+        <button type="button" id="l-en" onclick="setLang('en')">EN</button>
+        <button type="button" id="l-ar" onclick="setLang('ar')">AR</button>
+      </div>
+    </div>
+  </header>
+  <p class="ios-hint" id="ios-hint" hidden data-i="iosHint"></p>
+
+  <p class="disclaimer" data-i="disclaimer"></p>
+
+  <div class="mini" aria-hidden="true">
+    <span><span class="s" id="mini-stage">–</span> &nbsp;<span class="c" id="mini-kps"></span></span>
+    <a href="#result" data-i="details"></a>
+  </div>
+
+  <div class="layout">
+      <section class="q" aria-labelledby="q-h">
+        <h2 class="h" id="q-h" data-i="guided"></h2>
+        <p class="lead" data-i="guidedIntro"></p>
+        <div class="prog" aria-hidden="true"><span id="p1"></span><span id="p2"></span><span id="p3"></span><span id="p4"></span></div>
+        <div id="qbox" aria-live="polite">
+          <div class="qtext" id="qtext"></div>
+          <div class="qhelp" id="qhint"></div>
+          <div class="qbtns">
+            <button type="button" class="yes" id="b-yes" onclick="answer(true)"></button>
+            <button type="button" class="no" id="b-no" onclick="answer(false)"></button>
+            <button type="button" class="ghost" id="b-back" onclick="back()"></button>
+          </div>
+        </div>
+        <div id="qend" hidden>
+          <p class="qdone" id="qdone"></p>
+          <div class="qbtns"><button type="button" class="ghost" id="b-restart" onclick="restart()"></button></div>
+        </div>
+      </section>
+
+    <aside class="aside" id="result" aria-live="polite">
+      <div class="result" id="card">
+        <div class="flipper">
+        <div class="face front" id="front">
+        <div class="lbl" data-i="resLbl"></div>
+        <div class="rhead"><button type="button" class="rpic-btn" id="rpicBtn" onclick="flip(true)" hidden><img class="rpic" id="rpic" alt=""><span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></span></button><div><div class="stage" id="stage">–</div><div class="gname" id="gname"></div></div></div>
+        <p class="empty" id="empty" data-i="empty"></p>
+        <div class="kpsline" id="kps"></div>
+        <div class="lim" id="lim" hidden></div>
+        <div class="ladder" aria-hidden="true"><div id="ld0"></div><div id="ld1"></div><div id="ld2"></div><div id="ld3"></div><div id="ld4"></div><div id="ld5"></div></div>
+        <div class="ladder-l" aria-hidden="true"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+        <div class="defn" id="defn"></div>
+        <div class="limnote" id="limnote" hidden></div>
+        <div class="summary" id="summary"></div>
+        <div class="actions">
+          <button type="button" class="btn primary" id="copy" onclick="copySummary()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg><span id="copyLbl"></span></button>
+          <button type="button" class="btn see" id="seeimg" onclick="flip(true)" hidden><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg><span data-i="seeBtn"></span></button>
+          <button type="button" class="btn" id="reset" onclick="restart(true)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/></svg><span id="resetLbl"></span></button>
+        </div>
+        </div>
+        <div class="face back" id="back" inert onclick="flip(false)">
+          <div class="bhead"><span class="bps" id="bps"></span><span class="bname" id="bname"></span></div>
+          <img class="bimg" id="bimg" alt="">
+          <h3 class="bt" data-i="imgT"></h3>
+          <ul class="bexp" id="bexp"></ul>
+          <button type="button" class="btn back-btn" id="backBtn" onclick="flip(false)" data-i="backRes"></button>
+        </div>
+      </div>
+      </div>
+    </aside>
+
+      <section class="scale" aria-labelledby="s-h">
+        <h2 class="h" id="s-h" data-i="scaleT"></h2>
+        <p class="lead" data-i="scaleIntro"></p>
+        <p class="barleg"><span class="bl-bar" aria-hidden="true"><span class="bl-up"></span></span><span data-i="barLeg"></span></p>
+        <div class="cards" id="cards"></div>
+      </section>
+  </div>
+
+  <section class="traps" aria-labelledby="t-h">
+    <div>
+      <h2 class="h" id="t-h" data-i="trapsT"></h2>
+      <ul id="traps"></ul>
+    </div>
+    <div class="kpst">
+      <h3 data-i="kpsH"></h3>
+      <p data-i="kpsNote"></p>
+      <table>
+        <thead><tr><th>ECOG / WHO</th><th>Karnofsky</th></tr></thead>
+        <tbody>
+          <tr><td class="n"><i style="background:var(--g0)"></i>0</td><td>100–90</td></tr>
+          <tr><td class="n"><i style="background:var(--g1)"></i>1</td><td>80–70</td></tr>
+          <tr><td class="n"><i style="background:var(--g2)"></i>2</td><td>60–50</td></tr>
+          <tr><td class="n"><i style="background:var(--g3)"></i>3</td><td>40–30</td></tr>
+          <tr><td class="n"><i style="background:var(--g4)"></i>4</td><td>20–10</td></tr>
+          <tr><td class="n"><i style="background:var(--g5)"></i>5</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <div class="refs">
+      <h4 data-i="refs"></h4>
+      <div>Oken MM, Creech RH, Tormey DC, et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. <i>Am J Clin Oncol</i> 1982;5(6):649–55. <a href="https://pubmed.ncbi.nlm.nih.gov/7165009/" target="_blank" rel="noopener">PMID 7165009</a></div>
+      <div>ECOG-ACRIN Cancer Research Group. ECOG Performance Status Scale (Karnofsky comparison). <a href="https://ecog-acrin.org/resources/ecog-performance-status/" target="_blank" rel="noopener">ecog-acrin.org</a></div>
+      <div>Sørensen JB, Klee M, Palshof T, Hansen HH. Performance status assessment in cancer patients. An inter-observer variability study. <i>Br J Cancer</i> 1993;67:773–5. <a href="https://pubmed.ncbi.nlm.nih.gov/8471434/" target="_blank" rel="noopener">PMID 8471434</a></div>
+    </div>
+    <div>
+      <h4><span data-i="madeby"></span> <span data-i="name"></span></h4>
+      <div data-i="affil"></div>
+      <div><a href="mailto:ismaheneharaoubia@gmail.com">ismaheneharaoubia@gmail.com</a></div>
+      <div data-i="illus"></div>
+      <div><a href="../" data-i="allTools"></a></div>
+      <div>v2.10 · <span data-i="version"></span></div>
+      <div class="offline" id="offline" hidden data-i="offline"></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+const KPS = ['100–90', '80–70', '60–50', '40–30', '20–10', '0'];
+const COLORS = ['var(--g0)','var(--g1)','var(--g2)','var(--g3)','var(--g4)','var(--g5)'];
+const TCOL = ['#3F7F14','#00754A','#A06A00','#B4540C','#C0272E','#5B6068']; // darker text shades of each grade colour (readable on white)
+const T = {
+ fr:{ install:"Installer l'app", iosHint:"Sur iPhone ou iPad : touchez Partager, puis « Sur l'écran d'accueil ».", title:"Indice de performance ECOG", offline:"✓ Disponible hors connexion sur cet appareil", seeImg:"Voir l'illustration expliquée", seeBtn:"Voir l'image", imgT:"Ce que montre l'image", backRes:"↺ Touchez la carte pour revenir au résultat",
+  expl:[["<b>Il court dans un parc</b> : efforts physiques intenses possibles, sans aucune restriction."],
+        ["<b>Il fait ses courses avec un panier léger</b> : ambulatoire et actif.","<b>Il prépare son repas</b> : capable d'un travail léger, comme le ménage léger.","<b>Le pictogramme barré (porter une lourde charge)</b> : efforts physiques intenses impossibles."],
+        ["<b>Il se brosse les dents seul dans sa salle de bain</b> : autonome pour ses soins personnels.","<b>Il marche avec son thé</b> : ambulatoire.","<b>Le porte-documents barré</b> : incapable de travailler.","<b>La barre aux deux tiers jaune</b> : levé plus de 50 % de ses heures d'éveil."],
+        ["<b>Un proche l'aide à enfiler son t-shirt, mais il mange seul</b> : soins personnels limités, il n'en fait qu'une partie seul.","<b>Au fauteuil, puis au lit en plein jour, avec un plateau-repas</b> : au lit ou au fauteuil plus de 50 % de ses heures d'éveil.","<b>La barre surtout grise</b> : levé moins de la moitié de la journée."],
+        ["<b>Un proche le fait manger et lui fait la toilette</b> : incapable de tout soin personnel.","<b>Alité dans les deux scènes, en plein jour</b> : totalement confiné au lit.","<b>La barre entièrement grise</b> : au lit pendant toutes ses heures d'éveil.","<b>À domicile, sans matériel hospitalier</b> : le PS dépend de l'état du patient, pas du lieu."],
+        ["<b>Le lit vide et son t-shirt plié</b> : le décès, représenté par l'absence."]],
+   empty:"Répondez aux questions ou choisissez une illustration : le grade s'affichera ici.", sub:"Échelle ECOG, OMS ou Zubrod, d'après Oken et al. (1982)", kpsNote:"Correspondance usuelle (ECOG-ACRIN), approximative.", disclaimer:"Outil pédagogique d'aide à la décision : il ne remplace pas le jugement clinique du médecin.",
+  details:"Détails", guided:"Évaluation guidée", guidedIntro:"Répondez selon l'état habituel du patient ces derniers jours, pas selon un épisode aigu.",
+  Q:{
+   q1:["Peut-il mener toutes ses activités d'avant la maladie, sans restriction ?","Y compris les efforts intenses."],
+   q2:["Peut-il encore faire un travail léger, comme un travail de bureau ou le ménage léger ?","Marcher et faire sa toilette ne suffisent pas."],
+   q3a:["Fait-il seul tous ses soins : manger, douche, habillage, toilettes ?","Sans l'aide d'une autre personne."],
+   q3b:["Est-il levé plus de la moitié de la journée ?","Du réveil au coucher (la nuit ne compte pas)."],
+   t23:["PS 2 ou 3 : à quelle fréquence a-t-il besoin de l'aide d'une autre personne ?","Les deux peuvent avoir besoin d'aide : c'est la fréquence qui fait la différence.","De temps en temps","Tous les jours"],
+   q4:["Fait-il encore seul une partie de ses soins, par exemple manger ?","Un seul soin fait seul suffit : manger seul, se laver le visage."],
+   q5:["Est-il au lit ou au fauteuil toute la journée ?","Il ne se lève pas, ou seulement avec de l'aide."],
+   t34:["PS 3 ou 4 : où son état permet-il de le soigner ?","Le PS 4 correspond à un état qui justifie une hospitalisation.","À domicile","À l'hôpital"]},
+  limW:"limite", limKps:"départage Karnofsky",
+  lim23:"Cas limite PS 2–3 : critères d'Oken discordants (soins personnels / temps levé). Départage par les définitions du Karnofsky (KPS {k}). C'est une aide à la décision, pas une règle officielle d'Oken : décrivez le patient dans le dossier.",
+  lim34k:"Cas limite PS 3–4 : critères d'Oken discordants. Départage par les définitions du Karnofsky (KPS {k}). C'est une aide à la décision, pas une règle officielle d'Oken : décrivez le patient dans le dossier.",
+  lim34:"Cas limite PS 3–4 : alité en permanence, mais fait encore une partie de ses soins. Le PS 4 exige l'absence de tout soin personnel (Oken 1982), donc PS 3.",
+  yes:"Oui", no:"Non", back:"← Retour", restart:"Recommencer l'évaluation", done:"Évaluation terminée. Vous pouvez aussi vérifier la carte correspondante ci-dessous.",
+  scaleT:"Échelle illustrée", scaleIntro:"Ou choisissez directement le grade. Définitions d'Oken et al. (1982), traduites de l'anglais.", barLeg:"Barre sous les images : du réveil ☀ au coucher ☾ = les heures d'éveil (la nuit ne compte pas). Jaune = levé, gris = au lit ou au fauteuil.",
+  g:["Pleinement actif, capable de mener toutes les activités d'avant la maladie, sans restriction.",
+     "Limité dans les activités physiques intenses, mais ambulatoire et capable d'un travail léger ou sédentaire (ménage léger, travail de bureau).",
+     "Ambulatoire et autonome pour tous les soins personnels, mais incapable d'effectuer toute activité de travail, même légère. Levé plus de 50 % des heures d'éveil.",
+     "Capable seulement de soins personnels limités. Au lit ou au fauteuil plus de 50 % des heures d'éveil.",
+     "Complètement invalide, incapable de tout soin personnel. Totalement confiné au lit ou au fauteuil.",
+     "Décédé."],
+  gShort:["Activité normale","Symptomatique, ambulatoire","Autonome, incapable de travailler","Soins personnels limités","Totalement dépendant","Décès"],
+  grade:"PS", resLbl:"Grade ECOG / OMS", kpsEq:"≈ Karnofsky", answers:"Réponses",
+  trapsT:"Pièges à éviter",
+  traps:["<b>État habituel</b>, pas un épisode aigu réversible.",
+         "<b>Demandez une journée type</b> au patient et à son entourage.",
+         "<b>Fauteuil roulant, amputation</b> : c'est l'autonomie qui compte, pas le fauteuil. Notez la cause.",
+         "<b>Le PS 2</b> est le grade le plus discordant entre médecins (Sørensen 1993).",
+         "<b>Soins personnels</b> = manger, se laver, s'habiller, aller aux toilettes.",
+         "<b>La limite 0–2 / 3–4</b> est la plus fiable et la plus utilisée pour décider."],
+  kpsH:"Équivalence avec le Karnofsky", copy:"Copier le résumé", copied:"Copié ✓", copyS:"Copier", reset:"Réinitialiser",
+  refs:"Références", madeby:"Conçu par", name:"Dr Ismahene Haraoubia", affil:"Résidente en oncologie médicale, service d'oncologie médicale, CPMC, Alger, Algérie",
+  illus:"Illustrations et logo : Dr Hi.", allTools:"← Tous les outils Dr Hi", version:"Mis à jour en novembre 2026", summ:"ECOG PS" },
+ en:{ install:"Install the app", iosHint:"On iPhone or iPad: tap Share, then “Add to Home Screen”.", title:"ECOG Performance Status", offline:"✓ Available offline on this device", seeImg:"See the explained illustration", seeBtn:"Picture", imgT:"What the picture shows", backRes:"↺ Tap the card to go back to the result",
+  expl:[["<b>Running in a park</b>: strenuous physical activity possible, without any restriction."],
+        ["<b>Shopping with a light basket</b>: ambulatory and active.","<b>Preparing his meal</b>: able to do light work, such as light housework.","<b>The crossed-out icon (carrying a heavy load)</b>: no strenuous physical activity."],
+        ["<b>Brushing his teeth alone in his bathroom</b>: capable of self-care.","<b>Walking with his tea</b>: ambulatory.","<b>The crossed-out briefcase</b>: unable to work.","<b>The bar two-thirds yellow</b>: up and about more than 50% of waking hours."],
+        ["<b>A relative helps him put on his t-shirt, but he eats alone</b>: limited self-care, he does only part of it alone.","<b>In the armchair, then in bed in daytime, with a meal tray</b>: in bed or chair more than 50% of waking hours.","<b>The bar mostly grey</b>: up for less than half of the day."],
+        ["<b>A relative feeds and washes him</b>: cannot carry on any self-care.","<b>In bed in both scenes, in daytime</b>: totally confined to bed.","<b>The bar entirely grey</b>: in bed for all waking hours.","<b>At home, no hospital equipment</b>: PS depends on the patient's condition, not the place."],
+        ["<b>The empty bed and his folded t-shirt</b>: death, shown through absence."]],
+   empty:"Answer the questions or choose an illustration: the grade will appear here.", sub:"ECOG, WHO or Zubrod scale, after Oken et al. (1982)", kpsNote:"Usual correspondence (ECOG-ACRIN), approximate.", disclaimer:"Educational decision-support tool: it does not replace the physician's clinical judgement.",
+  details:"Details", guided:"Guided assessment", guidedIntro:"Answer according to the patient's usual condition over recent days, not an acute episode.",
+  Q:{
+   q1:["Can the patient carry on all pre-disease activities without restriction?","Including strenuous activity."],
+   q2:["Can the patient still do light work, such as office work or light housework?","Walking and washing are not enough."],
+   q3a:["Does the patient do all self-care alone: eating, shower, dressing, toilet?","Without help from another person."],
+   q3b:["Is the patient up for more than half of the day?","From waking to bedtime (night does not count)."],
+   t23:["PS 2 or 3: how often does the patient need help from another person?","Both may need help: how often makes the difference.","Now and then","Every day"],
+   q4:["Does the patient still do part of their self-care alone, for example eating?","One self-care task done alone is enough: eating alone, washing the face."],
+   q5:["Is the patient in bed or chair all day?","Does not get up, or only with help."],
+   t34:["PS 3 or 4: where can the patient be cared for?","PS 4 corresponds to a condition that requires hospital admission.","At home","In hospital"]},
+  limW:"borderline", limKps:"Karnofsky tie-break",
+  lim23:"Borderline PS 2–3: Oken criteria disagree (self-care / time up). Tie-break using the Karnofsky definitions (KPS {k}). This is a decision aid, not an official Oken rule: describe the patient in the record.",
+  lim34k:"Borderline PS 3–4: Oken criteria disagree. Tie-break using the Karnofsky definitions (KPS {k}). This is a decision aid, not an official Oken rule: describe the patient in the record.",
+  lim34:"Borderline PS 3–4: bedridden all day, but still does part of their self-care. PS 4 requires no self-care at all (Oken 1982), hence PS 3.",
+  yes:"Yes", no:"No", back:"← Back", restart:"Restart the assessment", done:"Assessment complete. You can also check the matching card below.",
+  scaleT:"Illustrated scale", scaleIntro:"Or choose the grade directly. Definitions from Oken et al., 1982.", barLeg:"Bar under the pictures: from waking ☀ to bedtime ☾ = waking hours (night does not count). Yellow = up and about, grey = in bed or chair.",
+  g:["Fully active, able to carry on all pre-disease performance without restriction.",
+     "Restricted in physically strenuous activity but ambulatory and able to carry out work of a light or sedentary nature, e.g., light house work, office work.",
+     "Ambulatory and capable of all self-care but unable to carry out any work activities. Up and about more than 50% of waking hours.",
+     "Capable of only limited self-care, confined to bed or chair more than 50% of waking hours.",
+     "Completely disabled. Cannot carry on any self-care. Totally confined to bed or chair.",
+     "Dead."],
+  gShort:["Normal activity","Symptomatic, ambulatory","Self-caring, cannot work","Limited self-care","Completely disabled","Dead"],
+  grade:"PS", resLbl:"ECOG / WHO grade", kpsEq:"≈ Karnofsky", answers:"Answers",
+  trapsT:"Pitfalls to avoid",
+  traps:["<b>Usual condition</b>, not a reversible acute episode.",
+         "<b>Ask for a typical day</b> from the patient and family.",
+         "<b>Wheelchair, amputation</b>: independence counts, not the chair. Record the cause.",
+         "<b>PS 2</b> is the grade on which physicians disagree most (Sørensen 1993).",
+         "<b>Self-care</b> = eating, washing, dressing, toileting.",
+         "<b>The 0–2 / 3–4 cut-off</b> is the most reliable and the most used for decisions."],
+  kpsH:"Karnofsky equivalence", copy:"Copy summary", copied:"Copied ✓", copyS:"Copy", reset:"Reset",
+  refs:"References", madeby:"Designed by", name:"Dr Ismahene Haraoubia", affil:"Resident in Medical Oncology, Medical Oncology Department, CPMC, Algiers, Algeria",
+  illus:"Illustrations and logo: Dr Hi.", allTools:"← All Dr Hi tools", version:"Updated November 2026", summ:"ECOG PS" },
+ ar:{ install:"تثبيت التطبيق", iosHint:"على iPhone أو iPad: اضغط على «مشاركة» ثم «إضافة إلى الشاشة الرئيسية».", title:"مقياس الحالة الوظيفية ECOG", offline:"✓ متاح دون اتصال على هذا الجهاز", seeImg:"عرض الرسم مع الشرح", seeBtn:"عرض الصورة", imgT:"ماذا تُظهر الصورة", backRes:"↺ المس البطاقة للعودة إلى النتيجة",
+  expl:[["<b>يركض في حديقة</b>: قادر على الجهد البدني الشاق دون أي قيود."],
+        ["<b>يتسوّق حاملاً سلة خفيفة</b>: يتنقل وما زال نشيطاً.","<b>يحضّر طعامه</b>: قادر على عمل خفيف، مثل الأعمال المنزلية الخفيفة.","<b>الرمز المشطوب (حمل ثقل كبير)</b>: غير قادر على الجهد البدني الشاق."],
+        ["<b>ينظّف أسنانه وحده في الحمّام</b>: مستقل في عنايته الشخصية.","<b>يمشي حاملاً كوب الشاي</b>: يتنقل وحده.","<b>الحقيبة المشطوبة</b>: غير قادر على العمل.","<b>الشريط أصفر بنسبة الثلثين</b>: خارج السرير أكثر من 50٪ من ساعات اليقظة."],
+        ["<b>أحد أقاربه يساعده في لبس قميصه، لكنه يأكل وحده</b>: عناية شخصية محدودة، يقوم بجزء منها فقط وحده.","<b>على الكرسي ثم في السرير في وضح النهار، مع صينية الطعام</b>: في السرير أو على الكرسي أكثر من 50٪ من ساعات اليقظة.","<b>الشريط رمادي في معظمه</b>: خارج السرير أقل من نصف اليوم."],
+        ["<b>أحد أقاربه يطعمه ويغسل وجهه</b>: لا يستطيع القيام بأي عناية شخصية.","<b>ملازم للسرير في المشهدين، في وضح النهار</b>: ملازم للسرير كلياً.","<b>الشريط رمادي بالكامل</b>: في السرير طوال ساعات اليقظة.","<b>في المنزل، دون معدات استشفائية</b>: الدرجة تتعلق بحالة المريض لا بالمكان."],
+        ["<b>السرير الفارغ وقميصه المطوي</b>: الوفاة، مُعبَّراً عنها بالغياب."]],
+   empty:"أجب عن الأسئلة أو اختر رسماً: ستظهر الدرجة هنا.", sub:"مقياس ECOG أو منظمة الصحة العالمية أو Zubrod، حسب Oken وزملائه (1982)", kpsNote:"تقابل تقريبي معتمد (ECOG-ACRIN).", disclaimer:"أداة تعليمية مساعدة على القرار: لا تُغني عن التقييم السريري للطبيب.",
+  details:"التفاصيل", guided:"التقييم الموجَّه", guidedIntro:"أجب بحسب الحالة المعتادة للمريض خلال الأيام الأخيرة، لا بحسب نوبة حادة.",
+  Q:{
+   q1:["هل يستطيع القيام بكل أنشطته كما كان قبل المرض، دون قيود؟","بما في ذلك الجهد الشاق."],
+   q2:["هل ما زال يستطيع القيام بعمل خفيف، مثل العمل المكتبي أو الأعمال المنزلية الخفيفة؟","المشي والاغتسال وحدهما لا يكفيان."],
+   q3a:["هل يقوم وحده بكل عنايته: الأكل، الاستحمام، اللباس، قضاء الحاجة؟","دون مساعدة شخص آخر."],
+   q3b:["هل يبقى خارج السرير أكثر من نصف اليوم؟","من الاستيقاظ إلى النوم (الليل لا يُحتسب)."],
+   t23:["PS 2 أم 3: كم مرة يحتاج إلى مساعدة شخص آخر؟","كلاهما قد يحتاج إلى مساعدة: تكرارها هو الذي يصنع الفرق.","من حين لآخر","كل يوم"],
+   q4:["هل ما زال يقوم وحده بجزء من عنايته، مثل الأكل؟","يكفي أن يقوم وحده بعمل واحد من أعمال العناية الشخصية: الأكل وحده، غسل الوجه."],
+   q5:["هل يبقى في السرير أو على الكرسي طوال اليوم؟","لا ينهض، أو ينهض بمساعدة فقط."],
+   t34:["PS 3 أم 4: أين يمكن رعايته؟","تقابل PS 4 حالة تستدعي الاستشفاء.","في المنزل","في المستشفى"]},
+  limW:"حدّي", limKps:"حسم بكارنوفسكي",
+  lim23:"حالة حدّية PS 2–3: معايير Oken متعارضة (العناية الشخصية / الوقت خارج السرير). الحسم بتعريفات مقياس كارنوفسكي (KPS {k}). هذه أداة مساعدة وليست قاعدة رسمية لـ Oken: صِف حالة المريض في الملف.",
+  lim34k:"حالة حدّية PS 3–4: معايير Oken متعارضة. الحسم بتعريفات مقياس كارنوفسكي (KPS {k}). هذه أداة مساعدة وليست قاعدة رسمية لـ Oken: صِف حالة المريض في الملف.",
+  lim34:"حالة حدّية PS 3–4: ملازم للسرير طوال اليوم، لكنه ما زال يقوم بجزء من عنايته الشخصية. تتطلب PS 4 غياب أي عناية شخصية (Oken 1982)، إذن PS 3.",
+  yes:"نعم", no:"لا", back:"رجوع ←", restart:"إعادة التقييم", done:"انتهى التقييم. يمكنك أيضاً مراجعة البطاقة المقابلة أدناه.",
+  scaleT:"السُّلَّم المصوَّر", scaleIntro:"أو اختر الدرجة مباشرة. تعريفات Oken وزملائه (1982)، مترجمة عن الإنجليزية.", barLeg:"الشريط أسفل الصور: من الاستيقاظ ☀ إلى النوم ☾ = ساعات اليقظة (الليل لا يُحتسب). الأصفر = خارج السرير، الرمادي = في السرير أو على الكرسي.",
+  g:["نشط تماماً، قادر على ممارسة جميع أنشطته كما كان قبل المرض دون أي قيود.",
+     "مقيَّد في الأنشطة البدنية الشاقة، لكنه يمشي ويتنقل وقادر على القيام بأعمال خفيفة أو مكتبية (أعمال منزلية خفيفة، عمل مكتبي).",
+     "يمشي ويتنقل وقادر على العناية الشخصية الكاملة، لكنه غير قادر على القيام بأي عمل، ولو كان خفيفاً. يبقى خارج السرير أكثر من 50٪ من ساعات اليقظة.",
+     "قادر على عناية شخصية محدودة فقط. يلازم السرير أو الكرسي أكثر من 50٪ من ساعات اليقظة.",
+     "عاجز تماماً، لا يستطيع القيام بأي عناية شخصية. يلازم السرير أو الكرسي بشكل كامل.",
+     "متوفى."],
+  gShort:["نشاط عادي","أعراض مع القدرة على المشي","مستقل، عاجز عن العمل","عناية شخصية محدودة","عجز كامل","وفاة"],
+  grade:"الدرجة", resLbl:"درجة ECOG / منظمة الصحة العالمية", kpsEq:"≈ كارنوفسكي", answers:"الإجابات",
+  trapsT:"أخطاء يجب تجنبها",
+  traps:["<b>الحالة المعتادة</b>، لا نوبة حادة عابرة.",
+         "<b>اسأل المريض ومرافقيه</b> عن يومه العادي.",
+         "<b>الكرسي المتحرك، البتر</b>: المهم هو الاستقلالية لا الكرسي. سجّل السبب.",
+         "<b>الدرجة 2</b> هي الأكثر اختلافاً بين الأطباء (Sørensen 1993).",
+         "<b>العناية الشخصية</b> = الأكل، الاغتسال، اللباس، قضاء الحاجة.",
+         "<b>الحد بين 0–2 و3–4</b> هو الأكثر ثباتاً والأكثر اعتماداً في القرار."],
+  kpsH:"التقابل مع مقياس كارنوفسكي", copy:"نسخ الملخص", copied:"تم النسخ ✓", copyS:"نسخ", reset:"إعادة تعيين",
+  refs:"المراجع", madeby:"تطبيق من إعداد", name:"الدكتورة حراوبية اسمهان", affil:"طبيبة مقيمة في طب الأورام، مصلحة طب الأورام، مركز بيار وماري كوري، الجزائر العاصمة، الجزائر",
+  illus:"الرسومات والشعار: Dr Hi.", allTools:"كل أدوات Dr Hi ←", version:"تحديث نوفمبر 2026", summ:"ECOG PS" }
+};
+
+/* ---------- Guided assessment logic (pure) ---------- */
+// a: answers keyed by question id (true = yes, false = no).
+// Returns {ask:id} for the next question, or {ps, lim?, kps?} once decided.
+// Oken 1982: PS 2 = ALL self-care AND up >50% of waking hours; PS 3 = limited self-care AND bed/chair >50%;
+// PS 4 = NO self-care AND totally confined. When the self-care and time criteria disagree, Oken gives no rule:
+// the tie is broken with the Karnofsky definitions (60 / 50 and 40 / 30) and flagged as borderline.
+function ecogGuide(a){
+  if (a.q1 === undefined) return {ask:'q1'};
+  if (a.q1) return {ps:0};
+  if (a.q2 === undefined) return {ask:'q2'};
+  if (a.q2) return {ps:1};
+  if (a.q3a === undefined) return {ask:'q3a'};
+  if (a.q3b === undefined) return {ask:'q3b'};
+  if (a.q3a && a.q3b) return {ps:2};
+  if (a.q3a !== a.q3b){
+    if (a.t23 === undefined) return {ask:'t23'};
+    return a.t23 ? {ps:2, lim:'2-3', kps:60} : {ps:3, lim:'2-3', kps:50};
+  }
+  if (a.q4 === undefined) return {ask:'q4'};
+  if (a.q5 === undefined) return {ask:'q5'};
+  if (a.q4 && !a.q5) return {ps:3};
+  if (a.q4 && a.q5) return {ps:3, lim:'3-4'};           // PS 3 criteria fully met; PS 4 needs no self-care at all
+  if (!a.q4 && a.q5) return {ps:4};
+  if (a.t34 === undefined) return {ask:'t34'};
+  return a.t34 ? {ps:3, lim:'3-4', kps:40} : {ps:4, lim:'3-4', kps:30};
+}
+const STAGE_OF = {q1:1, q2:2, q3a:3, q3b:3, t23:3, q4:4, q5:4, t34:4};
+
+/* ---------- UI ---------- */
+const $ = id => document.getElementById(id);
+let lang = 'fr', order = [], ans = {}, ps = null, res = null, fromGuide = false;
+try { const s = localStorage.getItem('drhi-lang'); if (s) lang = s; else { const n = (navigator.language||''); lang = n.startsWith('ar') ? 'ar' : n.startsWith('en') ? 'en' : 'fr'; } } catch(e){}
+
+function buildCards(){
+  const t = T[lang];
+  $('cards').innerHTML = [0,1,2,3,4,5].map(i => `
+    <button type="button" class="card" id="c${i}" style="--gc:${COLORS[i]}" aria-pressed="${ps===i}" onclick="pick(${i})">
+      <div class="pic" id="pic${i}"><img src="img/ps${i}.jpg" alt="ECOG ${i}" onerror="this.parentElement.classList.add('noimg');this.remove()"><span class="badge" style="color:${COLORS[i]}">${i}</span></div>
+      <span class="gt"><span class="gn">PS ${i}</span><span class="gl">${t.gShort[i]}</span></span>
+      <span class="gd">${t.g[i]}</span>
+      <span class="kps">${t.kpsEq} ${KPS[i]}</span>
+    </button>`).join('');
+}
+function renderQ(){
+  const t = T[lang], r = ecogGuide(ans);
+  const finished = fromGuide && ps !== null;
+  const stage = finished ? 4 : STAGE_OF[r.ask];
+  for (let k = 1; k <= 4; k++) $('p'+k).classList.toggle('on', k <= stage);
+  $('qbox').hidden = finished; $('qend').hidden = !finished;
+  if (!finished){ const q = t.Q[r.ask]; $('qtext').textContent = q[0]; $('qhint').textContent = q[1]; $('b-yes').textContent = q[2] || t.yes; $('b-no').textContent = q[3] || t.no; $('b-back').hidden = order.length === 0; $('qbox').classList.toggle('tie', r.ask[0] === 't'); }
+}
+function limNote(t, r){ if (!r || !r.lim) return ''; return (r.lim === '2-3' ? t.lim23 : r.kps ? t.lim34k : t.lim34).replace('{k}', r.kps); }
+function renderResult(){
+  const t = T[lang];
+  const root = document.documentElement.style;
+  if (ps !== null){ root.setProperty('--cur', COLORS[ps]); root.setProperty('--curt', TCOL[ps]); } else { root.removeProperty('--cur'); root.removeProperty('--curt'); }
+  const pic = document.querySelector('#pic'+ps+' img'); $('rpic').hidden = !pic; if (pic) $('rpic').src = pic.src;
+  $('gname').textContent = ps !== null ? t.gShort[ps] : '';
+  $('rpicBtn').hidden = !pic; $('seeimg').hidden = !pic; $('rpicBtn').setAttribute('aria-label', t.seeImg);
+  if (ps !== null){ $('bps').textContent = `${t.grade} ${ps}`; $('bname').textContent = t.gShort[ps]; $('bimg').src = pic ? pic.src : ''; $('bimg').alt = `ECOG ${ps}`;
+    $('bexp').innerHTML = t.expl[ps].map(x => `<li>${x}</li>`).join(''); }
+  if (ps === null || !pic) flip(false);
+  for (let i = 0; i < 6; i++){ $('ld'+i).classList.toggle('on', ps !== null && i <= ps); const c = $('c'+i); if (c) c.setAttribute('aria-pressed', ps === i); }
+  const r = fromGuide ? res : null;
+  $('lim').hidden = !(r && r.lim); $('limnote').hidden = !(r && r.lim);
+  $('stage').hidden = ps === null; $('empty').hidden = ps !== null;
+  if (ps === null){ $('stage').textContent = '–'; $('kps').textContent = ''; $('defn').textContent = ''; $('summary').textContent = ''; $('copy').disabled = true; $('mini-stage').textContent = '–'; $('mini-kps').textContent = ''; return; }
+  $('stage').textContent = `${t.grade} ${ps}`; $('mini-stage').textContent = `ECOG ${ps}` + (r && r.lim ? ` (${r.lim.replace('-','–')})` : '');
+  $('kps').textContent = `${t.kpsEq} ${KPS[ps]}`; $('mini-kps').textContent = `KPS ${KPS[ps]}`;
+  if (r && r.lim){ $('lim').textContent = `${t.limW} \u2066${r.lim.replace('-','–')}\u2069`; $('limnote').textContent = limNote(t, r); }
+  $('defn').textContent = t.g[ps];
+    let sum = `ECOG PS ${ps} (KPS ≈ ${KPS[ps]})`;
+  const ts = lang === 'ar' ? T.en : t;   // the copied summary stays in Latin script (LTR, monospace)
+  if (r && r.lim) sum = `ECOG PS ${ps} (${ts.limW} ${r.lim.replace('-','–')}${r.kps ? `, ${ts.limKps} ${r.kps}` : ''})`;
+  $('summary').textContent = sum + ' – Oken 1982' + (r && r.kps ? ' / Karnofsky' : '');
+  $('copy').disabled = false;
+}
+function flip(on){
+  const card = $('card'); if (!card) return;
+  const was = card.classList.contains('flipped'); card.classList.toggle('flipped', on);
+  $('front').inert = on; $('back').inert = !on;
+  if (on !== was) (on ? $('backBtn') : ($('rpicBtn').hidden ? $('copy') : $('rpicBtn'))).focus({preventScroll:true});
+}
+function answer(yes){ flip(false); const r = ecogGuide(ans); if (!r.ask) return; ans[r.ask] = yes; order.push(r.ask); const n = ecogGuide(ans); if (n.ask === undefined){ ps = n.ps; res = n; fromGuide = true; } renderQ(); renderResult(); if (n.ask === undefined && window.innerWidth < 960) $('result').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); }
+function back(){ const k = order.pop(); if (k) delete ans[k]; renderQ(); }
+function restart(toTop){ order = []; ans = {}; fromGuide = false; res = null; ps = null; renderQ(); renderResult(); if (toTop) window.scrollTo({top:0, behavior:'smooth'}); }   // both buttons clear the previous result
+function pick(i){ flip(false); ps = i; fromGuide = false; res = null; order = []; ans = {}; renderQ(); renderResult(); if (window.innerWidth < 920) $('result').scrollIntoView({behavior:'smooth'}); }
+
+function setLang(l){
+  lang = l; const t = T[l];
+  try { localStorage.setItem('drhi-lang', l); } catch(e){}
+  document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i]').forEach(el => { const k = el.getAttribute('data-i'); if (typeof t[k] === 'string') el.textContent = t[k]; });
+  ['fr','en','ar'].forEach(x => $('l-'+x).setAttribute('aria-pressed', x === l));
+  $('b-yes').textContent = t.yes; $('b-no').textContent = t.no; $('b-back').textContent = t.back; $('b-restart').textContent = t.restart; $('qdone').textContent = t.done;
+  $('copyLbl').textContent = t.copyS; $('resetLbl').textContent = t.reset; $('copy').title = t.copy; $('copy').setAttribute('aria-label', t.copy);
+  $('traps').innerHTML = t.traps.map(x => `<li>${x}</li>`).join('');
+  document.title = t.title + ' – Dr Hi';
+  buildCards(); renderQ(); renderResult();
+}
+function copySummary(){
+  const txt = $('summary').textContent, b = $('copyLbl');
+  const done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copyS, 1600); };
+  try { navigator.clipboard.writeText(txt).then(done, () => fallback(txt, done)); } catch(e){ fallback(txt, done); }
+}
+function fallback(txt, done){ const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch(e){} ta.remove(); }
+setLang(lang);
+</script>
+<script id="sw-reg">
+/* Offline: cache the app on first visit (only when served over http/https) */
+/* Install button: Android/desktop Chrome prompt; iPhone/iPad shows the Home Screen hint */
+let deferredInstall = null;
+const isStandalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) document.getElementById('install').hidden = false; });
+window.addEventListener('appinstalled', () => { document.getElementById('install').hidden = true; });
+if (isIOS && !isStandalone && /^https?:$/.test(location.protocol)) document.getElementById('install').hidden = false;
+function installApp(){
+  if (deferredInstall){ deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; document.getElementById('install').hidden = true; }); }
+  else { const h = document.getElementById('ios-hint'); h.hidden = !h.hidden; }
+}
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => { const o = document.getElementById('offline'); if (o) o.hidden = false; }).catch(() => {});
+}
+</script>
+</body>
+</html>

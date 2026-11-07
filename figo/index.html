@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ovarian Cancer FIGO Staging – Dr Hi</title>
+<meta name="description" content="FIGO 2014 staging of ovarian, fallopian tube and primary peritoneal cancer, with TNM (AJCC 8th) equivalents. Educational tool by Dr I. Haraoubia, CPMC Algiers.">
+<meta name="theme-color" content="#0B6E73">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FIGO ovaire">
+<style>
+html{color-scheme:light!important}
+input,select,textarea,button{color-scheme:light}
+/* Fonts bundled with the app (SIL Open Font License) so it works offline */
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/serif-400.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/serif-600.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/serif-700.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:italic;font-weight:400;font-display:swap;src:url('../fonts/serif-400i.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('../fonts/plex-400.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:500;font-display:swap;src:url('../fonts/plex-500.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('../fonts/plex-600.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:700;font-display:swap;src:url('../fonts/plex-700.woff2') format('woff2');}
+</style>
+<style>
+/* Dr Hi · FIGO ovaire — same beige paper and type as the ECOG and TNM tools, teal as the accent of this tool (variable names kept from the shared stylesheet) */
+:root{
+  --paper:#F5F0E6; --ivory:#FFFFFF; --sand:#E8DFCF; --sand-2:#D8CBB4;
+  --ink:#1D2433; --ink-2:#434A58; --muted:#6B6A66;
+  --pink:#0B6E73; --pink-2:#0E959B; --pink-ink:#08494D; --pink-mist:#E4F2F1; --pink-line:#B4DBD9;
+  --err-bg:#FFF0F0; --err-line:#C62828; --err-ink:#8E1C1C;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --shadow:0 1px 0 rgba(90,70,30,.04),0 18px 40px -26px rgba(90,70,30,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 24px 48px}
+button,input,select{font:inherit}
+:focus-visible{outline:3px solid var(--pink-2);outline-offset:3px;border-radius:6px}
+
+/* Header */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid var(--sand)}
+.brand{display:flex;align-items:center;gap:18px;min-width:0}
+.brand .logo{width:72px;height:auto;flex:none}
+.brand h1{margin:0;font-family:var(--serif);font-weight:600;font-size:36px;line-height:1.1;letter-spacing:-.01em;color:var(--pink)}
+.brand .sub{margin:6px 0 0;font-size:15.5px;color:var(--muted)}
+.lang{display:flex;padding:4px;gap:2px;background:var(--ivory);border:1px solid var(--sand);border-radius:999px}
+.lang button{min-height:40px;min-width:48px;padding:6px 14px;border:0;border-radius:999px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:600;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--pink);color:#fff}
+.disclaimer{margin:16px 0 26px;font-size:15.5px;color:var(--ink-2);padding-inline-start:12px;border-inline-start:3px solid var(--sand-2)}
+
+/* Layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}
+.inputs{display:flex;flex-direction:column;gap:20px;min-width:0}
+.aside{position:sticky;top:20px}
+
+/* Steps */
+fieldset{min-width:0;margin:0;border:1px solid var(--sand);background:var(--ivory);border-radius:22px;padding:20px 24px 24px;box-shadow:var(--shadow);min-width:0}
+legend{float:left;width:100%;padding:0;margin:0 0 14px;font-family:var(--serif);font-weight:600;font-size:23px;line-height:1.25;color:var(--ink)}
+fieldset > :not(legend){clear:both}
+.step{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--pink-mist);color:var(--pink);font-family:var(--serif);font-weight:700;font-size:17px;margin-inline-end:10px;vertical-align:2px}
+.hint{font-size:15.5px;color:var(--ink-2);margin:4px 0 14px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opts.row{flex-direction:row;flex-wrap:wrap}
+.row .opt{flex:1 1 190px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1.5px solid var(--sand);border-radius:14px;cursor:pointer;background:var(--ivory);min-height:48px;transition:border-color .15s,background .15s}
+.opt:hover{border-color:var(--sand-2)}
+.opt input{margin:3px 0 0;width:19px;height:19px;accent-color:var(--pink);flex:none}
+.opt:has(input:checked){border-color:var(--pink);background:var(--pink-mist)}
+.opt .t{font-size:16.5px;line-height:1.4}
+.opt .code{font-weight:700;font-size:14px;color:var(--pink-ink);background:var(--ivory);border:1px solid var(--pink-line);border-radius:7px;padding:1px 7px;margin-inline-start:8px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.sub{font-size:14.5px;color:var(--muted);display:block;margin-top:3px}
+.note{font-size:15.5px;color:var(--ink-2);background:var(--paper);border-radius:12px;padding:10px 14px;margin:12px 0 0;line-height:1.5}
+.note[hidden]{display:none}
+select{width:100%;padding:10px 12px;min-height:46px;border:1.5px solid var(--sand-2);border-radius:12px;background:var(--ivory);color:var(--ink)}
+input[type="number"]{width:100%;max-width:220px;padding:10px 12px;min-height:48px;border:1.5px solid var(--sand-2);border-radius:12px;background:var(--ivory);color:var(--ink);font-size:18px}
+.sizebox{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sizeout{font-weight:700;color:var(--pink-ink)}
+.sep{font-size:15.5px;font-weight:600;color:var(--ink-2);margin:18px 0 8px}
+.chk{display:flex;align-items:flex-start;gap:10px;margin-top:14px;font-size:16px;line-height:1.4}
+.chk input{width:19px;height:19px;accent-color:var(--pink);margin-top:2px;flex:none}
+.chk[hidden]{display:none}
+.n-alert{background:var(--pink-mist);border:1px solid var(--pink-line);border-inline-start:4px solid var(--pink);border-radius:12px;padding:12px 16px;font-size:16px;color:var(--ink);margin:0 0 14px;line-height:1.5}
+.n-alert[hidden]{display:none}
+.n-alert ul{margin:8px 0 0;padding-inline-start:20px;display:flex;flex-direction:column;gap:4px}
+.n-alert b{color:var(--pink-ink)}
+.symlink{display:inline-block;margin-top:12px;font-size:15.5px;font-weight:600;color:var(--pink)}
+
+/* Result */
+.result{background:var(--ivory);color:var(--ink);border:1px solid var(--sand);border-top:10px solid var(--pink-2);border-radius:22px;padding:22px 24px;box-shadow:var(--shadow)}
+.result .lbl{font-size:14px;font-weight:600;color:var(--muted)}
+.result .stage{font-family:var(--serif);font-weight:700;font-size:76px;line-height:1;margin:8px 0 6px;letter-spacing:-.02em;color:var(--pink)}
+.stage.small{font-size:36px;line-height:1.2}
+.result .stage.long{font-size:58px}
+@media (max-width:640px){.result .stage.long{font-size:50px}}
+.result .tnm{font-size:19px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.ladder[hidden],.ladder-l[hidden]{display:none}
+.ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:20px 0 6px}
+.ladder div{height:6px;border-radius:3px;background:var(--sand)}
+.ladder div.on{background:var(--pink-2)}
+.ladder-l{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;font-size:14px;color:var(--muted);margin-bottom:14px}
+.why{border-top:1px solid var(--sand);padding-top:14px;font-size:16px;color:var(--ink-2);line-height:1.5}
+.why b{color:var(--ink)}
+.why ul{margin:6px 0 0;padding-inline-start:20px}
+.why li{margin:3px 0}
+.err{background:var(--err-bg);border:1.5px solid var(--err-line);color:var(--err-ink);border-radius:12px;padding:10px 12px;font-size:15.5px;font-weight:600;margin-top:12px}
+.summary{margin-top:14px;font-size:15px;line-height:1.45;background:var(--paper);border-radius:12px;padding:10px 12px;color:var(--ink);word-break:break-word}
+.summary:empty{display:none}
+.actions{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px;margin-top:16px}
+.btn{min-height:50px;padding:10px 14px;border-radius:12px;cursor:pointer;font-size:15.5px;font-weight:600;border:1.5px solid var(--sand-2);background:var(--ivory);color:var(--ink)}
+.btn.primary{background:var(--pink);border-color:var(--pink);color:#fff}
+.btn:hover{border-color:var(--pink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* Symbols */
+.symbols{margin-top:44px;background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:26px 28px 28px;box-shadow:var(--shadow)}
+.sym-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}
+.sym-badge{flex:none;width:46px;height:46px;border-radius:50%;background:var(--pink);color:#fff;font-family:var(--serif);font-weight:700;font-size:26px;display:flex;align-items:center;justify-content:center}
+.sym-head h2{margin:0 0 4px;font-family:var(--serif);font-weight:600;font-size:26px;color:var(--ink)}
+.sym-head p{margin:0;font-size:16px;color:var(--ink-2)}
+.symbols .alerts{display:flex;flex-direction:column;gap:8px;margin:4px 0 16px}
+.symbols .alert{background:var(--pink-mist);border-inline-start:4px solid var(--pink);border-radius:10px;padding:10px 14px;font-size:16px;color:var(--ink)}
+.symbols .alert b{color:var(--pink-ink)}
+.symbols summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:10px 18px;border-radius:12px;background:var(--pink);color:#fff;font-weight:700;font-size:15.5px}
+.symbols summary:hover{background:var(--pink-ink)}
+.symbols summary::-webkit-details-marker{display:none}
+.symbols summary::after{content:'▾';font-size:15px;transition:transform .2s}
+.symbols details[open] summary::after{transform:rotate(180deg)}
+.symbols details[open] .tw{margin-top:16px}
+.symbols .tw{overflow-x:auto}
+.symbols table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:540px}
+.symbols th{text-align:start;font-size:14px;font-weight:600;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--sand-2)}
+.symbols td{padding:10px;border-bottom:1px solid var(--sand);vertical-align:top}
+.symbols td.sym{font-weight:700;color:var(--pink);white-space:nowrap}
+.symbols td.ex{white-space:nowrap;font-weight:600}
+.symbols td.pg{color:var(--muted);white-space:nowrap}
+.symbols .src{font-size:14.5px;color:var(--muted);margin:12px 0 0}
+
+/* FIGO-specific */
+.ignored{opacity:.55}
+.ignored-msg{display:none;font-size:15px;font-weight:600;color:var(--muted);margin:0 0 10px}
+.ignored .ignored-msg{display:block}
+.lbl2{display:block;font-weight:600;font-size:16px;margin:18px 0 8px;color:var(--ink)}
+.sub2{font-weight:600;margin:12px 0 0}
+.result .tnm{white-space:normal}
+.ladder.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ladder-l.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.guide{margin-top:44px}
+.gh{margin:0;font-family:var(--serif);font-weight:600;font-size:26px;color:var(--ink)}
+.glead{margin:6px 0 18px;font-size:16px;color:var(--muted)}
+.fcard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:24px;align-items:center;background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:22px 24px;box-shadow:var(--shadow)}
+#figmap{display:block;width:100%;max-width:460px;height:auto;margin:0 auto}
+#figmap text{font-family:var(--sans)}
+.fleg table{border-collapse:separate;border-spacing:0 5px;font-size:16px;color:var(--ink-2)}
+.fleg td{padding:6px 8px;vertical-align:middle;line-height:1.35}
+.fleg td.d{width:14px;padding-inline-end:4px}
+.fleg td.d i{width:14px;height:14px;border-radius:4px;display:block}
+.fleg td.c{font-weight:700;color:var(--ink);white-space:nowrap}
+.fleg tr.on td{background:var(--pink-mist)}
+.fleg tr.on td:first-child{border-radius:8px 0 0 8px}
+.fleg tr.on td:last-child{border-radius:0 8px 8px 0}
+.fleg tr.dim{opacity:.45}
+.fleg .memo{margin:10px 0 0;font-style:italic;color:var(--muted);font-size:15px}
+.gcredit{margin:12px 0 0;font-size:14px;color:var(--muted);font-style:italic}
+@media (max-width: 900px){ .fcard{grid-template-columns:minmax(0,1fr);padding:18px 16px} }
+
+/* Pitfalls */
+.traps{margin-top:44px;background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:26px 28px 28px;box-shadow:var(--shadow)}
+.traps ul{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;font-size:16.5px;line-height:1.5;color:var(--ink-2)}
+.traps li{position:relative;padding-inline-start:18px}
+.traps li::before{content:"";position:absolute;inset-inline-start:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--pink)}
+.traps li b{color:var(--ink)}
+.traps li span{display:block}
+.traps li small{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+@media (max-width: 900px){ .traps ul{grid-template-columns:1fr} .traps{padding:22px 18px} }
+/* Install */
+.tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.install{min-height:44px;padding:8px 16px;border:1.5px solid var(--pink);border-radius:999px;background:var(--ivory);color:var(--pink-ink);font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.install:hover{background:var(--pink-mist)}
+.install[hidden],.ios-hint[hidden]{display:none}
+.ios-hint{margin:10px 0 0;padding:10px 14px;border-radius:12px;background:var(--pink-mist);color:var(--ink);font-size:15.5px}
+
+/* Footer */
+footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--sand);display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:32px;font-size:14.5px;line-height:1.6;color:var(--muted)}
+footer h4{margin:0 0 6px;font-family:var(--serif);font-weight:600;font-size:16px;color:var(--ink)}
+footer .refs div{margin-bottom:6px}
+footer a{color:var(--pink)}
+footer strong{color:var(--ink)}
+.offline{margin-top:6px;color:#00754A;font-weight:600}
+.offline[hidden]{display:none}
+
+/* Small screens */
+.mini{display:none}
+@media (max-width: 960px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .aside{position:static;scroll-margin-top:70px}
+  footer{grid-template-columns:1fr;gap:18px}
+  .mini{display:flex;position:sticky;top:0;z-index:10;margin:0 -16px 18px;padding:10px 16px;background:var(--ivory);color:var(--ink);border-bottom:4px solid var(--pink-2);align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 16px -10px rgba(90,70,30,.4)}
+  .mini .s{font-family:var(--serif);font-weight:700;font-size:20px;color:var(--pink)}
+  .mini .c{font-size:14.5px;color:var(--ink-2);font-weight:600}
+  .mini a{color:var(--pink);font-size:14.5px;font-weight:600}
+}
+@media (max-width: 640px){
+  .wrap{padding:18px 16px 36px}
+  .brand .logo{width:56px}
+  .brand h1{font-size:27px}
+  fieldset{padding:18px 16px 20px;border-radius:18px}
+  legend{font-size:21px}
+  .symbols{padding:22px 18px}
+  .result .stage{font-size:64px}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img class="logo" src="../img/drhi.png" alt="Dr Hi">
+      <div>
+        <h1 data-i="title"></h1>
+        <p class="sub" data-i="kicker"></p>
+      </div>
+    </div>
+    <div class="tools">
+      <button type="button" class="install" id="install" hidden onclick="installApp()" data-i="install"></button>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" id="l-en" onclick="setLang('en')">EN</button>
+        <button type="button" id="l-fr" onclick="setLang('fr')">FR</button>
+      </div>
+    </div>
+  </header>
+  <p class="ios-hint" id="ios-hint" hidden data-i="iosHint"></p>
+
+  <p class="disclaimer" data-i="disclaimer"></p>
+
+  <div class="mini" aria-hidden="true">
+    <span><span class="s" id="mini-stage">–</span> &nbsp;<span class="c" id="mini-tnm"></span></span>
+    <a href="#result" data-i="details"></a>
+  </div>
+
+  <div class="layout">
+    <form class="inputs" id="f" onsubmit="return false">
+
+      <fieldset>
+        <legend><span class="step">1</span><span data-i="s1"></span></legend>
+        <div class="opts row">
+          <label class="opt"><input type="radio" name="site" value="ovary" checked><span class="t" data-i="ovary"></span></label>
+          <label class="opt"><input type="radio" name="site" value="tube"><span class="t" data-i="tube"></span></label>
+          <label class="opt"><input type="radio" name="site" value="peritoneum"><span class="t" data-i="peritoneum"></span></label>
+        </div>
+        <div class="lbl2" data-i="basisLbl"></div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="basis" value="p" checked><span class="t"><span data-i="basisP"></span><span class="code">pTNM</span></span></label>
+          <label class="opt"><input type="radio" name="basis" value="c"><span class="t"><span data-i="basisC"></span><span class="code">cTNM</span></span></label>
+          <label class="opt"><input type="radio" name="basis" value="yp"><span class="t"><span data-i="basisY"></span><span class="code">ypTNM</span></span></label>
+        </div>
+        <p class="sub2" id="c-note" hidden data-i="cNote"></p>
+        <div id="yp-box" class="note" hidden>
+          <label for="initStage" class="lbl2" style="margin-top:0" data-i="initLbl"></label>
+          <select id="initStage" name="initStage">
+            <option value="" data-i="initNone"></option>
+            <option>IA</option><option>IB</option><option>IC1</option><option>IC2</option><option>IC3</option>
+            <option>IIA</option><option>IIB</option>
+            <option>IIIA1(i)</option><option>IIIA1(ii)</option><option>IIIA2</option><option>IIIB</option><option>IIIC</option>
+            <option>IVA</option><option>IVB</option>
+          </select>
+          <label class="opt" style="margin-top:10px"><input type="checkbox" name="pcr"><span class="t"><span data-i="pcr"></span><span class="code">ypT0</span><span class="sub" data-i="pcrS"></span></span></label>
+          <p class="sub2" data-i="ypRule"></p>
+        </div>
+        <label for="histo" class="lbl2" data-i="histoLbl"></label>
+        <select id="histo" name="histo">
+          <option value="" data-i="h0"></option>
+          <option value="hgsc" data-i="h1"></option>
+          <option value="lgsc" data-i="h2"></option>
+          <option value="endo" data-i="h3"></option>
+          <option value="clear" data-i="h4"></option>
+          <option value="muc" data-i="h5"></option>
+          <option value="bord" data-i="h7"></option>
+          <option value="strom" data-i="h8"></option>
+          <option value="other" data-i="h6"></option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="step">2</span><span data-i="s2"></span></legend>
+        <p class="hint" data-i="s2h"></p>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" name="pleural"><span class="t"><span data-i="pleural"></span><span class="code">IVA · M1a</span></span></label>
+          <label class="opt"><input type="checkbox" name="parench"><span class="t"><span data-i="parench"></span><span class="code">IVB · M1b</span></span></label>
+          <label class="opt"><input type="checkbox" name="extraorg"><span class="t"><span data-i="extraorg"></span><span class="code">IVB · M1b</span></span></label>
+          <label class="opt"><input type="checkbox" name="extraln"><span class="t"><span data-i="extraln"></span><span class="code">IVB · M1b</span></span></label>
+          <label class="opt"><input type="checkbox" name="bowel"><span class="t"><span data-i="bowel"></span><span class="code">IVB · M1b</span><span class="sub" data-i="bowelS"></span></span></label>
+          <label class="opt"><input type="checkbox" name="umbilical"><span class="t"><span data-i="umbilical"></span><span class="code">IVB · M1b</span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-peri">
+        <legend><span class="step">3</span><span data-i="s3"></span></legend>
+        <p class="ignored-msg" data-i="ignoredIV"></p>
+        <p class="hint" data-i="s3h"></p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="peri" value="none" checked><span class="t" data-i="periNone"></span></label>
+          <label class="opt"><input type="radio" name="peri" value="micro"><span class="t"><span data-i="periMicro"></span><span class="code">IIIA2 · T3a</span></span></label>
+          <label class="opt"><input type="radio" name="peri" value="le2"><span class="t"><span data-i="periLe2"></span><span class="code">IIIB · T3b</span></span></label>
+          <label class="opt"><input type="radio" name="peri" value="gt2"><span class="t"><span data-i="periGt2"></span><span class="code">IIIC · T3c</span><span class="sub" data-i="periGt2s"></span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-ln">
+        <legend><span class="step">4</span><span data-i="s4"></span></legend>
+        <p class="hint" data-i="s4h"></p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="ln" value="neg" checked><span class="t"><span data-i="lnNeg"></span><span class="code">N0</span></span></label>
+          <label class="opt"><input type="radio" name="ln" value="le10"><span class="t"><span data-i="lnLe10"></span><span class="code">IIIA1(i) · N1a</span></span></label>
+          <label class="opt"><input type="radio" name="ln" value="gt10"><span class="t"><span data-i="lnGt10"></span><span class="code">IIIA1(ii) · N1b</span></span></label>
+          <label class="opt"><input type="radio" name="ln" value="nx"><span class="t"><span data-i="lnNx"></span><span class="code">NX</span></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset id="fs-pelvis">
+        <legend><span class="step">5</span><span data-i="s5"></span></legend>
+        <p class="ignored-msg" data-i="ignoredIII"></p>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="pelvis" value="none" checked><span class="t" data-i="pelNone"></span></label>
+          <label class="opt"><input type="radio" name="pelvis" value="a"><span class="t"><span data-i="pelA"></span><span class="code">IIA · T2a</span></span></label>
+          <label class="opt"><input type="radio" name="pelvis" value="b"><span class="t"><span data-i="pelB"></span><span class="code">IIB · T2b</span></span></label>
+        </div>
+        <p class="note" data-i="adhesions"></p>
+      </fieldset>
+
+      <fieldset id="fs-local">
+        <legend><span class="step">6</span><span data-i="s6"></span></legend>
+        <p class="ignored-msg" data-i="ignoredII"></p>
+        <div class="opts row">
+          <label class="opt"><input type="radio" name="lat" value="uni" checked><span class="t"><span data-i="uni"></span><span class="code">T1a</span></span></label>
+          <label class="opt"><input type="radio" name="lat" value="bi"><span class="t"><span data-i="bi"></span><span class="code">T1b</span></span></label>
+        </div>
+        <p class="hint" style="margin-top:16px" data-i="s6h"></p>
+        <div class="opts">
+          <label class="opt"><input type="checkbox" name="spill"><span class="t"><span data-i="spill"></span><span class="code">IC1 · T1c1</span></span></label>
+          <label class="opt"><input type="checkbox" name="surface"><span class="t"><span data-i="surface"></span><span class="code">IC2 · T1c2</span></span></label>
+          <label class="opt"><input type="checkbox" name="cyto"><span class="t"><span data-i="cyto"></span><span class="code">IC3 · T1c3</span></span></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="aside" id="result" aria-live="polite">
+      <div class="result">
+        <div class="lbl" id="res-lbl" data-i="resLbl"></div>
+        <div class="stage" id="stage">–</div>
+        <div class="tnm" id="tnm"></div>
+        <div class="ladder four" aria-hidden="true"><div id="ld1"></div><div id="ld2"></div><div id="ld3"></div><div id="ld4"></div></div>
+        <div class="ladder-l four" aria-hidden="true"><span>I</span><span>II</span><span>III</span><span>IV</span></div>
+        <div class="why" id="why"></div>
+        <div class="err" id="err" hidden></div>
+        <div class="summary" id="summary"></div>
+        <div class="actions">
+          <button type="button" class="btn primary" id="copy" onclick="copySummary()"></button>
+          <button type="button" class="btn" id="reset" onclick="resetForm()"></button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="traps" aria-labelledby="t-h">
+    <h2 class="gh" id="t-h" data-i="trapsT"></h2>
+    <ul id="traps"></ul>
+  </section>
+
+  <section class="guide" aria-labelledby="guide-h">
+    <h2 class="gh" id="guide-h" data-i="guideT"></h2>
+    <p class="glead" data-i="guideS"></p>
+    <div class="fcard">
+      <svg id="figmap" viewBox="0 0 352 468" role="img" aria-labelledby="figmap-t"><title id="figmap-t" data-i="guideT"></title></svg>
+      <div class="fleg" id="fleg"></div>
+    </div>
+    <p class="gcredit" data-i="gCredit"></p>
+  </section>
+
+  <footer>
+    <div class="refs">
+    <h4 data-i="refs"></h4>
+    <div>Prat J; FIGO Committee on Gynecologic Oncology. Staging classification for cancer of the ovary, fallopian tube, and peritoneum. <i>Int J Gynaecol Obstet</i> 2014;124:1–5. <a href="https://doi.org/10.1016/j.ijgo.2013.10.001" target="_blank" rel="noopener">doi:10.1016/j.ijgo.2013.10.001</a></div>
+    <div>Renz M, Friedlander M, Berek JS. Cancer of the ovary, fallopian tube, and peritoneum: 2025 update. <i>Int J Gynaecol Obstet</i> 2025;171(Suppl 1):6–35. <a href="https://doi.org/10.1002/ijgo.70282" target="_blank" rel="noopener">doi:10.1002/ijgo.70282</a> (FIGO 2014 staging still in force).</div>
+    <div>Brierley J, Giuliani M, O'Sullivan B, Rous B, Van Eycken E (eds). <i>UICC TNM Classification of Malignant Tumours</i>, 9th ed. Wiley, 2025 – Ovarian, fallopian tube and primary peritoneal carcinoma, pp. 175–179 (definitions correspond to FIGO and AJCC 8th edition).</div>
+    </div>
+    <div>
+    <h4><span data-i="madeby"></span> Dr Ismahene Haraoubia</h4>
+    <div data-i="affil"></div>
+    <div><a href="mailto:ismaheneharaoubia@gmail.com">ismaheneharaoubia@gmail.com</a></div>
+    <div><a href="../" data-i="allTools"></a></div>
+    <div>v3.2 · <span data-i="version"></span></div>
+    <div class="offline" id="offline" hidden data-i="offline"></div>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ---------- Text (EN / FR) ---------- */
+const T = {
+ en:{
+  cNote:"Enough for the tumour board. Confirm or complete it at surgery.",
+  install:"Install the app", iosHint:"On iPhone or iPad: tap Share, then “Add to Home Screen”.", trapsT:"Pitfalls to avoid",
+  traps:[["<b>Pleural effusion</b>: IVA only if cytology is positive.","FIGO 2014"],
+   ["<b>Capsule</b> of liver or spleen = stage III (IIIC).|<b>Parenchyma</b> = IVB.","UICC p. 177"],
+   ["<b>Omentum and bowel serosa</b> = peritoneum (stage III).|<b>Transmural</b> bowel infiltration = IVB.","FIGO 2014"],
+   ["<b>Greater omental nodes</b> = regional (N1).|<b>Inguinal</b> or extra-abdominal nodes = IVB.","UICC p. 175, 177"],
+   ["<b>Node size</b> = greatest dimension of the metastasis, not of the node.","UICC p. 177"],
+   ["<b>IC1</b> = rupture during surgery.|<b>IC2</b> = rupture before surgery, or surface tumour.","UICC p. 176"],
+   ["<b>Primary peritoneal carcinoma</b> is never stage I.","UICC p. 176"],
+   ["<b>In doubt</b> between two categories: choose the less advanced one.","UICC rule 4, p. 4"]],
+  offline:"✓ Available offline on this device", gCredit:"Diagram concept and design: Dr Hi. Content: FIGO 2014 and UICC TNM 9th edition (2025).",
+  fm:{brim:"pelvic brim", ov:"ovaries", tubes:"tubes", ut:"uterus", liver:"liver", spleen:"spleen", lung:"lungs", nodes:"nodes", ing:"inguinal", umb:"umbilicus", asc:"ascites / washings", caps:"capsule"},
+  fleg:[["I","Ovary(ies) or tube(s) only","I"],["II","Pelvis, below the pelvic brim","II"],["IIIN","Retroperitoneal nodes only","IIIA1"],["III","Peritoneum above the brim (incl. liver/spleen capsule)","IIIA2–IIIC"],["IVA","Pleural effusion, positive cytology","IVA"],["IVB","Liver/spleen parenchyma, extra-abdominal organs or nodes (inguinal), umbilicus, transmural bowel","IVB"]],
+  fmemo:"The higher the disease goes, the higher the stage: ovary I · pelvis II · abdomen III · thorax and parenchyma IV.",
+  kicker:"FIGO 2014 and UICC TNM 9th edition (2025)", title:"FIGO staging of ovarian, tubal and peritoneal cancer", byline:"Medical Oncology, CPMC Algiers",
+  disclaimer:"Educational decision-support tool: it does not replace surgical-pathological staging, the tumour board or clinical judgement.",
+  details:"Details", basisLbl:"What is the stage based on?", basisP:"Surgery (laparoscopy or laparotomy) and pathology: final stage", basisC:"Imaging and biopsy, before surgery: provisional stage", basisY:"After neoadjuvant chemotherapy (interval surgery)", guideT:"Visual guide", allTools:"← All Dr Hi tools", guideS:"The diagram follows what you enter.", initLbl:"FIGO stage at diagnosis (before treatment)", initNone:"Not specified", pcr:"No viable residual tumour (complete pathological response)", pcrS:"Fibrosis, necrosis or scars without viable tumour cells do not count (UICC).", ypRule:"The reference FIGO stage remains the one at diagnosis: it never changes after treatment (UICC rule 3).", resLblY:"Residual disease after treatment", ypAt:"FIGO stage at diagnosis", ypNoInit:"to be specified", ypWhy:"Residual disease", ypPcr:"No viable residual tumour", ypAfter:"after neoadjuvant chemotherapy", s1:"Primary site and histology", ovary:"Ovary", tube:"Fallopian tube", peritoneum:"Primary peritoneal",
+  histoLbl:"Histological type (FIGO recommends recording it)", h0:"Not specified", h1:"High-grade serous carcinoma", h2:"Low-grade serous carcinoma", h3:"Endometrioid carcinoma", h4:"Clear cell carcinoma", h5:"Mucinous carcinoma", h7:"Borderline tumour", h8:"Malignant sex cord-stromal tumour", h6:"Other",
+  s2:"Distant metastases", s2h:"Tick every finding present. Peritoneal metastases are not stage IV.",
+  pleural:"Pleural effusion with positive cytology", parench:"Parenchymal metastasis of the liver and/or spleen",
+  extraorg:"Metastasis to extra-abdominal organs", extraln:"Inguinal lymph nodes or lymph nodes outside the abdominal cavity",
+  bowel:"Transmural (full-thickness) bowel infiltration", bowelS:"Deposits on the bowel serosa are peritoneal disease (step 3 or 5).", umbilical:"Umbilical deposit",
+  s3:"Peritoneum beyond the pelvic brim", s3h:"Above the pelvic brim, confirmed by cytology or histology, including bowel outside the pelvis.",
+  periNone:"No extrapelvic peritoneal involvement", periMicro:"Microscopic extrapelvic peritoneal involvement only",
+  periLe2:"Macroscopic peritoneal metastasis ≤ 2 cm", periGt2:"Macroscopic peritoneal metastasis > 2 cm",
+  periGt2s:"Includes extension to the capsule of liver or spleen without parenchymal involvement.",
+  s4:"Retroperitoneal lymph nodes", s4h:"Iliac, obturator, lateral sacral, para-aortic and retroperitoneal nodes, including greater omental nodes. Fewer than 10 nodes, all negative: pN0.",
+  lnNeg:"Negative", lnLe10:"Positive, metastasis ≤ 10 mm", lnGt10:"Positive, metastasis > 10 mm", lnNx:"Not assessed",
+  s5:"Pelvic extension (below the pelvic brim)", pelNone:"None", pelA:"Extension and/or implants on uterus and/or fallopian tubes and/or ovaries", pelB:"Extension to other pelvic tissues, including bowel within the pelvis",
+  adhesions:"Dense adhesions with histologically proven tumour cells: stage II (tick IIA or IIB according to their site).",
+  s6:"Tumour limited to ovary(ies) or tube(s)", uni:"One ovary or tube", bi:"Both ovaries or tubes",
+  s6h:"Capsule intact, no surface tumour and negative washings = IA/IB. Otherwise tick:",
+  spill:"Surgical spill", surface:"Capsule ruptured before surgery, or tumour on ovarian or tubal surface", cyto:"Malignant cells in ascites or peritoneal washings",
+  ignoredIV:"Not used for the stage: stage IV is already established (still recorded in the T category).",
+  ignoredIII:"Not used for the stage: extrapelvic disease is already present.",
+  ignoredII:"Not used for the stage: disease extends beyond the ovaries or tubes.",
+  resLbl:"FIGO 2014 stage", copy:"Copy summary", copied:"Copied ✓", reset:"Reset",
+  why:"Determined by", other:"Also recorded",
+  errPerit:"A primary peritoneal carcinoma cannot be stage I. Record at least the pelvic or extrapelvic extent (step 3 or 5).",
+  nxNote:"Lymph nodes not assessed: surgical staging is incomplete.",
+  icMulti:"Several IC criteria: FIGO asks to record each subset; none takes precedence (FIGO 2014).",
+  refs:"References", madeby:"Designed by", affil:"Resident in Medical Oncology, Medical Oncology Department, CPMC, Algiers, Algeria", version:"Updated November 2026",
+  r:{ pleural:"pleural effusion with positive cytology", parench:"parenchymal liver/spleen metastasis", extraorg:"metastasis to an extra-abdominal organ", extraln:"inguinal or extra-abdominal lymph node metastasis", bowel:"transmural bowel infiltration", umbilical:"umbilical deposit",
+      gt2:"macroscopic extrapelvic peritoneal metastasis > 2 cm", le2:"macroscopic extrapelvic peritoneal metastasis ≤ 2 cm", micro:"microscopic extrapelvic peritoneal involvement",
+      le10:"retroperitoneal node metastasis ≤ 10 mm", gt10:"retroperitoneal node metastasis > 10 mm",
+      pa:"extension/implants on uterus, tubes or ovaries", pb:"extension to other pelvic tissues (including bowel within the pelvis)",
+      uni:"tumour limited to one ovary/tube", bi:"tumour involving both ovaries/tubes", intact:"capsule intact, no surface tumour, negative cytology",
+      spill:"surgical spill", surface:"capsule rupture before surgery or surface tumour", cyto:"malignant cells in ascites/washings" },
+  site:{ovary:"Ovarian", tube:"Fallopian tube", peritoneum:"Primary peritoneal"}, ca:"carcinoma",
+  hn:{hgsc:"high-grade serous carcinoma", lgsc:"low-grade serous carcinoma", endo:"endometrioid carcinoma", clear:"clear cell carcinoma", muc:"mucinous carcinoma", other:"carcinoma (other type)", bord:"borderline tumour", strom:"malignant sex cord-stromal tumour"}
+ },
+ fr:{
+  cNote:"Suffisant pour la RCP. À confirmer ou compléter par la chirurgie.",
+  install:"Installer l'app", iosHint:"Sur iPhone ou iPad : touchez Partager, puis « Sur l'écran d'accueil ».", trapsT:"Pièges à éviter",
+  traps:[["<b>Épanchement pleural</b> : IVA seulement si la cytologie est positive.","FIGO 2014"],
+   ["<b>Capsule</b> du foie ou de la rate = stade III (IIIC).|<b>Parenchyme</b> = IVB.","UICC p. 177"],
+   ["<b>Épiploon et séreuse intestinale</b> = péritoine (stade III).|Infiltration <b>transmurale</b> de l'intestin = IVB.","FIGO 2014"],
+   ["<b>Ganglions du grand épiploon</b> = régionaux (N1).|Ganglions <b>inguinaux</b> ou hors de l'abdomen = IVB.","UICC p. 175, 177"],
+   ["<b>Taille ganglionnaire</b> = plus grand diamètre de la métastase, pas du ganglion.","UICC p. 177"],
+   ["<b>IC1</b> = rupture pendant la chirurgie.|<b>IC2</b> = rupture avant la chirurgie, ou tumeur en surface.","UICC p. 176"],
+   ["<b>Carcinome péritonéal primitif</b> : jamais stade I.","UICC p. 176"],
+   ["<b>En cas de doute</b> entre deux catégories : retenir la moins avancée.","UICC, règle 4, p. 4"]],
+  offline:"✓ Disponible hors connexion sur cet appareil", gCredit:"Concept et design du schéma : Dr Hi. Contenu : FIGO 2014 et UICC TNM 9e édition (2025).",
+  fm:{brim:"détroit supérieur", ov:"ovaires", tubes:"trompes", ut:"utérus", liver:"foie", spleen:"rate", lung:"poumons", nodes:"ganglions", ing:"inguinaux", umb:"ombilic", asc:"ascite / lavage", caps:"capsule"},
+  fleg:[["I","Ovaire(s) ou trompe(s) seulement","I"],["II","Pelvis, sous le détroit supérieur","II"],["IIIN","Ganglions rétropéritonéaux seuls","IIIA1"],["III","Péritoine au-dessus du détroit (capsule du foie ou de la rate comprise)","IIIA2–IIIC"],["IVA","Épanchement pleural, cytologie positive","IVA"],["IVB","Parenchyme du foie ou de la rate, organes ou ganglions extra-abdominaux (inguinaux), ombilic, intestin transmural","IVB"]],
+  fmemo:"Plus la maladie monte, plus le stade monte : ovaire I · pelvis II · abdomen III · thorax et parenchymes IV.",
+  kicker:"FIGO 2014 et UICC TNM 9e édition (2025)", title:"Stadification FIGO de l'ovaire, de la trompe et du péritoine", byline:"Oncologie médicale, CPMC Alger",
+  disclaimer:"Outil pédagogique d'aide à la décision : il ne remplace ni la stadification chirurgicale et anatomopathologique, ni la RCP, ni le jugement clinique.",
+  details:"Détails", basisLbl:"Sur quoi repose le stade ?", basisP:"Chirurgie (cœlioscopie ou laparotomie) et anatomopathologie : stade définitif", basisC:"Imagerie et biopsie, avant la chirurgie : stade provisoire", basisY:"Après chimiothérapie néoadjuvante (chirurgie d'intervalle)", guideT:"Guide visuel", allTools:"← Tous les outils Dr Hi", guideS:"Le schéma suit votre saisie.", initLbl:"Stade FIGO au diagnostic (avant traitement)", initNone:"Non précisé", pcr:"Aucune cellule tumorale viable résiduelle (réponse complète)", pcrS:"Fibrose, nécrose ou cicatrices sans cellules tumorales viables ne comptent pas (UICC).", ypRule:"Le stade FIGO de référence reste celui du diagnostic : il ne change jamais après traitement (UICC, règle 3).", resLblY:"Maladie résiduelle après traitement", ypAt:"Stade FIGO au diagnostic", ypNoInit:"à préciser", ypWhy:"Maladie résiduelle", ypPcr:"Aucune tumeur viable résiduelle", ypAfter:"après chimiothérapie néoadjuvante", s1:"Site primitif et histologie", ovary:"Ovaire", tube:"Trompe de Fallope", peritoneum:"Péritoine primitif",
+  histoLbl:"Type histologique (à préciser selon la FIGO)", h0:"Non précisé", h1:"Carcinome séreux de haut grade", h2:"Carcinome séreux de bas grade", h3:"Carcinome endométrioïde", h4:"Carcinome à cellules claires", h5:"Carcinome mucineux", h7:"Tumeur borderline", h8:"Tumeur maligne des cordons sexuels et du stroma", h6:"Autre",
+  s2:"Métastases à distance", s2h:"Cochez chaque élément présent. Les métastases péritonéales ne sont pas un stade IV.",
+  pleural:"Épanchement pleural à cytologie positive", parench:"Métastase parenchymateuse hépatique et/ou splénique",
+  extraorg:"Métastase d'un organe extra-abdominal", extraln:"Ganglions inguinaux ou ganglions hors de la cavité abdominale",
+  bowel:"Infiltration transmurale (toute l'épaisseur) de l'intestin", bowelS:"Les dépôts sur la séreuse intestinale relèvent du péritoine (étape 3 ou 5).", umbilical:"Nodule ombilical",
+  s3:"Péritoine au-dessus du détroit supérieur", s3h:"Au-dessus du détroit supérieur, confirmée en cytologie ou en histologie, y compris l'intestin hors du pelvis.",
+  periNone:"Pas d'atteinte péritonéale extrapelvienne", periMicro:"Atteinte péritonéale extrapelvienne microscopique seulement",
+  periLe2:"Métastase péritonéale macroscopique ≤ 2 cm", periGt2:"Métastase péritonéale macroscopique > 2 cm",
+  periGt2s:"Inclut l'extension à la capsule du foie ou de la rate sans atteinte parenchymateuse.",
+  s4:"Ganglions rétropéritonéaux", s4h:"Ganglions iliaques, obturateurs, sacrés latéraux, para-aortiques et rétropéritonéaux, y compris ceux du grand épiploon. Moins de 10 ganglions, tous négatifs : pN0.",
+  lnNeg:"Négatifs", lnLe10:"Positifs, métastase ≤ 10 mm", lnGt10:"Positifs, métastase > 10 mm", lnNx:"Non évalués",
+  s5:"Extension pelvienne (sous le détroit supérieur)", pelNone:"Aucune", pelA:"Extension et/ou implants sur l'utérus et/ou les trompes et/ou les ovaires", pelB:"Extension aux autres tissus pelviens, y compris l'intestin dans le pelvis",
+  adhesions:"Adhérences denses avec cellules tumorales prouvées en histologie : stade II (cochez IIA ou IIB selon leur siège).",
+  s6:"Tumeur limitée à l'ovaire (aux ovaires) ou à la (aux) trompe(s)", uni:"Un ovaire ou une trompe", bi:"Les deux ovaires ou trompes",
+  s6h:"Capsule intacte, pas de tumeur en surface et cytologie négative = IA/IB. Sinon, cochez :",
+  spill:"Rupture peropératoire (effraction chirurgicale)", surface:"Rupture capsulaire avant la chirurgie, ou tumeur à la surface de l'ovaire ou de la trompe", cyto:"Cellules malignes dans l'ascite ou le liquide de lavage péritonéal",
+  ignoredIV:"Non utilisé pour le stade : le stade IV est déjà établi (reste noté dans la catégorie T).",
+  ignoredIII:"Non utilisé pour le stade : une atteinte extrapelvienne est déjà présente.",
+  ignoredII:"Non utilisé pour le stade : la maladie dépasse les ovaires ou les trompes.",
+  resLbl:"Stade FIGO 2014", copy:"Copier le résumé", copied:"Copié ✓", reset:"Réinitialiser",
+  why:"Déterminé par", other:"Également noté",
+  errPerit:"Un carcinome péritonéal primitif ne peut pas être de stade I. Indiquez au moins l'extension pelvienne ou extrapelvienne (étape 3 ou 5).",
+  nxNote:"Ganglions non évalués : la stadification chirurgicale est incomplète.",
+  icMulti:"Plusieurs critères IC : la FIGO demande de noter chaque sous-groupe ; aucun ne prime sur l'autre (FIGO 2014).",
+  refs:"Références", madeby:"Conçu par", affil:"Résidente en oncologie médicale, service d'oncologie médicale, CPMC, Alger, Algérie", version:"Mis à jour en novembre 2026",
+  r:{ pleural:"épanchement pleural à cytologie positive", parench:"métastase parenchymateuse hépatique/splénique", extraorg:"métastase d'un organe extra-abdominal", extraln:"métastase ganglionnaire inguinale ou extra-abdominale", bowel:"infiltration transmurale de l'intestin", umbilical:"nodule ombilical",
+      gt2:"métastase péritonéale extrapelvienne macroscopique > 2 cm", le2:"métastase péritonéale extrapelvienne macroscopique ≤ 2 cm", micro:"atteinte péritonéale extrapelvienne microscopique",
+      le10:"métastase ganglionnaire rétropéritonéale ≤ 10 mm", gt10:"métastase ganglionnaire rétropéritonéale > 10 mm",
+      pa:"extension/implants sur l'utérus, les trompes ou les ovaires", pb:"extension aux autres tissus pelviens (y compris l'intestin pelvien)",
+      uni:"tumeur limitée à un ovaire/une trompe", bi:"tumeur des deux ovaires/trompes", intact:"capsule intacte, surface indemne, cytologie négative",
+      spill:"rupture peropératoire", surface:"rupture capsulaire préopératoire ou tumeur en surface", cyto:"cellules malignes dans l'ascite/le lavage" },
+  site:{ovary:"de l'ovaire", tube:"de la trompe", peritoneum:"péritonéal primitif"}, ca:"Carcinome",
+  hn:{hgsc:"carcinome séreux de haut grade", lgsc:"carcinome séreux de bas grade", endo:"carcinome endométrioïde", clear:"carcinome à cellules claires", muc:"carcinome mucineux", other:"carcinome (autre type)", bord:"tumeur borderline", strom:"tumeur maligne des cordons sexuels et du stroma"}
+ }
+};
+
+/* ---------- Staging logic (pure function, FIGO 2014 / AJCC 8th) ---------- */
+function computeStage(s){
+  const IVB = ['parench','extraorg','extraln','bowel','umbilical'].filter(k => s[k]);
+  const M = IVB.length ? 'M1b' : (s.pleural ? 'M1a' : 'M0');
+  const N = {neg:'N0', le10:'N1a', gt10:'N1b', nx:'NX'}[s.ln];
+
+  // T category from local / peritoneal extent
+  let Tcat, ic = [];
+  if (s.peri === 'gt2') Tcat = 'T3c';
+  else if (s.peri === 'le2') Tcat = 'T3b';
+  else if (s.peri === 'micro') Tcat = 'T3a';
+  else if (s.pelvis === 'b') Tcat = 'T2b';
+  else if (s.pelvis === 'a') Tcat = 'T2a';
+  else {
+    ic = ['spill','surface','cyto'].filter(k => s[k]);
+    if (ic.length === 1) Tcat = {spill:'T1c1', surface:'T1c2', cyto:'T1c3'}[ic[0]];
+    else if (ic.length > 1) Tcat = 'T1c';
+    else Tcat = s.lat === 'bi' ? 'T1b' : 'T1a';
+  }
+  const localOnlyT1 = Tcat.startsWith('T1');
+  const error = (s.site === 'peritoneum' && localOnlyT1 && M === 'M0') ? 'errPerit' : null;
+
+  let stage, group, reasons = [];
+  if (M === 'M1b'){ stage='IVB'; group=4; reasons = IVB.slice(); }
+  else if (M === 'M1a'){ stage='IVA'; group=4; reasons=['pleural']; }
+  else if (Tcat === 'T3c'){ stage='IIIC'; group=3; reasons=['gt2']; }
+  else if (Tcat === 'T3b'){ stage='IIIB'; group=3; reasons=['le2']; }
+  else if (Tcat === 'T3a'){ stage='IIIA2'; group=3; reasons=['micro']; }
+  else if (N === 'N1a'){ stage='IIIA1(i)'; group=3; reasons=['le10']; }
+  else if (N === 'N1b'){ stage='IIIA1(ii)'; group=3; reasons=['gt10']; }
+  else if (Tcat === 'T2b'){ stage='IIB'; group=2; reasons=['pb']; }
+  else if (Tcat === 'T2a'){ stage='IIA'; group=2; reasons=['pa']; }
+  else if (ic.length){ stage = 'IC' + (ic.length===1 ? {spill:'1',surface:'2',cyto:'3'}[ic[0]] : ''); group=1; reasons = ic.slice(); }
+  else { stage = s.lat === 'bi' ? 'IB' : 'IA'; group=1; reasons = [s.lat === 'bi' ? 'bi' : 'uni', 'intact']; }
+  if (error){ stage = null; group = 0; }
+
+  // Sub-label when several IC criteria are present
+  const icLabel = ic.length > 1 ? ic.map(k => ({spill:'IC1',surface:'IC2',cyto:'IC3'})[k]).join(' + ') : null;
+  // Which input sections no longer affect the stage
+  const ignore = { peri: group === 4, pelvis: group === 4 || Tcat.startsWith('T3'), local: group === 4 || !localOnlyT1 };
+  return { stage, group, T:Tcat, N, M, reasons, icMulti: ic.length > 1, icLabel, error, ignore, nx: N === 'NX' };
+}
+
+/* ---------- UI ---------- */
+let lang = 'en';
+try { const saved = localStorage.getItem('drhi-lang') || localStorage.getItem('figo-lang'); if (saved === 'fr' || saved === 'en') lang = saved; else if ((navigator.language||'').startsWith('fr')) lang = 'fr'; } catch(e){ if ((navigator.language||'').startsWith('fr')) lang = 'fr'; }
+
+const $ = id => document.getElementById(id);
+function readState(){
+  const f = $('f'), v = n => (f.querySelector(`input[name="${n}"]:checked`)||{}).value;
+  const c = n => f.querySelector(`input[name="${n}"]`).checked;
+  return { basis:v('basis'), site:v('site'), histo:$('histo').value, pleural:c('pleural'), parench:c('parench'), extraorg:c('extraorg'), extraln:c('extraln'), bowel:c('bowel'), umbilical:c('umbilical'),
+           peri:v('peri'), ln:v('ln'), pelvis:v('pelvis'), lat:v('lat'), spill:c('spill'), surface:c('surface'), cyto:c('cyto'), pcr:c('pcr'), initStage:$('initStage').value };
+}
+
+function buildSummary(s, r){
+  const t = T[lang];
+  const histo = s.histo ? t.hn[s.histo] : null;
+  let head;
+  if (lang === 'fr') head = histo ? `${histo.charAt(0).toUpperCase()+histo.slice(1)} ${t.site[s.site]}` : `${t.ca} ${t.site[s.site]}`;
+  else head = histo ? `${t.site[s.site]} ${histo}` : `${t.site[s.site]} ${t.ca}`;
+  if (s.basis === 'yp') {
+    const ypT = s.pcr ? 'ypT0' : 'yp' + r.T, mPart = r.M !== 'M0' ? ' ' + r.M : '';
+    const sep = lang === 'fr' ? ' : ' : ': ';
+    return `${head} – ${t.ypAfter}${sep}${ypT} yp${r.N}${mPart} · ${t.ypAt}${sep}${s.initStage || t.ypNoInit}`;
+  }
+  const stageTxt = r.icLabel ? `IC (${r.icLabel})` : r.stage;
+  const px = s.basis || 'p';
+  return `${head} – FIGO 2014 ${lang==='fr'?'stade':'stage'} ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M})`;
+}
+
+const ROMAN = ['', 'I', 'II', 'III', 'IV'];
+function render(){
+  const s = readState(), r = computeStage(s), t = T[lang];
+  const ypMode = s.basis === 'yp';
+  $('fs-peri').classList.toggle('ignored', !ypMode && r.ignore.peri);
+  $('fs-pelvis').classList.toggle('ignored', !ypMode && r.ignore.pelvis);
+  $('fs-local').classList.toggle('ignored', !ypMode && r.ignore.local);
+  $('fs-peri').querySelector('.ignored-msg').textContent = t.ignoredIV;
+  $('fs-pelvis').querySelector('.ignored-msg').textContent = r.group === 4 ? t.ignoredIV : t.ignoredIII;
+  $('fs-local').querySelector('.ignored-msg').textContent = r.group === 4 ? t.ignoredIV : (r.T.startsWith('T3') ? t.ignoredIII : t.ignoredII);
+
+  const err = $('err'), yp = s.basis === 'yp';
+  $('yp-box').hidden = !yp;
+  $('c-note').hidden = s.basis !== 'c';
+  $('stage').classList.toggle('small', yp);
+  $('stage').classList.toggle('long', !yp && !!r.stage && r.stage.length > 5);
+  document.querySelector('.ladder').hidden = yp; document.querySelector('.ladder-l').hidden = yp;
+  $('res-lbl').textContent = yp ? t.resLblY : t.resLbl;
+  if (r.error && !(yp && s.pcr)){
+    $('stage').textContent = '–'; $('mini-stage').textContent = '–';
+    $('tnm').textContent = ''; $('mini-tnm').textContent = '';
+    $('why').innerHTML = ''; $('summary').textContent = '';
+    err.textContent = t[r.error]; err.hidden = false;
+    $('copy').disabled = true;
+  } else if (yp) {
+    err.hidden = true; $('copy').disabled = false;
+    const ypT = s.pcr ? 'ypT0' : 'yp' + r.T, mPart = r.M !== 'M0' ? ' ' + r.M : '';
+    const code = `${ypT} yp${r.N}${mPart}`;
+    $('stage').textContent = code; $('mini-stage').textContent = code;
+    $('tnm').textContent = `${t.ypAt}${lang === 'fr' ? ' : ' : ': '}${s.initStage || t.ypNoInit}`;
+    $('mini-tnm').textContent = s.initStage ? 'FIGO ' + s.initStage : '';
+    let html = s.pcr ? `<b>${t.ypPcr}</b>` : `<b>${t.ypWhy}:</b><ul>` + r.reasons.map(k => `<li>${t.r[k]}</li>`).join('') + '</ul>';
+    html += `<div style="margin-top:8px">${t.ypRule}</div>`;
+    $('why').innerHTML = html;
+    $('summary').textContent = buildSummary(s, r);
+  } else {
+    err.hidden = true; $('copy').disabled = false;
+    $('stage').textContent = r.icLabel ? 'IC' : r.stage;
+    $('mini-stage').textContent = 'FIGO ' + (r.icLabel ? `IC (${r.icLabel})` : r.stage);
+    const px = s.basis || 'p';
+    const tnm = `${px}${r.T} ${px}${r.N} ${r.M}`;
+    $('tnm').textContent = (r.icLabel ? r.icLabel + ' · ' : '') + tnm;
+    $('mini-tnm').textContent = tnm;
+    let html = `<b>${t.why}${lang==='fr' ? ' :' : ':'}</b><ul>` + r.reasons.map(k => `<li>${t.r[k]}</li>`).join('') + '</ul>';
+    const notes = [];
+    if (r.icMulti) notes.push(t.icMulti);
+    if (r.nx) notes.push(t.nxNote);
+    if (notes.length) html += `<div style="margin-top:8px">${notes.join('<br>')}</div>`;
+    $('why').innerHTML = html;
+    $('summary').textContent = buildSummary(s, r);
+  }
+  for (let i = 1; i <= 4; i++) $('ld'+i).classList.toggle('on', !yp && !r.error && r.group >= i);
+  drawFigo(s, r);
+}
+
+/* ---------- Interactive FIGO diagram (concept and design: Dr Hi) ---------- */
+const SC = {1:'#C6E6E3', 2:'#7FC8C3', 3:'#2B9A96', 4:'#0A5A5E'};   // stage I → IV
+const SINK = {1:'#5FA9A4', 2:'#3C918C', 3:'#13706D', 4:'#063C3F'};
+const NEU = {body:'#FBF8F2', bodyL:'#DCD2C2', org:'#EFE8DC', orgL:'#C7B9A3', txt:'#7A6E5E', ink:'#3A3328'};
+function legKey(r){
+  if (!r || r.error || !r.group) return null;
+  if (r.group === 1) return 'I';
+  if (r.group === 2) return 'II';
+  if (r.group === 4) return r.stage;
+  return r.stage.startsWith('IIIA1') ? 'IIIN' : 'III';
+}
+function drawFigo(s, r){
+  const t = T[lang], fm = t.fm, yp = s.basis === 'yp', pcr = yp && s.pcr;
+  const ok = !r.error;
+  const dimL = !yp && r.ignore.local, dimP = !yp && r.ignore.pelvis, dimR = !yp && r.ignore.peri;
+  const g = (yp || !ok) ? 0 : r.group;
+  const o = d => d ? ' opacity=".38"' : '';
+  const txt = (x, y, s2, a='middle', c=NEU.txt, w=500, fs=13) => `<text x="${x}" y="${y}" text-anchor="${a}" font-size="${fs}" font-weight="${w}" fill="${c}" stroke="${NEU.body}" stroke-width="3.5" paint-order="stroke" stroke-linejoin="round">${s2}</text>`;
+  const L = [];
+  // ---- body silhouette
+  L.push(`<path d="M150 4 C150 14 146 18 132 22 C104 30 78 36 66 58 C58 74 58 98 60 150 C62 186 78 214 88 238 C94 262 78 296 72 338 C66 384 72 424 82 462 L258 462 C268 424 274 384 268 338 C262 296 246 262 252 238 C262 214 278 186 280 150 C282 98 282 74 274 58 C262 36 236 30 208 22 C194 18 190 14 190 4 Z" fill="${NEU.body}" stroke="${NEU.bodyL}" stroke-width="1.6"/>`);
+  // ---- thorax: lungs
+  const lungR = 'M160 34 C136 32 110 54 100 92 C93 120 90 142 94 152 C118 145 146 148 162 156 C164 120 164 70 160 34 Z';
+  const lungL = 'M180 34 C204 32 230 54 240 92 C247 120 250 142 246 152 C222 145 194 148 178 156 C176 120 176 70 180 34 Z';
+  L.push(`<defs><clipPath id="cpR"><path d="${lungR}"/></clipPath><clipPath id="cpL"><path d="${lungL}"/></clipPath></defs>`);
+  L.push(`<path d="${lungR}" fill="${NEU.org}" stroke="${NEU.orgL}" stroke-width="1.4"/><path d="${lungL}" fill="${NEU.org}" stroke="${NEU.orgL}" stroke-width="1.4"/>`);
+  if (!pcr && s.pleural){ // pleural effusion = IVA
+    L.push(`<rect x="80" y="122" width="100" height="40" fill="${SC[4]}" fill-opacity=".55" clip-path="url(#cpR)"/>`);
+    L.push(`<path d="M93 124 Q120 120 162 126" fill="none" stroke="${SINK[4]}" stroke-width="1.6"/>`);
+  }
+  if (!pcr && s.extraorg){ // lung metastases
+    [[128,86,7],[214,74,6],[226,112,5]].forEach(([x,y,rr]) => L.push(`<circle cx="${x}" cy="${y}" r="${rr}" fill="${SC[4]}" stroke="${SINK[4]}" stroke-width="1.2"/>`));
+  }
+  L.push(txt(170, 28, fm.lung, 'middle', NEU.txt, 500, 13.5));
+  // ---- diaphragm
+  L.push(`<path d="M86 168 C112 140 150 140 170 160 C190 144 228 140 254 166" fill="none" stroke="${NEU.orgL}" stroke-width="2"/>`);
+  // ---- aorta and retroperitoneal nodes
+  L.push(`<path d="M170 166 L170 296 M170 296 L150 328 M170 296 L190 328" fill="none" stroke="#D9A9A0" stroke-width="5" stroke-linecap="round" stroke-opacity=".75"/>`);
+  // ---- liver & spleen (capsule = III if > 2 cm, parenchyma = IVB)
+  const cap = !pcr && s.peri === 'gt2';
+  const liver = 'M88 172 C112 150 160 152 198 168 C190 190 160 208 116 222 C98 214 88 196 88 172 Z';
+  L.push(`<path d="${liver}" fill="${NEU.org}" stroke="${cap ? SC[3] : NEU.orgL}" stroke-width="${cap ? 5 : 1.4}"${cap ? o(dimR) : ''}/>`);
+  L.push(`<ellipse cx="236" cy="184" rx="15" ry="25" transform="rotate(32 236 184)" fill="${NEU.org}" stroke="${cap ? SC[3] : NEU.orgL}" stroke-width="${cap ? 5 : 1.4}"${cap ? o(dimR) : ''}/>`);
+  if (!pcr && s.parench){
+    [[116,198,7],[148,204,5],[100,190,4],[238,192,6]].forEach(([x,y,rr]) => L.push(`<circle cx="${x}" cy="${y}" r="${rr}" fill="${SC[4]}" stroke="${SINK[4]}" stroke-width="1.2"/>`));
+  }
+  L.push(txt(150, 176, fm.liver, 'middle', NEU.txt, 500, 13.5));
+  L.push(txt(260, 214, fm.spleen, 'middle', NEU.txt, 500, 13.5));
+  // ---- bowel (colon frame + small bowel loops)
+  L.push(`<path d="M108 312 L104 248 Q104 232 120 232 L222 232 Q238 232 238 248 L236 312" fill="none" stroke="${NEU.orgL}" stroke-width="9" stroke-linecap="round" stroke-opacity=".55"/>`);
+  L.push(`<path d="M128 252 C142 244 152 262 166 254 C180 246 188 262 204 254 C214 248 220 258 218 268 C214 280 196 274 184 282 C170 290 160 276 146 284 C132 292 122 280 128 268 C132 260 140 300 156 302 C172 304 182 292 198 300 C210 306 218 296 220 290" fill="none" stroke="${NEU.orgL}" stroke-width="2" stroke-opacity=".8"/>`);
+  if (!pcr && s.bowel){ // transmural infiltration = IVB
+    L.push(`<path d="M146 284 C132 292 122 280 128 268" fill="none" stroke="${SC[4]}" stroke-width="7" stroke-linecap="round"/>`);
+  }
+  const nodes = [[182,214],[158,232],[182,252],[158,274],[182,290],[146,306],[194,306]];
+  const lnPos = !pcr && (s.ln === 'le10' || s.ln === 'gt10'), big = s.ln === 'gt10';
+  nodes.forEach(([x,y], i) => {
+    const hit = lnPos && i % 2 === 0;
+    const rx = hit && big ? 7.5 : 5, ry = hit && big ? 6 : 4;
+    L.push(`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="${hit ? SC[3] : '#fff'}" stroke="${hit ? SINK[3] : NEU.orgL}" stroke-width="1.3"${s.ln === 'nx' ? ' stroke-dasharray="2 2"' : ''}/>`);
+  });
+  L.push(txt(190, 240, fm.nodes, 'start', NEU.txt, 500, 13.5));
+  // ---- umbilicus (IVB)
+  const umb = !pcr && s.umbilical;
+  L.push(`<circle cx="170" cy="270" r="${umb ? 8 : 3.5}" fill="${umb ? SC[4] : NEU.body}" stroke="${umb ? SINK[4] : NEU.orgL}" stroke-width="1.4"/>`);
+  L.push(txt(140, 274, fm.umb, 'end', NEU.txt, 500, 13.5));
+  // ---- extrapelvic peritoneum (stage III)
+  if (!pcr && s.peri !== 'none'){
+    const P = [[124,262],[216,262],[198,286],[116,296],[226,300],[150,244],[196,244],[134,312]];
+    if (s.peri === 'micro'){
+      P.forEach(([x,y]) => [[0,0],[5,3],[-4,4],[3,-4],[-3,-3]].forEach(([dx,dy]) => L.push(`<circle cx="${x+dx}" cy="${y+dy}" r="1.5" fill="${SINK[3]}"${o(dimR)}/>`)));
+    } else {
+      const rr = s.peri === 'gt2' ? 10 : 5.5, pts = s.peri === 'gt2' ? P.slice(0, 5) : P;
+      pts.forEach(([x,y]) => L.push(`<circle cx="${x}" cy="${y}" r="${rr}" fill="${SC[3]}" stroke="${SINK[3]}" stroke-width="1.2"${o(dimR)}/>`));
+    }
+  }
+  // ---- pelvic brim (II / III boundary)
+  L.push(`<path d="M84 326 Q170 304 256 326" fill="none" stroke="${NEU.ink}" stroke-width="1.6" stroke-dasharray="6 5"/>`);
+  L.push(txt(258, 350, fm.brim, 'end', NEU.ink, 600, 13.5));
+  // ---- pelvis: pelvic peritoneum / other pelvic tissues (IIB)
+  const pb = !pcr && s.pelvis === 'b';
+  L.push(`<path d="M98 340 C108 400 140 438 170 440 C200 438 232 400 242 340" fill="${pb ? SC[2] : 'none'}" fill-opacity="${pb ? .45 : 0}" stroke="${pb ? SINK[2] : NEU.orgL}" stroke-width="1.3" stroke-dasharray="${pb ? '0' : '3 4'}"${pb ? o(dimP) : ''}/>`);
+  L.push(`<path d="M212 330 C220 360 206 392 184 430" fill="none" stroke="${NEU.orgL}" stroke-width="8" stroke-linecap="round" stroke-opacity=".5"/>`);
+  if (pb) [[118,392],[214,404],[200,376]].forEach(([x,y]) => L.push(`<circle cx="${x}" cy="${y}" r="5" fill="${SC[2]}" stroke="${SINK[2]}" stroke-width="1.2"${o(dimP)}/>`));
+  // uterus, tubes, ovaries
+  const pa = !pcr && s.pelvis === 'a';
+  L.push(`<path d="M156 356 C156 344 184 344 184 356 L180 392 C178 402 162 402 160 392 Z" fill="${NEU.org}" stroke="${NEU.orgL}" stroke-width="1.4"/>`);
+  L.push(`<path d="M158 356 C142 350 128 350 116 358 M182 356 C198 350 212 350 224 358" fill="none" stroke="${NEU.orgL}" stroke-width="3" stroke-linecap="round"/>`);
+  if (pa) [[164,364],[176,380],[132,352],[210,352]].forEach(([x,y]) => L.push(`<circle cx="${x}" cy="${y}" r="4.5" fill="${SC[2]}" stroke="${SINK[2]}" stroke-width="1.2"${o(dimP)}/>`));
+  const local = !pcr && s.site !== 'peritoneum';
+  const sides = local ? (s.lat === 'bi' ? [0, 1] : [0]) : [];
+  [[120,374],[220,374]].forEach(([x,y], i) => {
+    const hit = sides.includes(i) && s.site === 'ovary';
+    L.push(`<ellipse cx="${x}" cy="${y}" rx="${hit ? 17 : 12}" ry="${hit ? 13 : 8.5}" fill="${hit ? SC[1] : NEU.org}" stroke="${hit ? SINK[1] : NEU.orgL}" stroke-width="${hit ? 1.8 : 1.4}"${hit ? o(dimL) : ''}/>`);
+    if (sides.includes(i) && s.site === 'tube') L.push(`<path d="M${i ? 196 : 144} 352 C${i ? 210 : 130} 348 ${i ? 222 : 118} 350 ${i ? 228 : 112} 360" fill="none" stroke="${SC[1]}" stroke-width="9" stroke-linecap="round"${o(dimL)}/><path d="M${i ? 196 : 144} 352 C${i ? 210 : 130} 348 ${i ? 222 : 118} 350 ${i ? 228 : 112} 360" fill="none" stroke="${SINK[1]}" stroke-width="1.4"${o(dimL)}/>`);
+  });
+  if (local){ // IC markers on the first involved side
+    const [x, y] = s.site === 'ovary' ? [120, 374] : [114, 356];
+    if (s.surface) [[-12,-9],[-15,2],[-6,12],[8,-12]].forEach(([dx,dy]) => L.push(`<circle cx="${x+dx}" cy="${y+dy}" r="3.6" fill="${SC[1]}" stroke="${SINK[1]}" stroke-width="1.3"${o(dimL)}/>`));
+    if (s.spill) L.push(`<path d="M${x+14} ${y+4} l7 -3 l-3 6 l8 1 l-7 4 l4 6 l-8 -3" fill="none" stroke="${SINK[1]}" stroke-width="1.6" stroke-linejoin="round"${o(dimL)}/>` + [[x+30,y+2],[x+28,y+14]].map(([a,b]) => `<circle cx="${a}" cy="${b}" r="2.4" fill="${SINK[1]}"${o(dimL)}/>`).join(''));
+  }
+  if (!pcr && s.cyto) [[150,418],[166,424],[182,418],[196,426]].forEach(([x,y]) => L.push(`<path d="M${x} ${y-7} C${x+4} ${y-1} ${x+4} ${y+3} ${x} ${y+3} C${x-4} ${y+3} ${x-4} ${y-1} ${x} ${y-7} Z" fill="${SC[1]}" stroke="${SINK[1]}" stroke-width="1.2"${o(dimL)}/>`));
+  L.push(txt(170, 414, fm.ut, 'middle', NEU.txt, 500, 13.5));
+  L.push(txt(98, 400, fm.ov, 'middle', NEU.txt, 500, 13.5));
+  // ---- inguinal nodes (IVB)
+  const ing = !pcr && s.extraln;
+  [[96,440],[244,440]].forEach(([x,y]) => L.push(`<ellipse cx="${x}" cy="${y}" rx="${ing ? 7 : 5}" ry="${ing ? 5.5 : 4}" fill="${ing ? SC[4] : '#fff'}" stroke="${ing ? SINK[4] : NEU.orgL}" stroke-width="1.3"/>`));
+  L.push(txt(244, 456, fm.ing, 'middle', NEU.txt, 500, 13.5));
+  // ---- stage ruler (right)
+  const seg = (y1, y2, n, lab, x1 = 300, w = 46) => {
+    const on = g === n;
+    return `<rect x="${x1}" y="${y1}" width="${w}" height="${y2 - y1}" rx="10" fill="${on ? SC[n] : '#F4EFE6'}" stroke="${on ? SINK[n] : '#E3DACB'}" stroke-width="${on ? 2.5 : 1}"/>` +
+      `<text x="${x1 + w / 2}" y="${(y1 + y2) / 2 + 7}" text-anchor="middle" font-family="Source Serif 4, Georgia, serif" font-size="21" font-weight="700" fill="${on ? (n >= 3 ? '#fff' : SINK[n]) : '#B4A894'}">${lab}</text>`;
+  };
+  L.push(seg(6, 160, 4, 'IV'), seg(166, 318, 3, 'III'), seg(334, 400, 2, 'II'), seg(408, 462, 1, 'I'));
+
+
+  L.push(`<path d="M256 326 L300 326" stroke="${NEU.ink}" stroke-width="1.6" stroke-dasharray="6 5"/>`);
+  L.push(`<path d="M${sides.includes(1) && s.site === 'ovary' ? 238 : 233} 374 H286 V435 H300" fill="none" stroke="#CBBFAC" stroke-width="1.2" stroke-dasharray="2 3"/>`);
+  $('figmap').innerHTML = `<title>${t.guideT}</title>` + L.join('');
+
+  // ---- legend
+  const k = (yp || !ok) ? null : legKey(r);
+  const grp = {I:1, II:2, IIIN:3, III:3, IVA:4, IVB:4};
+  $('fleg').innerHTML = '<table>' + t.fleg.map(([key, label, code]) =>
+    `<tr class="${k === key ? 'on' : ''}"><td class="d"><i style="background:${SC[grp[key]]}"></i></td><td class="c">${code}</td><td>${label}</td></tr>`).join('') +
+    `</table><p class="memo">${t.fmemo}</p>`;
+}
+
+function setLang(l){
+  lang = l;
+  try { localStorage.setItem('drhi-lang', l); } catch(e){}
+  document.documentElement.lang = l;
+  const t = T[l];
+  document.querySelectorAll('[data-i]').forEach(el => { const k = el.getAttribute('data-i'); if (typeof t[k] === 'string') el.textContent = t[k]; });
+  $('l-en').setAttribute('aria-pressed', l === 'en'); $('l-fr').setAttribute('aria-pressed', l === 'fr');
+  $('copy').textContent = t.copy; $('reset').textContent = t.reset;
+  $('traps').innerHTML = t.traps.map(([x, src]) => `<li>${x.split('|').map(q => `<span>${q}</span>`).join('')}<small>${src}</small></li>`).join('');
+  document.title = (l === 'fr' ? 'Stadification FIGO ovaire' : 'Ovarian Cancer FIGO Staging') + ' – Dr Hi';
+  render();
+}
+
+function copySummary(){
+  const txt = $('summary').textContent, b = $('copy');
+  const done = () => { b.textContent = T[lang].copied; setTimeout(() => b.textContent = T[lang].copy, 1600); };
+  try {
+    navigator.clipboard.writeText(txt).then(done, () => fallbackCopy(txt, done));
+  } catch(e){ fallbackCopy(txt, done); }
+}
+function fallbackCopy(txt, done){
+  const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); done(); } catch(e){}
+  ta.remove();
+}
+function resetForm(){ $('f').reset(); render(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+$('f').addEventListener('change', render);
+setLang(lang);
+</script>
+<script id="sw-reg">
+/* Offline: cache the app on first visit (only when served over http/https) */
+/* Install button: Android/desktop Chrome prompt; iPhone/iPad shows the Home Screen hint */
+let deferredInstall = null;
+const isStandalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) document.getElementById('install').hidden = false; });
+window.addEventListener('appinstalled', () => { document.getElementById('install').hidden = true; });
+if (isIOS && !isStandalone && /^https?:$/.test(location.protocol)) document.getElementById('install').hidden = false;
+function installApp(){
+  if (deferredInstall){ deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; document.getElementById('install').hidden = true; }); }
+  else { const h = document.getElementById('ios-hint'); h.hidden = !h.hidden; }
+}
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => { const o = document.getElementById('offline'); if (o) o.hidden = false; }).catch(() => {});
+}
+</script>
+</body>
+</html>

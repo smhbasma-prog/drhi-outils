@@ -1,0 +1,15 @@
+{
+  "name": "TNM sein – Dr Hi",
+  "short_name": "TNM sein",
+  "description": "Classification TNM et stade anatomique du cancer du sein (UICC 9e éd. 2025 / AJCC 8e). FR · EN.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F0E6",
+  "theme_color": "#C2185B",
+  "lang": "fr",
+  "icons": [
+    { "src": "img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

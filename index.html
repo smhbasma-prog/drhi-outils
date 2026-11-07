@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr Hi – Outils d'oncologie</title>
+<meta name="description" content="Outils gratuits d'aide à la classification en oncologie : ECOG, TNM sein (UICC 9e), FIGO ovaire. Dr Ismahene Haraoubia, CPMC, Alger.">
+<meta name="theme-color" content="#F5F0E6">
+<link rel="icon" type="image/png" href="img/drhi.png">
+<style>
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/serif-600.woff2') format('woff2');}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/serif-700.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:400;font-display:swap;src:url('fonts/plex-400.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/plex-600.woff2') format('woff2');}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/plex-700.woff2') format('woff2');}
+html{color-scheme:light!important}
+:root{
+  --paper:#F5F0E6; --ivory:#FFFFFF; --sand:#E8DFCF; --sand-2:#D8CBB4;
+  --ink:#1D2433; --ink-2:#434A58; --muted:#6B6A66;
+  --serif:'Source Serif 4',Georgia,serif; --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --shadow:0 1px 0 rgba(90,70,30,.04),0 18px 40px -26px rgba(90,70,30,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 44px}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:22px;border-bottom:1px solid var(--sand)}
+.brand{display:flex;align-items:center;gap:18px;min-width:0}
+.brand img{width:84px;height:auto;flex:none}
+h1{margin:0;font-family:var(--serif);font-weight:700;font-size:40px;line-height:1.08;letter-spacing:-.01em}
+.lead{margin:6px 0 0;font-size:17px;color:var(--ink-2)}
+.lang{display:flex;padding:4px;gap:2px;background:var(--ivory);border:1px solid var(--sand);border-radius:999px}
+.lang button{min-height:40px;min-width:48px;padding:6px 14px;border:0;border-radius:999px;background:transparent;color:var(--ink-2);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:30px}
+.card{position:relative;display:flex;flex-direction:column;gap:12px;background:var(--ivory);border:1px solid var(--sand);border-radius:22px;padding:24px 24px 22px;box-shadow:var(--shadow);color:inherit;text-decoration:none;overflow:hidden;transition:border-color .15s, transform .15s}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:var(--acc)}
+.card:hover{border-color:var(--acc);transform:translateY(-2px)}
+.card:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.card .top{display:flex;align-items:center;gap:14px}
+.card .top img{width:56px;height:56px;border-radius:14px;border:1px solid var(--sand);flex:none}
+.card h2{margin:0;font-family:var(--serif);font-weight:700;font-size:28px;line-height:1.1;color:var(--acc-ink)}
+.card p{margin:0;font-size:17px;color:var(--ink-2);flex:1}
+.card .ref{font-size:14px;color:var(--muted)}
+.card .go{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:4px;padding-top:14px;border-top:1px solid var(--sand);font-weight:700;color:var(--acc-ink)}
+.card .go small{font-weight:600;color:var(--muted);font-size:14px}
+.c-ecog{--acc:#3A6BB3;--acc-ink:#2A4F8A}
+.c-tnm{--acc:#C2185B;--acc-ink:#8E1445}
+.c-figo{--acc:#0B6E73;--acc-ink:#08494D}
+.how{margin:26px 0 0;font-size:16px;color:var(--ink-2)}
+.how b{color:var(--ink)}
+.disclaimer{margin:10px 0 0;font-size:15px;color:var(--muted)}
+footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--sand);font-size:15px;color:var(--muted);line-height:1.65}
+footer b{color:var(--ink)}
+footer a{color:var(--ink);text-underline-offset:3px}
+@media (max-width: 900px){ .grid{grid-template-columns:1fr} h1{font-size:32px} .brand img{width:64px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <img src="img/drhi.png" alt="Dr Hi">
+      <div>
+        <h1 data-i="title"></h1>
+        <p class="lead" data-i="lead"></p>
+      </div>
+    </div>
+    <div class="lang" role="group" aria-label="Langue / Language">
+      <button type="button" id="l-fr" onclick="setLang('fr')">FR</button>
+      <button type="button" id="l-en" onclick="setLang('en')">EN</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <a class="card c-ecog" href="ecog/">
+      <div class="top"><img src="ecog/img/icon-192.png" alt=""><h2>ECOG PS</h2></div>
+      <p data-i="ecogD"></p>
+      <span class="ref">Oken MM et al., 1982</span>
+      <span class="go"><span data-i="open"></span><small>FR · EN · AR</small></span>
+    </a>
+    <a class="card c-tnm" href="tnm-sein/">
+      <div class="top"><img src="tnm-sein/img/icon-192.png" alt=""><h2 data-i="tnmT"></h2></div>
+      <p data-i="tnmD"></p>
+      <span class="ref" data-i="tnmR"></span>
+      <span class="go"><span data-i="open"></span><small>FR · EN</small></span>
+    </a>
+    <a class="card c-figo" href="figo/">
+      <div class="top"><img src="figo/img/icon-192.png" alt=""><h2 data-i="figoT"></h2></div>
+      <p data-i="figoD"></p>
+      <span class="ref" data-i="figoR"></span>
+      <span class="go"><span data-i="open"></span><small>FR · EN</small></span>
+    </a>
+  </main>
+
+  <p class="how" data-i-html="how"></p>
+  <p class="disclaimer" data-i="disclaimer"></p>
+
+  <footer>
+    <div><span data-i="madeby"></span> <b>Dr Ismahene Haraoubia</b> (Dr Hi)</div>
+    <div data-i="affil"></div>
+    <div><a href="mailto:ismaheneharaoubia@gmail.com">ismaheneharaoubia@gmail.com</a> · <a href="https://www.youtube.com/@dr-Hi-6" rel="noopener">YouTube</a> · <a href="https://www.instagram.com/dr.hi.6" rel="noopener">Instagram</a></div>
+  </footer>
+</div>
+<script>
+const T = {
+ fr:{ tnmR:"UICC TNM 9e édition (2025)", figoR:"FIGO 2014 · UICC TNM 9e édition (2025)", title:"Outils d'oncologie", lead:"Classer vite et juste, en consultation.",
+      ecogD:"État général de 0 à 5, en quelques questions, avec illustrations.",
+      tnmT:"TNM sein", tnmD:"cTNM, pTNM et ypTNM, toutes les sous-catégories N, stade anatomique.",
+      figoT:"FIGO ovaire", figoD:"Ovaire, trompe et péritoine, avec schéma anatomique interactif.",
+      open:"Ouvrir",
+      how:"<b>À installer sur votre téléphone</b> : ouvrez un outil, puis touchez « Installer l'app ». Il fonctionne ensuite sans internet.",
+      disclaimer:"Outils pédagogiques d'aide à la décision : ils ne remplacent ni la RCP ni le jugement clinique. Gratuits, sans publicité, sans collecte de données.",
+      madeby:"Conçu par", affil:"Résidente en oncologie médicale, CPMC, Alger, Algérie" },
+ en:{ tnmR:"UICC TNM 9th edition (2025)", figoR:"FIGO 2014 · UICC TNM 9th edition (2025)", title:"Oncology tools", lead:"Stage fast and right, at the point of care.",
+      ecogD:"Performance status 0 to 5, in a few questions, with illustrations.",
+      tnmT:"Breast TNM", tnmD:"cTNM, pTNM and ypTNM, every N subcategory, anatomic stage group.",
+      figoT:"Ovarian FIGO", figoD:"Ovary, fallopian tube and peritoneum, with an interactive anatomical diagram.",
+      open:"Open",
+      how:"<b>Install on your phone</b>: open a tool, then tap “Install the app”. It then works offline.",
+      disclaimer:"Educational decision-support tools: they do not replace the tumour board or clinical judgement. Free, no ads, no data collected.",
+      madeby:"Designed by", affil:"Resident in Medical Oncology, CPMC, Algiers, Algeria" }
+};
+function setLang(l){
+  document.documentElement.lang = l;
+  try { localStorage.setItem('drhi-lang', l); } catch(e){}
+  document.querySelectorAll('[data-i]').forEach(el => { el.textContent = T[l][el.getAttribute('data-i')]; });
+  document.querySelectorAll('[data-i-html]').forEach(el => { el.innerHTML = T[l][el.getAttribute('data-i-html')]; });
+  document.getElementById('l-fr').setAttribute('aria-pressed', l === 'fr');
+  document.getElementById('l-en').setAttribute('aria-pressed', l === 'en');
+  document.title = 'Dr Hi – ' + T[l].title;
+}
+let start = 'fr';
+try { const v = localStorage.getItem('drhi-lang'); start = (v === 'fr' || v === 'en') ? v : ((navigator.language||'').startsWith('en') ? 'en' : 'fr'); } catch(e){}
+setLang(start);
+</script>
+</body>
+</html>
