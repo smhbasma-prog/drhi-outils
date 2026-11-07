@@ -134,6 +134,7 @@ function setLang(l){
 let start = 'fr';
 try { const v = localStorage.getItem('drhi-lang'); start = (v === 'fr' || v === 'en') ? v : ((navigator.language||'').startsWith('en') ? 'en' : 'fr'); } catch(e){}
 setLang(start);
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>
 </html>

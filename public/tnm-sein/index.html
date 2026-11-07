@@ -956,6 +956,7 @@ function installApp(){
   else instHint.hidden = !instHint.hidden;
 }
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  navigator.serviceWorker.register('../sw.js', {scope: '../'}).catch(() => {});   // whole Dr Hi site offline (home page + the other tools)
   navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => { const o = document.getElementById('offline'); if (o) o.hidden = false; }).catch(() => {});
 }
 </script>
