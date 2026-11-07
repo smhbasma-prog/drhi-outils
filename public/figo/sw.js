@@ -1,5 +1,5 @@
 /* FIGO ovaire – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'figo-v3.4';
+const VERSION = 'figo-v3.5';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest',
   'img/icon-192.png', 'img/icon-512.png', 'img/apple-touch-icon.png', '../img/drhi.png',

@@ -178,6 +178,9 @@ input[type="number"]{width:100%;max-width:220px;padding:10px 12px;min-height:48p
 .traps li span{display:block}
 .traps li small{display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
 @media (max-width: 900px){ .traps ul{grid-template-columns:1fr} .traps{padding:22px 18px} }
+/* Home link */
+.home{display:inline-flex;align-items:center;min-height:40px;margin:0 0 4px;font-size:15.5px;font-weight:600;color:var(--ink-2);text-decoration:none}
+.home:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 /* Install */
 .tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .install{min-height:44px;padding:8px 16px;border:1.5px solid var(--pink);border-radius:999px;background:var(--ivory);color:var(--pink-ink);font:inherit;font-size:15px;font-weight:700;cursor:pointer}
@@ -219,6 +222,7 @@ footer strong{color:var(--ink)}
 </head>
 <body>
 <div class="wrap">
+  <a class="home" href="../" data-i="allTools"></a>
   <header class="top">
     <div class="brand">
       <img class="logo" src="../img/drhi.png" alt="Dr Hi">
@@ -406,7 +410,7 @@ footer strong{color:var(--ink)}
 const T = {
  en:{
   cNote:"Enough for the tumour board. Confirm or complete it at surgery.",
-  install:"Install the app", iosHint:"On iPhone or iPad: tap Share, then “Add to Home Screen”.", trapsT:"Pitfalls to avoid",
+  install:"Install the app", iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.", andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).", trapsT:"Pitfalls to avoid",
   traps:[["<b>Pleural effusion</b>: IVA only if cytology is positive.","FIGO 2014"],
    ["<b>Capsule</b> of liver or spleen = stage III (IIIC).|<b>Parenchyma</b> = IVB.","UICC p. 177"],
    ["<b>Omentum and bowel serosa</b> = peritoneum (stage III).|<b>Transmural</b> bowel infiltration = IVB.","FIGO 2014"],
@@ -458,7 +462,7 @@ const T = {
  },
  fr:{
   cNote:"Suffisant pour la RCP. À confirmer ou compléter par la chirurgie.",
-  install:"Installer l'app", iosHint:"Sur iPhone ou iPad : touchez Partager, puis « Sur l'écran d'accueil ».", trapsT:"Pièges à éviter",
+  install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", trapsT:"Pièges à éviter",
   traps:[["<b>Épanchement pleural</b> : IVA seulement si la cytologie est positive.","FIGO 2014"],
    ["<b>Capsule</b> du foie ou de la rate = stade III (IIIC).|<b>Parenchyme</b> = IVB.","UICC p. 177"],
    ["<b>Épiploon et séreuse intestinale</b> = péritoine (stade III).|Infiltration <b>transmurale</b> de l'intestin = IVB.","FIGO 2014"],
@@ -797,16 +801,20 @@ setLang(lang);
 </script>
 <script id="sw-reg">
 /* Offline: cache the app on first visit (only when served over http/https) */
-/* Install button: Android/desktop Chrome prompt; iPhone/iPad shows the Home Screen hint */
+/* Install button: always offered on phones/tablets; native prompt when the browser provides one, otherwise short instructions */
 let deferredInstall = null;
 const isStandalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) document.getElementById('install').hidden = false; });
-window.addEventListener('appinstalled', () => { document.getElementById('install').hidden = true; });
-if (isIOS && !isStandalone && /^https?:$/.test(location.protocol)) document.getElementById('install').hidden = false;
+const isMobile = isIOS || /android|mobile/i.test(navigator.userAgent);
+const instBtn = document.getElementById('install'), instHint = document.getElementById('ios-hint');
+instHint.setAttribute('data-i', isIOS ? 'iosHint' : 'andHint');
+instHint.textContent = T[lang][instHint.getAttribute('data-i')] || '';
+if (!isStandalone && isMobile && /^https?:$/.test(location.protocol)) instBtn.hidden = false;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) instBtn.hidden = false; });
+window.addEventListener('appinstalled', () => { instBtn.hidden = true; instHint.hidden = true; });
 function installApp(){
-  if (deferredInstall){ deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; document.getElementById('install').hidden = true; }); }
-  else { const h = document.getElementById('ios-hint'); h.hidden = !h.hidden; }
+  if (deferredInstall){ deferredInstall.prompt(); deferredInstall.userChoice.finally(() => { deferredInstall = null; }); }
+  else instHint.hidden = !instHint.hidden;
 }
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
   navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => { const o = document.getElementById('offline'); if (o) o.hidden = false; }).catch(() => {});

@@ -1,5 +1,5 @@
 /* ECOG – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'ecog-v2.12';
+const VERSION = 'ecog-v2.13';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest',
   'img/ps0.jpg', 'img/ps1.jpg', 'img/ps2.jpg', 'img/ps3.jpg', 'img/ps4.jpg', 'img/ps5.jpg',

@@ -1,5 +1,5 @@
 /* TNM sein – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'tnm-v2.14';
+const VERSION = 'tnm-v2.15';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest',
   'img/icon-192.png', 'img/icon-512.png', 'img/apple-touch-icon.png', '../img/drhi.png',
