@@ -1,0 +1,12 @@
+{
+  // Dr Hi – site statique (page d'accueil + ECOG + TNM sein + FIGO ovaire)
+  "name": "drhi",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./public",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}
