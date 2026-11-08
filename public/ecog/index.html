@@ -374,9 +374,9 @@ const T = {
  fr:{ install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", title:"Indice de performance ECOG", offline:"✓ Disponible hors connexion sur cet appareil", seeImg:"Voir l'illustration expliquée", seeBtn:"Voir l'image", imgT:"Ce que montre l'image", backRes:"↺ Touchez la carte pour revenir au résultat",
   expl:[["<b>Il court dans un parc</b> : efforts physiques intenses possibles, sans aucune restriction."],
         ["<b>Il fait ses courses avec un panier léger</b> : ambulatoire et actif.","<b>Il prépare son repas</b> : capable d'un travail léger, comme le ménage léger.","<b>Le pictogramme barré (porter une lourde charge)</b> : efforts physiques intenses impossibles."],
-        ["<b>Il se brosse les dents seul dans sa salle de bain</b> : autonome pour ses soins personnels.","<b>Il marche avec son thé</b> : ambulatoire.","<b>Le porte-documents barré</b> : incapable de travailler.","<b>La barre aux deux tiers jaune</b> : debout et actif plus de 50 % de ses heures d'éveil."],
-        ["<b>Un proche l'aide à enfiler son t-shirt, mais il mange seul</b> : soins personnels limités, il n'en fait qu'une partie seul.","<b>Au fauteuil, puis au lit en plein jour, avec un plateau-repas</b> : au lit ou au fauteuil plus de 50 % de ses heures d'éveil.","<b>La barre surtout grise</b> : debout et actif moins de la moitié de la journée."],
-        ["<b>Un proche le fait manger et lui fait la toilette</b> : incapable de tout soin personnel.","<b>Alité dans les deux scènes, en plein jour</b> : totalement confiné au lit.","<b>La barre entièrement grise</b> : au lit pendant toutes ses heures d'éveil.","<b>À domicile, sans matériel hospitalier</b> : le PS dépend de l'état du patient, pas du lieu."],
+        ["<b>Il se brosse les dents seul dans sa salle de bain</b> : autonome pour ses soins personnels.","<b>Il marche avec son thé</b> : ambulatoire.","<b>Le porte-documents barré</b> : incapable de travailler.","<b>La barre aux deux tiers jaune</b> : hors du lit et actif plus de 50 % de ses heures d'éveil."],
+        ["<b>Un proche l'aide à enfiler son t-shirt, mais il mange seul</b> : soins personnels limités, il n'en fait qu'une partie seul.","<b>Au fauteuil, puis au lit en plein jour, avec un plateau-repas</b> : au lit ou au fauteuil plus de 50 % de ses heures d'éveil.","<b>La barre surtout grise</b> : hors du lit et actif moins de la moitié de la journée."],
+        ["<b>Un proche le fait manger et lui fait la toilette</b> : incapable de tout soin personnel.","<b>Alité dans les deux scènes, en plein jour</b> : totalement confiné au lit (ou au fauteuil).","<b>La barre entièrement grise</b> : au lit pendant toutes ses heures d'éveil.","<b>À domicile, sans matériel hospitalier</b> : le PS dépend de l'état du patient, pas du lieu."],
         ["<b>Le lit vide et son t-shirt plié</b> : le décès, représenté par l'absence."]],
    empty:"Répondez aux questions ou choisissez une illustration : le grade s'affichera ici.", sub:"Échelle ECOG, OMS ou Zubrod, d'après Oken et al. (1982)", kpsNote:"Correspondance usuelle (ECOG-ACRIN), approximative.", disclaimer:"Outil pédagogique d'aide à la décision : il ne remplace pas le jugement clinique du médecin.",
   details:"Détails", guided:"Évaluation guidée", guidedIntro:"Répondez selon l'état habituel du patient ces derniers jours, pas selon un épisode aigu.",
@@ -384,18 +384,19 @@ const T = {
    q1:["Peut-il mener toutes ses activités d'avant la maladie, sans restriction ?","Y compris les efforts intenses."],
    q2:["Peut-il encore faire un travail léger, comme un travail de bureau ou le ménage léger ?","Marcher et faire sa toilette ne suffisent pas."],
    q3a:["Fait-il seul tous ses soins : manger, douche, habillage, toilettes ?","Sans l'aide d'une autre personne."],
-   q3b:["Est-il debout et actif, hors du lit et hors du fauteuil, plus de la moitié de la journée ?","Assis au fauteuil ne compte pas. Du réveil au coucher (la nuit ne compte pas)."],
+   q3b:["Passe-t-il plus de la moitié de la journée hors du lit, sans rester au fauteuil pour se reposer ?","Rester au lit ou au fauteuil à cause de la fatigue ou de la maladie ne compte pas ; être assis pour une activité (repas, lecture, bureau) compte. Du réveil au coucher."],
    q4:["Fait-il encore seul une partie de ses soins, par exemple manger ?","Un seul soin fait seul suffit : manger seul, se laver le visage."],
    q5:["Est-il au lit ou au fauteuil toute la journée ?","Il ne quitte ni le lit ni le fauteuil pendant ses heures d'éveil."]},
   limW:"limite",
+  lim23c:"Cas limite : ne fait aucun soin personnel seul, mais passe plus de la moitié de la journée hors du lit (situation rare, par ex. troubles cognitifs). Les critères d'Oken sont très discordants : l'app propose PS 3. Décrivez le patient dans le dossier.", rule23:"règle de l'app : critère du temps", rule23c:"règle de l'app : aucun soin personnel", rule34:"règle de l'app : critère des soins personnels", okenDef:"définitions d'Oken 1982",
   lim23:"Cas limite PS 2–3 : les deux critères d'Oken ne vont pas dans le même sens (soins personnels / temps au lit ou au fauteuil). L'app retient le critère du temps : plus de la moitié de la journée au lit ou au fauteuil = PS 3, sinon PS 2. C'est une aide à la décision, pas une règle officielle d'Oken : décrivez le patient dans le dossier.",
   lim34b:"Cas limite PS 3–4 : ne fait plus aucun soin seul, sans être au lit ou au fauteuil toute la journée. L'app retient le critère des soins personnels : aucun soin personnel = PS 4 (Oken 1982). Décrivez le patient dans le dossier.",
   lim34:"Cas limite PS 3–4 : au lit ou au fauteuil toute la journée, mais fait encore une partie de ses soins. Le PS 4 exige l'absence de tout soin personnel (Oken 1982), donc PS 3.",
   yes:"Oui", no:"Non", back:"← Retour", restart:"Recommencer l'évaluation", done:"Évaluation terminée. Vous pouvez aussi vérifier la carte correspondante ci-dessous.",
-  scaleT:"Échelle illustrée", scaleIntro:"Ou choisissez directement le grade. Définitions d'Oken et al. (1982), traduites de l'anglais.", barLeg:"Barre sous les images : du réveil ☀ au coucher ☾ = les heures d'éveil (la nuit ne compte pas). Jaune = debout et actif, gris = au lit ou au fauteuil.",
+  scaleT:"Échelle illustrée", scaleIntro:"Ou choisissez directement le grade. Définitions d'Oken et al. (1982), traduites de l'anglais.", barLeg:"Barre sous les images : du réveil ☀ au coucher ☾ = les heures d'éveil (la nuit ne compte pas). Jaune = hors du lit et actif, gris = au lit ou au fauteuil pour se reposer.",
   g:["Pleinement actif, capable de mener toutes les activités d'avant la maladie, sans restriction.",
      "Limité dans les activités physiques intenses, mais ambulatoire et capable d'un travail léger ou sédentaire (ménage léger, travail de bureau).",
-     "Ambulatoire et autonome pour tous les soins personnels, mais incapable d'effectuer toute activité de travail, même légère. Debout et actif (hors du lit et du fauteuil) plus de 50 % des heures d'éveil.",
+     "Ambulatoire et autonome pour tous les soins personnels, mais incapable d'effectuer toute activité de travail, même légère. Hors du lit et actif plus de 50 % des heures d'éveil (sans rester au lit ou au fauteuil pour se reposer).",
      "Capable seulement de soins personnels limités. Au lit ou au fauteuil plus de 50 % des heures d'éveil.",
      "Complètement invalide, incapable de tout soin personnel. Totalement confiné au lit ou au fauteuil.",
      "Décédé."],
@@ -416,7 +417,7 @@ const T = {
         ["<b>Shopping with a light basket</b>: ambulatory and active.","<b>Preparing his meal</b>: able to do light work, such as light housework.","<b>The crossed-out icon (carrying a heavy load)</b>: no strenuous physical activity."],
         ["<b>Brushing his teeth alone in his bathroom</b>: capable of self-care.","<b>Walking with his tea</b>: ambulatory.","<b>The crossed-out briefcase</b>: unable to work.","<b>The bar two-thirds yellow</b>: up and about more than 50% of waking hours."],
         ["<b>A relative helps him put on his t-shirt, but he eats alone</b>: limited self-care, he does only part of it alone.","<b>In the armchair, then in bed in daytime, with a meal tray</b>: in bed or chair more than 50% of waking hours.","<b>The bar mostly grey</b>: up and about for less than half of the day."],
-        ["<b>A relative feeds and washes him</b>: cannot carry on any self-care.","<b>In bed in both scenes, in daytime</b>: totally confined to bed.","<b>The bar entirely grey</b>: in bed for all waking hours.","<b>At home, no hospital equipment</b>: PS depends on the patient's condition, not the place."],
+        ["<b>A relative feeds and washes him</b>: cannot carry on any self-care.","<b>In bed in both scenes, in daytime</b>: totally confined to bed (or chair).","<b>The bar entirely grey</b>: in bed for all waking hours.","<b>At home, no hospital equipment</b>: PS depends on the patient's condition, not the place."],
         ["<b>The empty bed and his folded t-shirt</b>: death, shown through absence."]],
    empty:"Answer the questions or choose an illustration: the grade will appear here.", sub:"ECOG, WHO or Zubrod scale, after Oken et al. (1982)", kpsNote:"Usual correspondence (ECOG-ACRIN), approximate.", disclaimer:"Educational decision-support tool: it does not replace the physician's clinical judgement.",
   details:"Details", guided:"Guided assessment", guidedIntro:"Answer according to the patient's usual condition over recent days, not an acute episode.",
@@ -424,15 +425,16 @@ const T = {
    q1:["Can the patient carry on all pre-disease activities without restriction?","Including strenuous activity."],
    q2:["Can the patient still do light work, such as office work or light housework?","Walking and washing are not enough."],
    q3a:["Does the patient do all self-care alone: eating, shower, dressing, toilet?","Without help from another person."],
-   q3b:["Is the patient up and about, out of bed and out of the chair, for more than half of the day?","Sitting in a chair does not count. From waking to bedtime (night does not count)."],
+   q3b:["Is the patient out of bed for more than half of the day, without staying in a chair to rest?","Resting in bed or in a chair because of fatigue or illness does not count; sitting for an activity (meals, reading, desk work) counts. From waking to bedtime."],
    q4:["Does the patient still do part of their self-care alone, for example eating?","One self-care task done alone is enough: eating alone, washing the face."],
    q5:["Is the patient in bed or chair all day?","Does not leave the bed or the chair during waking hours."]},
   limW:"borderline",
+  lim23c:"Borderline: no self-care done alone, yet out of bed for more than half of the day (rare, e.g. cognitive impairment). Oken's criteria strongly disagree: the app proposes PS 3. Describe the patient in the record.", rule23:"app rule: time criterion", rule23c:"app rule: no self-care", rule34:"app rule: self-care criterion", okenDef:"Oken 1982 definitions",
   lim23:"Borderline PS 2–3: Oken's two criteria disagree (self-care / time in bed or chair). The app uses the time criterion: more than half of waking hours in bed or chair = PS 3, otherwise PS 2. This is a decision aid, not an official Oken rule: describe the patient in the record.",
   lim34b:"Borderline PS 3–4: no self-care at all, although not in bed or chair all day. The app uses the self-care criterion: no self-care at all = PS 4 (Oken 1982). Describe the patient in the record.",
   lim34:"Borderline PS 3–4: in bed or chair all day, but still does part of their self-care. PS 4 requires no self-care at all (Oken 1982), hence PS 3.",
   yes:"Yes", no:"No", back:"← Back", restart:"Restart the assessment", done:"Assessment complete. You can also check the matching card below.",
-  scaleT:"Illustrated scale", scaleIntro:"Or choose the grade directly. Definitions from Oken et al., 1982.", barLeg:"Bar under the pictures: from waking ☀ to bedtime ☾ = waking hours (night does not count). Yellow = up and about, grey = in bed or chair.",
+  scaleT:"Illustrated scale", scaleIntro:"Or choose the grade directly. Definitions from Oken et al., 1982.", barLeg:"Bar under the pictures: from waking ☀ to bedtime ☾ = waking hours (night does not count). Yellow = up and about, grey = resting in bed or chair.",
   g:["Fully active, able to carry on all pre-disease performance without restriction.",
      "Restricted in physically strenuous activity but ambulatory and able to carry out work of a light or sedentary nature, e.g., light house work, office work.",
      "Ambulatory and capable of all self-care but unable to carry out any work activities. Up and about more than 50% of waking hours.",
@@ -454,9 +456,9 @@ const T = {
  ar:{ install:"تثبيت التطبيق", iosHint:"على iPhone أو iPad: افتح الصفحة في Safari، اضغط على «مشاركة» ثم «إضافة إلى الشاشة الرئيسية».", andHint:"افتح الصفحة في Chrome، ثم القائمة ⋮ واختر «تثبيت التطبيق» (أو «إضافة إلى الشاشة الرئيسية»).", title:"مقياس الحالة الوظيفية ECOG", offline:"✓ متاح دون اتصال على هذا الجهاز", seeImg:"عرض الرسم مع الشرح", seeBtn:"عرض الصورة", imgT:"ماذا تُظهر الصورة", backRes:"↺ المس البطاقة للعودة إلى النتيجة",
   expl:[["<b>يركض في حديقة</b>: قادر على الجهد البدني الشاق دون أي قيود."],
         ["<b>يتسوّق حاملاً سلة خفيفة</b>: يتنقل وما زال نشيطاً.","<b>يحضّر طعامه</b>: قادر على عمل خفيف، مثل الأعمال المنزلية الخفيفة.","<b>الرمز المشطوب (حمل ثقل كبير)</b>: غير قادر على الجهد البدني الشاق."],
-        ["<b>ينظّف أسنانه وحده في الحمّام</b>: مستقل في عنايته الشخصية.","<b>يمشي حاملاً كوب الشاي</b>: يتنقل وحده.","<b>الحقيبة المشطوبة</b>: غير قادر على العمل.","<b>الشريط أصفر بنسبة الثلثين</b>: واقف ويتحرك أكثر من 50٪ من ساعات اليقظة."],
-        ["<b>أحد أقاربه يساعده في لبس قميصه، لكنه يأكل وحده</b>: عناية شخصية محدودة، يقوم بجزء منها فقط وحده.","<b>على الكرسي ثم في السرير في وضح النهار، مع صينية الطعام</b>: في السرير أو على الكرسي أكثر من 50٪ من ساعات اليقظة.","<b>الشريط رمادي في معظمه</b>: واقف ويتحرك أقل من نصف اليوم."],
-        ["<b>أحد أقاربه يطعمه ويغسل وجهه</b>: لا يستطيع القيام بأي عناية شخصية.","<b>ملازم للسرير في المشهدين، في وضح النهار</b>: ملازم للسرير كلياً.","<b>الشريط رمادي بالكامل</b>: في السرير طوال ساعات اليقظة.","<b>في المنزل، دون معدات استشفائية</b>: الدرجة تتعلق بحالة المريض لا بالمكان."],
+        ["<b>ينظّف أسنانه وحده في الحمّام</b>: مستقل في عنايته الشخصية.","<b>يمشي حاملاً كوب الشاي</b>: يتنقل وحده.","<b>الحقيبة المشطوبة</b>: غير قادر على العمل.","<b>الشريط أصفر بنسبة الثلثين</b>: خارج السرير ونشِط أكثر من 50٪ من ساعات اليقظة."],
+        ["<b>أحد أقاربه يساعده في لبس قميصه، لكنه يأكل وحده</b>: عناية شخصية محدودة، يقوم بجزء منها فقط وحده.","<b>على الكرسي ثم في السرير في وضح النهار، مع صينية الطعام</b>: في السرير أو على الكرسي أكثر من 50٪ من ساعات اليقظة.","<b>الشريط رمادي في معظمه</b>: خارج السرير ونشِط أقل من نصف اليوم."],
+        ["<b>أحد أقاربه يطعمه ويقوم بنظافته الشخصية</b>: لا يستطيع القيام بأي عناية شخصية.","<b>ملازم للسرير في المشهدين، في وضح النهار</b>: ملازم للسرير (أو الكرسي) كلياً.","<b>الشريط رمادي بالكامل</b>: في السرير طوال ساعات اليقظة.","<b>في المنزل، دون معدات استشفائية</b>: الدرجة تتعلق بحالة المريض لا بالمكان."],
         ["<b>السرير الفارغ وقميصه المطوي</b>: الوفاة، مُعبَّراً عنها بالغياب."]],
    empty:"أجب عن الأسئلة أو اختر رسماً: ستظهر الدرجة هنا.", sub:"مقياس ECOG أو منظمة الصحة العالمية أو Zubrod، حسب Oken وزملائه (1982)", kpsNote:"تقابل تقريبي معتمد (ECOG-ACRIN).", disclaimer:"أداة تعليمية مساعدة على القرار: لا تُغني عن التقييم السريري للطبيب.",
   details:"التفاصيل", guided:"التقييم الموجَّه", guidedIntro:"أجب بحسب الحالة المعتادة للمريض خلال الأيام الأخيرة، لا بحسب نوبة حادة.",
@@ -464,18 +466,19 @@ const T = {
    q1:["هل يستطيع القيام بكل أنشطته كما كان قبل المرض، دون قيود؟","بما في ذلك الجهد الشاق."],
    q2:["هل ما زال يستطيع القيام بعمل خفيف، مثل العمل المكتبي أو الأعمال المنزلية الخفيفة؟","المشي والاغتسال وحدهما لا يكفيان."],
    q3a:["هل يقوم وحده بكل عنايته: الأكل، الاستحمام، اللباس، قضاء الحاجة؟","دون مساعدة شخص آخر."],
-   q3b:["هل يكون واقفاً ويتحرك، خارج السرير وبعيداً عن الكرسي، أكثر من نصف اليوم؟","الجلوس على الكرسي لا يُحتسب. من الاستيقاظ إلى النوم (الليل لا يُحتسب)."],
+   q3b:["هل يقضي أكثر من نصف اليوم خارج السرير، دون أن يبقى على الكرسي للراحة؟","البقاء في السرير أو على الكرسي بسبب التعب أو المرض لا يُحتسب؛ الجلوس لنشاط (الأكل، القراءة، المكتب) يُحتسب. من الاستيقاظ إلى النوم."],
    q4:["هل ما زال يقوم وحده بجزء من عنايته، مثل الأكل؟","يكفي أن يقوم وحده بعمل واحد من أعمال العناية الشخصية: الأكل وحده، غسل الوجه."],
    q5:["هل يبقى في السرير أو على الكرسي طوال اليوم؟","لا يغادر السرير ولا الكرسي خلال ساعات اليقظة."]},
   limW:"حدّي",
+  lim23c:"حالة حدّية: لا يقوم بأي عناية شخصية وحده، لكنه يقضي أكثر من نصف اليوم خارج السرير (حالة نادرة، مثل الاضطرابات المعرفية). معايير Oken متعارضة بشدة: يقترح التطبيق PS 3. صِف حالة المريض في الملف.", rule23:"قاعدة التطبيق: معيار الوقت", rule23c:"قاعدة التطبيق: غياب العناية الشخصية", rule34:"قاعدة التطبيق: معيار العناية الشخصية", okenDef:"تعريفات Oken 1982",
   lim23:"حالة حدّية PS 2–3: معيارا Oken متعارضان (العناية الشخصية / الوقت في السرير أو على الكرسي). يعتمد التطبيق معيار الوقت: أكثر من نصف ساعات اليقظة في السرير أو على الكرسي = PS 3، وإلا PS 2. هذه أداة مساعدة وليست قاعدة رسمية لـ Oken: صِف حالة المريض في الملف.",
   lim34b:"حالة حدّية PS 3–4: لا يقوم بأي عناية شخصية وحده، مع أنه لا يلازم السرير أو الكرسي طوال اليوم. يعتمد التطبيق معيار العناية الشخصية: غياب أي عناية شخصية = PS 4 (Oken 1982). صِف حالة المريض في الملف.",
   lim34:"حالة حدّية PS 3–4: في السرير أو على الكرسي طوال اليوم، لكنه ما زال يقوم بجزء من عنايته الشخصية. تتطلب PS 4 غياب أي عناية شخصية (Oken 1982)، إذن PS 3.",
   yes:"نعم", no:"لا", back:"رجوع ←", restart:"إعادة التقييم", done:"انتهى التقييم. يمكنك أيضاً مراجعة البطاقة المقابلة أدناه.",
-  scaleT:"السُّلَّم المصوَّر", scaleIntro:"أو اختر الدرجة مباشرة. تعريفات Oken وزملائه (1982)، مترجمة عن الإنجليزية.", barLeg:"الشريط أسفل الصور: من الاستيقاظ ☀ إلى النوم ☾ = ساعات اليقظة (الليل لا يُحتسب). الأصفر = واقف ويتحرك، الرمادي = في السرير أو على الكرسي.",
+  scaleT:"السُّلَّم المصوَّر", scaleIntro:"أو اختر الدرجة مباشرة. تعريفات Oken وزملائه (1982)، مترجمة عن الإنجليزية.", barLeg:"الشريط أسفل الصور: من الاستيقاظ ☀ إلى النوم ☾ = ساعات اليقظة (الليل لا يُحتسب). الأصفر = خارج السرير ونشِط، الرمادي = في السرير أو على الكرسي للراحة.",
   g:["نشط تماماً، قادر على ممارسة جميع أنشطته كما كان قبل المرض دون أي قيود.",
      "مقيَّد في الأنشطة البدنية الشاقة، لكنه يمشي ويتنقل وقادر على القيام بأعمال خفيفة أو مكتبية (أعمال منزلية خفيفة، عمل مكتبي).",
-     "يمشي ويتنقل وقادر على العناية الشخصية الكاملة، لكنه غير قادر على القيام بأي عمل، ولو كان خفيفاً. يكون واقفاً ويتحرك (خارج السرير وبعيداً عن الكرسي) أكثر من 50٪ من ساعات اليقظة.",
+     "يمشي ويتنقل وقادر على العناية الشخصية الكاملة، لكنه غير قادر على القيام بأي عمل، ولو كان خفيفاً. خارج السرير ونشِط أكثر من 50٪ من ساعات اليقظة (دون البقاء في السرير أو على الكرسي للراحة).",
      "قادر على عناية شخصية محدودة فقط. يلازم السرير أو الكرسي أكثر من 50٪ من ساعات اليقظة.",
      "عاجز تماماً، لا يستطيع القيام بأي عناية شخصية. يلازم السرير أو الكرسي بشكل كامل.",
      "متوفى."],
@@ -495,14 +498,14 @@ const T = {
 
 /* ---------- Guided assessment logic (pure) ---------- */
 // a: answers keyed by question id (true = yes, false = no).
-// Returns {ask:id} for the next question, or {ps, lim?, kps?} once decided.
-// Oken 1982: PS 2 = ALL self-care AND up >50% of waking hours; PS 3 = limited self-care AND bed/chair >50%;
-// PS 4 = NO self-care AND totally confined. When the self-care and time criteria disagree, Oken gives no rule:
-// the tie is broken with the Karnofsky definitions (60 / 50 and 40 / 30) and flagged as borderline.
+// Returns {ask:id} for the next question, or {ps, lim?, why?} once decided.
+// Oken 1982: PS 2 = ALL self-care AND up and about >50% of waking hours; PS 3 = limited self-care AND bed/chair >50%;
+// PS 4 = NO self-care AND totally confined to bed or chair. Discordant criteria: see the rules inside ecogGuide().
 function ecogGuide(a){
   // Oken 1982. Discordant criteria are settled by one explicit rule per boundary (decision aid, stated in the result):
-  //  PS 2 vs 3 -> the time criterion (more than half of waking hours in bed or chair = PS 3)
+  //  PS 2 vs 3 -> the time criterion (more than half of waking hours resting in bed or chair = PS 3)
   //  PS 3 vs 4 -> the self-care criterion (no self-care at all = PS 4)
+  //  A patient with no self-care at all is never left at PS 2 (rare: out of bed most of the day but doing no self-care -> PS 3, flagged)
   if (a.q1 === undefined) return {ask:'q1'};
   if (a.q1) return {ps:0};
   if (a.q2 === undefined) return {ask:'q2'};
@@ -510,8 +513,9 @@ function ecogGuide(a){
   if (a.q3a === undefined) return {ask:'q3a'};
   if (a.q3b === undefined) return {ask:'q3b'};
   if (a.q3a && a.q3b) return {ps:2};
-  if (a.q3a !== a.q3b) return a.q3b ? {ps:2, lim:'2-3'} : {ps:3, lim:'2-3'};
+  if (a.q3a && !a.q3b) return {ps:3, lim:'2-3'};
   if (a.q4 === undefined) return {ask:'q4'};
+  if (a.q3b) return a.q4 ? {ps:2, lim:'2-3'} : {ps:3, lim:'2-3', why:'c'};
   if (a.q5 === undefined) return {ask:'q5'};
   if (a.q4 && !a.q5) return {ps:3};
   if (a.q4 && a.q5) return {ps:3, lim:'3-4', why:'a'};   // bed or chair all day, but still some self-care
@@ -543,7 +547,7 @@ function renderQ(){
   $('qbox').hidden = finished; $('qend').hidden = !finished;
   if (!finished){ const q = t.Q[r.ask]; $('qtext').textContent = q[0]; $('qhint').textContent = q[1]; $('b-yes').textContent = q[2] || t.yes; $('b-no').textContent = q[3] || t.no; $('b-back').hidden = order.length === 0; $('qbox').classList.toggle('tie', r.ask[0] === 't'); }
 }
-function limNote(t, r){ if (!r || !r.lim) return ''; return r.lim === '2-3' ? t.lim23 : (r.why === 'b' ? t.lim34b : t.lim34); }
+function limNote(t, r){ if (!r || !r.lim) return ''; return r.why === 'c' ? t.lim23c : r.lim === '2-3' ? t.lim23 : (r.why === 'b' ? t.lim34b : t.lim34); }
 function renderResult(){
   const t = T[lang];
   const root = document.documentElement.style;
@@ -565,8 +569,8 @@ function renderResult(){
   $('defn').textContent = t.g[ps];
     let sum = `ECOG PS ${ps} (KPS ≈ ${KPS[ps]})`;
   const ts = lang === 'ar' ? T.en : t;   // the copied summary stays in Latin script (LTR, monospace)
-  if (r && r.lim) sum = `ECOG PS ${ps} (${ts.limW} ${r.lim.replace('-','–')})`;
-  $('summary').textContent = sum + ' – Oken 1982';
+  if (r && r.lim) sum = `ECOG PS ${ps} (${ts.limW} ${r.lim.replace('-','–')}${ts === T.fr ? ' ; ' : '; '}${r.why === 'c' ? ts.rule23c : r.lim === '2-3' ? ts.rule23 : ts.rule34})`;
+  $('summary').textContent = sum + ' – ' + ts.okenDef;
   $('copy').disabled = false;
 }
 function flip(on){

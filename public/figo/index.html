@@ -274,7 +274,11 @@ footer strong{color:var(--ink)}
             <option>IIIA1(i)</option><option>IIIA1(ii)</option><option>IIIA2</option><option>IIIB</option><option>IIIC</option>
             <option>IVA</option><option>IVB</option>
           </select>
-          <label class="opt" style="margin-top:10px"><input type="checkbox" name="pcr"><span class="t"><span data-i="pcr"></span><span class="code">ypT0</span><span class="sub" data-i="pcrS"></span></span></label>
+          <div class="lbl2" data-i="residLbl"></div>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="resid" value="yes"><span class="t"><span data-i="residYes"></span></span></label>
+            <label class="opt"><input type="radio" name="resid" value="no"><span class="t"><span data-i="pcr"></span><span class="code">ypT0</span><span class="sub" data-i="pcrS"></span></span></label>
+          </div>
           <p class="sub2" data-i="ypRule"></p>
         </div>
         <label for="histo" class="lbl2" data-i="histoLbl"></label>
@@ -409,6 +413,7 @@ footer strong{color:var(--ink)}
 /* ---------- Text (EN / FR) ---------- */
 const T = {
  en:{
+  residLbl:"Viable residual tumour after treatment?", residYes:"Yes: describe it in the steps below", ypChoose:"Say whether viable residual tumour remains (yes, or complete response).", ypIV:"Stage IV at diagnosis: the reference FIGO stage remains IV (UICC rule 3); the yp categories only describe what is found now.", lnProof:"Clinical node status: FIGO 2014 requires cytological or histological proof of nodal metastasis for IIIA1.", nxShort:"nodes not assessed",
   parenchS:"Isolated metastasis inside the organ. Direct extension from the omentum to the liver or spleen remains IIIC (FIGO 2014).", ypRes:"“No viable residual tumour” cannot be combined with the residual disease entered above (nodes, peritoneum, pelvis, IC criteria or metastases): untick one of them.", pPeritT:"Primary peritoneal carcinoma is at least T2 (UICC p. 176): the T category is shown as T2 because no extent above or below the pelvic brim was entered.", provis:"provisional",
   cNote:"Enough for the tumour board. Confirm or complete it at surgery.",
   install:"Install the app", iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.", andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).", trapsT:"Pitfalls to avoid",
@@ -450,7 +455,7 @@ const T = {
   why:"Determined by", other:"Also recorded",
   errPerit:"A primary peritoneal carcinoma cannot be stage I. Record at least the pelvic or extrapelvic extent (step 3 or 5).",
   nxNote:"Lymph nodes not assessed: surgical staging is incomplete.",
-  icMulti:"Several IC criteria: FIGO asks to record each subset; none takes precedence (FIGO 2014).",
+  icMulti:"Several IC criteria: FIGO asks to record every IC subset present (FIGO 2014).",
   refs:"References", madeby:"Designed by", affil:"Resident in Medical Oncology, Medical Oncology Department, CPMC, Algiers, Algeria", version:"Updated November 2026",
   r:{ pleural:"pleural effusion with positive cytology", parench:"parenchymal liver/spleen metastasis", extraorg:"metastasis to an extra-abdominal organ", extraln:"inguinal or extra-abdominal lymph node metastasis", bowel:"transmural bowel infiltration", umbilical:"umbilical deposit",
       gt2:"macroscopic extrapelvic peritoneal metastasis > 2 cm", le2:"macroscopic extrapelvic peritoneal metastasis ≤ 2 cm", micro:"microscopic extrapelvic peritoneal involvement",
@@ -462,6 +467,7 @@ const T = {
   hn:{hgsc:"high-grade serous carcinoma", lgsc:"low-grade serous carcinoma", endo:"endometrioid carcinoma", clear:"clear cell carcinoma", muc:"mucinous carcinoma", other:"carcinoma (other type)", bord:"borderline tumour", strom:"malignant sex cord-stromal tumour"}
  },
  fr:{
+  residLbl:"Reste-t-il une tumeur viable après traitement ?", residYes:"Oui : décrivez-la dans les étapes ci-dessous", ypChoose:"Indiquez s'il reste une tumeur viable (oui, ou réponse complète).", ypIV:"Stade IV au diagnostic : le stade FIGO de référence reste IV (UICC, règle 3) ; les catégories yp décrivent seulement ce qui est retrouvé maintenant.", lnProof:"Statut ganglionnaire clinique : la FIGO 2014 exige une preuve cytologique ou histologique de l'atteinte ganglionnaire pour le stade IIIA1.", nxShort:"ganglions non évalués",
   parenchS:"Métastase isolée dans l'organe. L'extension directe de l'épiploon au foie ou à la rate reste IIIC (FIGO 2014).", ypRes:"« Pas de tumeur résiduelle viable » est incompatible avec les atteintes saisies plus haut (ganglions, péritoine, pelvis, critères IC ou métastases) : décochez l'un ou l'autre.", pPeritT:"Le carcinome péritonéal primitif est au moins T2 (UICC p. 176) : la catégorie T affichée est T2, car aucune extension n'a été saisie.", provis:"provisoire",
   cNote:"Suffisant pour la RCP. À confirmer ou compléter par la chirurgie.",
   install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", trapsT:"Pièges à éviter",
@@ -503,7 +509,7 @@ const T = {
   why:"Déterminé par", other:"Également noté",
   errPerit:"Un carcinome péritonéal primitif ne peut pas être de stade I. Indiquez au moins l'extension pelvienne ou extrapelvienne (étape 3 ou 5).",
   nxNote:"Ganglions non évalués : la stadification chirurgicale est incomplète.",
-  icMulti:"Plusieurs critères IC : la FIGO demande de noter chaque sous-groupe ; aucun ne prime sur l'autre (FIGO 2014).",
+  icMulti:"Plusieurs critères IC : la FIGO demande de noter chaque sous-groupe IC présent (FIGO 2014).",
   refs:"Références", madeby:"Conçu par", affil:"Résidente en oncologie médicale, service d'oncologie médicale, CPMC, Alger, Algérie", version:"Mis à jour en novembre 2026",
   r:{ pleural:"épanchement pleural à cytologie positive", parench:"métastase parenchymateuse hépatique/splénique", extraorg:"métastase d'un organe extra-abdominal", extraln:"métastase ganglionnaire inguinale ou extra-abdominale", bowel:"infiltration transmurale de l'intestin", umbilical:"nodule ombilical",
       gt2:"métastase péritonéale extrapelvienne macroscopique > 2 cm", le2:"métastase péritonéale extrapelvienne macroscopique ≤ 2 cm", micro:"atteinte péritonéale extrapelvienne microscopique",
@@ -542,7 +548,7 @@ function computeStage(s){
   if (peritT2){ Tcat = 'T2'; ic = []; }
 
   let stage, group, reasons = [];
-  if (M === 'M1b'){ stage='IVB'; group=4; reasons = IVB.slice(); }
+  if (M === 'M1b'){ stage='IVB'; group=4; reasons = IVB.slice(); if (s.pleural) reasons.push('pleural'); }
   else if (M === 'M1a'){ stage='IVA'; group=4; reasons=['pleural']; }
   else if (Tcat === 'T3c'){ stage='IIIC'; group=3; reasons=['gt2']; }
   else if (Tcat === 'T3b'){ stage='IIIB'; group=3; reasons=['le2']; }
@@ -571,7 +577,7 @@ function readState(){
   const f = $('f'), v = n => (f.querySelector(`input[name="${n}"]:checked`)||{}).value;
   const c = n => f.querySelector(`input[name="${n}"]`).checked;
   return { basis:v('basis'), site:v('site'), histo:$('histo').value, pleural:c('pleural'), parench:c('parench'), extraorg:c('extraorg'), extraln:c('extraln'), bowel:c('bowel'), umbilical:c('umbilical'),
-           peri:v('peri'), ln:v('ln'), pelvis:v('pelvis'), lat:v('lat'), spill:c('spill'), surface:c('surface'), cyto:c('cyto'), pcr:c('pcr'), initStage:$('initStage').value };
+           peri:v('peri'), ln:v('ln'), pelvis:v('pelvis'), lat:v('lat'), spill:c('spill'), surface:c('surface'), cyto:c('cyto'), resid:v('resid')||null, pcr:v('resid') === 'no', initStage:$('initStage').value };
 }
 
 function buildSummary(s, r){
@@ -588,7 +594,8 @@ function buildSummary(s, r){
   const stageTxt = r.icLabel ? `IC (${r.icLabel})` : r.stage;
   const px = s.basis || 'p';
   const prov = s.basis === 'c' ? ' ' + t.provis : '';
-  return lang === 'fr' ? `${head} – FIGO 2014 stade${prov} ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M})` : `${head} – FIGO 2014${prov} stage ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M})`;
+  const nxq = r.nx && r.group && r.group <= 2 ? `, ${t.nxShort}` : '';
+  return lang === 'fr' ? `${head} – FIGO 2014 stade${prov} ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M}${nxq})` : `${head} – FIGO 2014${prov} stage ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M}${nxq})`;
 }
 
 const ROMAN = ['', 'I', 'II', 'III', 'IV'];
@@ -610,7 +617,10 @@ function render(){
   document.querySelector('.ladder').hidden = yp; document.querySelector('.ladder-l').hidden = yp;
   $('res-lbl').textContent = yp ? t.resLblY : t.resLbl;
   const ypConflict = yp && s.pcr && (s.peri !== 'none' || s.pelvis !== 'none' || s.ln === 'le10' || s.ln === 'gt10' || r.M !== 'M0' || s.spill || s.surface || s.cyto);
-  if (ypConflict){
+  if (yp && !s.resid){
+    $('stage').textContent = '–'; $('mini-stage').textContent = '–'; $('tnm').textContent = ''; $('mini-tnm').textContent = '';
+    $('why').innerHTML = ''; $('summary').textContent = ''; err.textContent = t.ypChoose; err.hidden = false; $('copy').disabled = true;
+  } else if (ypConflict){
     $('stage').textContent = '–'; $('mini-stage').textContent = '–'; $('tnm').textContent = ''; $('mini-tnm').textContent = '';
     $('why').innerHTML = ''; $('summary').textContent = ''; err.textContent = t.ypRes; err.hidden = false; $('copy').disabled = true;
   } else if (r.error && !(yp && s.pcr)){
@@ -627,7 +637,7 @@ function render(){
     $('tnm').textContent = `${t.ypAt}${lang === 'fr' ? ' : ' : ': '}${s.initStage || t.ypNoInit}`;
     $('mini-tnm').textContent = s.initStage ? 'FIGO ' + s.initStage : '';
     let html = s.pcr ? `<b>${t.ypPcr}</b>` : `<b>${t.ypWhy}:</b><ul>` + r.reasons.map(k => `<li>${t.r[k]}</li>`).join('') + '</ul>';
-    html += `<div style="margin-top:8px">${t.ypRule}</div>`;
+    html += `<div style="margin-top:8px">${t.ypRule}</div>` + (/^IV/.test(s.initStage) && r.M === 'M0' ? `<div style="margin-top:8px;font-weight:700">${t.ypIV}</div>` : '');
     $('why').innerHTML = html;
     $('summary').textContent = buildSummary(s, r);
   } else {
@@ -643,6 +653,7 @@ function render(){
     if (r.icMulti) notes.push(t.icMulti);
     if (r.nx) notes.push(t.nxNote);
     if (r.peritT2) notes.push(t.pPeritT);
+    if (s.basis === 'c' && (s.ln === 'le10' || s.ln === 'gt10')) notes.push(t.lnProof);
     if (notes.length) html += `<div style="margin-top:8px">${notes.join('<br>')}</div>`;
     $('why').innerHTML = html;
     $('summary').textContent = buildSummary(s, r);
