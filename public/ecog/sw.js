@@ -1,5 +1,5 @@
 /* ECOG – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'ecog-v2.16';
+const VERSION = 'ecog-v2.17';
 const PREFIX = 'ecog-';
 const FILES = [
   "./",
