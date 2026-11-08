@@ -81,6 +81,10 @@ select{width:100%;padding:10px 12px;min-height:46px;border:1.5px solid var(--san
 input[type="number"]{width:100%;max-width:220px;padding:10px 12px;min-height:48px;border:1.5px solid var(--sand-2);border-radius:12px;background:var(--ivory);color:var(--ink);font-size:18px}
 .sizebox{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .sizeout{font-weight:700;color:var(--pink-ink)}
+.sizeout.bad{color:#B42318}
+.unit{display:inline-flex;padding:3px;gap:2px;background:var(--ivory);border:1px solid var(--sand);border-radius:999px}
+.unit button{min-height:40px;min-width:52px;border:0;border-radius:999px;background:transparent;color:var(--ink-2);font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.unit button[aria-pressed="true"]{background:var(--pink);color:#fff}
 .sep{font-size:15.5px;font-weight:600;color:var(--ink-2);margin:18px 0 8px}
 .chk{display:flex;align-items:flex-start;gap:10px;margin-top:14px;font-size:16px;line-height:1.4}
 .chk input{width:19px;height:19px;accent-color:var(--pink);margin-top:2px;flex:none}
@@ -312,7 +316,8 @@ footer strong{color:var(--ink)}
         <legend><span class="step">2</span><span data-i="s2"></span></legend>
         <label for="size" style="display:block;font-weight:600;font-size:15px;margin-bottom:6px" data-i="sizeLbl"></label>
         <div class="sizebox">
-          <input type="number" id="size" name="size" step="0.01" min="0" inputmode="decimal" placeholder="1.5">
+          <input type="text" id="size" name="size" inputmode="decimal" autocomplete="off" placeholder="1,5" aria-describedby="sizeout">
+          <span class="unit" role="group" aria-label="unit"><button type="button" id="u-cm" aria-pressed="true" onclick="setUnit('cm')">cm</button><button type="button" id="u-mm" aria-pressed="false" onclick="setUnit('mm')">mm</button></span>
           <span class="sizeout" id="sizeout"></span>
         </div>
         <p class="hint" style="margin-top:8px" id="size-hint"></p>
@@ -470,15 +475,15 @@ const T = window.T = {
   noteY:"ypTNM: residual disease after neoadjuvant therapy. ypT = largest residual invasive focus, treatment fibrosis excluded.",
   initLbl:"Stage at diagnosis (before treatment)", initNone:"Not specified",
   ypRule:"The reference stage remains the one at diagnosis: it never changes after treatment (UICC rule 3).",
-  s2:"T – Primary tumour", sizeLbl:"Size of the invasive component, greatest dimension (cm)",
-  sizeHint:"Invasive component only, not the in situ component. Several foci: the largest, not the sum.",
+  s2:"T – Primary tumour", sizeLbl:"Size of the invasive component, greatest dimension",
+  sizeHint:"Invasive component only, not the in situ component. Several foci: the one with the highest T category, not the sum. Check the unit: pathology reports often give mm.",
   orCat:"Or choose a specific category",
   tDCIS:"Ductal carcinoma in situ", tLCIS:"Lobular carcinoma in situ", tLCISs:"Included by the UICC; the AJCC 8th excludes LCIS.",
   tPaget:"Paget disease of the nipple without underlying invasive carcinoma or DCIS/LCIS", t0:"No evidence of primary tumour",
   t4a:"Extension to chest wall", t4as:"Ribs, intercostal muscles, serratus anterior. Pectoral muscle invasion alone is NOT T4a.",
   t4b:"Ulceration, ipsilateral satellite skin nodules or skin oedema (incl. peau d'orange)", t4bs:"Invasion of the dermis alone, dimpling or nipple retraction do NOT qualify as T4.",
   t4c:"Both T4a and T4b", t4d:"Inflammatory carcinoma", tX:"Primary tumour cannot be assessed",
-  multi:"Multiple simultaneous tumours in the same breast: classify the largest and add (m)",
+  multi:"Multiple simultaneous tumours in the same breast: classify the tumour with the highest T category and add (m) (UICC p. 151)",
   s3:"N – Regional lymph nodes",
   nHintC:"Clinically detected = highly suspicious on examination or imaging (not lymphoscintigraphy), or proven by FNA. Suspicious ultrasound (SENORIF 2026): cortex ≥ 3 mm, absent or eccentric hilum, round shape, irregular contour.",
   nAlert:"<b>cN does not depend on the number of nodes.</b><ul><li>Suspicious but <b>movable</b> nodes, even 4 or more: <b>cN1</b>.</li><li><b>Published evidence:</b> the Cleveland Clinic classifies patients with 4 or more suspicious movable nodes as cN1 (618 patients; Varman, <i>Ann Surg Oncol</i> 2026). The authors only propose to study a subcategory, without changing the rule.</li><li>Nodes <b>fixed</b> to one another or to other structures: <b>cN2a</b>.</li><li>The thresholds 1–3, 4–9 and ≥ 10 belong to <b>pN</b> only.</li><li><b>Mainiero 2</b> (indeterminate): sample it. Positive and movable: cN1(f); negative: cN0.</li><li>Record the number of suspicious nodes: it guides the strategy without changing cN.</li><li><b>Classifying correctly does not prevent treating more aggressively</b> (UICC rule 4), provided it is written down.</li></ul>",
@@ -490,8 +495,8 @@ const T = window.T = {
   mNote:"Any other node is M1 (cervical, contralateral internal mammary). Intramammary nodes = axillary level I.",
   resLbl:"Anatomic stage group", resLblY:"Residual disease after treatment",
   copy:"Copy summary", copied:"Copied ✓", reset:"Reset", why:"Determined by",
-  errNoT:"Enter the size of the invasive component or choose a T category.",
-  errTisN:"Tis with nodal metastasis is not a valid combination: look for an invasive component.",
+  errNoT:"Enter the size of the invasive component or choose a T category.", errSize:"Invalid size: use digits only, e.g. 1.5 or 1,5.", sizeWarn:"Unusually large: check the unit (cm or mm).", errNoN:"Choose the N category: a clinical N does not translate into a pathological N (and vice versa).", ypIV:"Stage IV at diagnosis: the reference stage remains IV (UICC rule 3). ypM only describes what is found now.",
+  errTisN:"Tis with nodal metastasis (any N, including N3) is not an expected combination: look for an invasive component (the UICC stage table has no Tis N+ row; discuss at the tumour board).",
   naT0N0:"T0 N0 M0: no stage group (no evidence of tumour).",
   naX:"Stage group cannot be assigned while T or N is not assessable (TX / NX).",
   progNote:"AJCC prognostic stage (grade, ER, PR, HER2) not calculated.",
@@ -559,15 +564,15 @@ const T = window.T = {
   noteY:"ypTNM : maladie résiduelle après traitement néoadjuvant. ypT = plus grand foyer infiltrant résiduel, fibrose post-thérapeutique exclue.",
   initLbl:"Stade au diagnostic (avant traitement)", initNone:"Non précisé",
   ypRule:"Le stade de référence reste celui du diagnostic : il ne change jamais après traitement (UICC, règle 3).",
-  s2:"T – Tumeur primitive", sizeLbl:"Taille de la composante infiltrante, plus grand diamètre (cm)",
-  sizeHint:"Composante infiltrante seule, pas la composante in situ. Plusieurs foyers : le plus grand, pas la somme.",
+  s2:"T – Tumeur primitive", sizeLbl:"Taille de la composante infiltrante, plus grand diamètre",
+  sizeHint:"Composante infiltrante seule, pas la composante in situ. Plusieurs foyers : celui de catégorie T la plus élevée, pas la somme. Vérifiez l'unité : les comptes rendus d'anatomopathologie donnent souvent des mm.",
   orCat:"Ou choisissez une catégorie particulière",
   tDCIS:"Carcinome canalaire in situ", tLCIS:"Carcinome lobulaire in situ", tLCISs:"Inclus par l'UICC ; l'AJCC 8e exclut le CLIS.",
   tPaget:"Maladie de Paget du mamelon sans carcinome infiltrant ni CCIS/CLIS sous-jacent", t0:"Pas de tumeur primitive décelable",
   t4a:"Extension à la paroi thoracique", t4as:"Côtes, muscles intercostaux, grand dentelé. L'atteinte du seul muscle pectoral n'est PAS un T4a.",
   t4b:"Ulcération, nodules cutanés satellites homolatéraux ou œdème cutané (y compris peau d'orange)", t4bs:"L'envahissement du derme seul, une rétraction cutanée ou du mamelon ne sont PAS un T4.",
   t4c:"T4a et T4b", t4d:"Carcinome inflammatoire", tX:"Tumeur primitive non évaluable",
-  multi:"Tumeurs multiples simultanées dans le même sein : classer la plus grande et ajouter (m)",
+  multi:"Tumeurs multiples simultanées dans le même sein : classer la tumeur de catégorie T la plus élevée et ajouter (m) (UICC p. 151)",
   s3:"N – Ganglions régionaux",
   nHintC:"Cliniquement détecté = très suspect à l'examen ou à l'imagerie (hors lymphoscintigraphie), ou prouvé par cytoponction. Échographie suspecte (SENORIF 2026) : cortex ≥ 3 mm, hile absent ou excentré, forme ronde, contour irrégulier.",
   nAlert:"<b>Le cN ne dépend pas du nombre de ganglions.</b><ul><li>Ganglions suspects mais <b>mobiles</b>, même 4 ou plus : <b>cN1</b>.</li><li><b>Preuve publiée :</b> la Cleveland Clinic classe cN1 les patientes avec 4 ganglions suspects mobiles ou plus (618 patientes ; Varman, <i>Ann Surg Oncol</i> 2026). Les auteurs proposent seulement d'étudier une sous-catégorie, sans changer la règle.</li><li>Ganglions <b>fixés</b> entre eux ou aux structures voisines : <b>cN2a</b>.</li><li>Les seuils 1–3, 4–9 et ≥ 10 sont réservés au <b>pN</b>.</li><li><b>Mainiero 2</b> (indéterminé) : à prélever. Positif et mobile : cN1(f) ; négatif : cN0.</li><li>Notez le nombre de ganglions suspects : il guide la stratégie sans changer le cN.</li><li><b>Classer juste n'empêche pas de traiter plus fort</b> (UICC, règle 4), à condition de l'écrire.</li></ul>",
@@ -579,8 +584,8 @@ const T = window.T = {
   mNote:"Tout autre ganglion est M1 (cervical, mammaire interne controlatéral). Ganglions intramammaires = axillaires de niveau I.",
   resLbl:"Stade anatomique", resLblY:"Maladie résiduelle après traitement",
   copy:"Copier le résumé", copied:"Copié ✓", reset:"Réinitialiser", why:"Déterminé par",
-  errNoT:"Saisissez la taille de la composante infiltrante ou choisissez une catégorie T.",
-  errTisN:"Un Tis avec atteinte ganglionnaire n'est pas une combinaison valide : recherchez une composante infiltrante.",
+  errNoT:"Saisissez la taille de la composante infiltrante ou choisissez une catégorie T.", errSize:"Taille non valide : utilisez uniquement des chiffres, par ex. 1,5 ou 1.5.", sizeWarn:"Taille inhabituelle : vérifiez l'unité (cm ou mm).", errNoN:"Choisissez la catégorie N : un N clinique ne se transpose pas en N pathologique (et inversement).", ypIV:"Stade IV au diagnostic : le stade de référence reste IV (UICC, règle 3). Le ypM décrit seulement ce qui est retrouvé maintenant.",
+  errTisN:"Un Tis avec atteinte ganglionnaire (tout N, y compris N3) n'est pas une combinaison attendue : recherchez une composante infiltrante (le tableau UICC n'a pas de ligne Tis N+ ; à discuter en RCP).",
   naT0N0:"T0 N0 M0 : pas de stade (aucune tumeur décelable).",
   naX:"Le stade ne peut pas être attribué tant que T ou N n'est pas évaluable (TX / NX).",
   progNote:"Stade pronostique AJCC (grade, RE, RP, HER2) non calculé.",
@@ -628,8 +633,9 @@ function stageFor(T, N, M){
   if (M !== 'M0') return {stage:'IV', group:4};
   const tg = T.startsWith('Tis') ? 'Tis' : T.startsWith('T1') ? 'T1' : T.startsWith('T4') ? 'T4' : T;   // T0 T1 T2 T3 T4 TX Tis
   const ng = N === 'N0(i+)' ? 'N0' : N === 'N1mi' ? 'N1mi' : N.startsWith('N1') ? 'N1' : N.startsWith('N2') ? 'N2' : N.startsWith('N3') ? 'N3' : N; // N0 N1mi N1 N2 N3 NX
-  if (ng === 'N3') return {stage:'IIIC', group:3};
+  // Tis with any nodal metastasis (including N3) is treated the same way: not a valid combination, look for an invasive component
   if (tg === 'Tis') return ng === 'N0' ? {stage:'0', group:0} : (ng === 'NX' ? {stage:null, reason:'naX'} : {stage:null, reason:'errTisN', error:true});
+  if (ng === 'N3') return {stage:'IIIC', group:3};
   if (tg === 'TX' || ng === 'NX') return {stage:null, reason:'naX'};
   const table = {
     T0:{N0:null,  N1mi:'IB',  N1:'IIA',  N2:'IIIA'},
@@ -839,13 +845,25 @@ let lastBasis = null;
 function buildN(basis){
   const list = basis === 'c' ? T[lang].nC : T[lang].nP;
   const prev = (document.querySelector('input[name="n"]:checked')||{}).value;
-  const keep = list.some(r => r[0] === prev) ? prev : 'N0';
+  const keep = list.some(r => r[0] === prev) ? prev : ((!prev || prev === 'N0') ? 'N0' : null);   // never turn a positive N into N0 silently
   $('n-options').innerHTML = list.map(r => `<label class="opt"><input type="radio" name="n" value="${r[0]}" ${r[0]===keep?'checked':''}><span class="t">${r[2]}<span class="code">${basis + r[0]}</span></span></label>`).join('');
 }
 
+let UNIT = 'cm';
+// Accepts 1.5 / 1,5 / " 15 " ; returns size in cm (NaN if empty), bad:true if not a number
+function parseSize(raw){
+  const x = String(raw || '').trim().replace(/\s+/g, '').replace(',', '.');
+  if (x === '') return {cm: NaN, bad: false};
+  if (!/^(\d+(\.\d*)?|\.\d+)$/.test(x)) return {cm: NaN, bad: true};
+  const v = parseFloat(x);
+  return {cm: UNIT === 'mm' ? v / 10 : v, bad: false};
+}
+function setUnit(u){ UNIT = u; $('size').placeholder = u === 'mm' ? '15' : (lang === 'fr' ? '1,5' : '1.5'); $('u-cm').setAttribute('aria-pressed', u === 'cm'); $('u-mm').setAttribute('aria-pressed', u === 'mm'); render(); }
+function fmtCm(cm){ const r = Math.round(cm * 100) / 100; return (lang === 'fr' ? String(r).replace('.', ',') : String(r)) + ' cm'; }
 function readState(){
   const f = $('f'), v = n => (f.querySelector(`input[name="${n}"]:checked`)||{}).value, c = n => f.querySelector(`input[name="${n}"]`).checked;
-  return { basis:v('basis'), size:parseFloat($('size').value), tcat:v('tcat')||null, multi:c('multi'), n:v('n')||'N0', f:c('fsuffix'), sn:c('snsuffix'), m:v('m'), pm:c('pm'), initStage:$('initStage').value };
+  const sz = parseSize($('size').value);
+  return { basis:v('basis'), size:sz.cm, sizeBad:sz.bad, tcat:v('tcat')||null, multi:c('multi'), n:v('n')||null, f:c('fsuffix'), sn:c('snsuffix'), m:v('m'), pm:c('pm'), initStage:$('initStage').value };
 }
 
 function codes(s){
@@ -863,7 +881,10 @@ function codes(s){
 function render(){ renderCore(); renderGuide(); }
 function renderCore(){
   const s = readState(), t = T[lang], yp = s.basis === 'yp';
-  if (s.basis !== lastBasis){ buildN(s.basis); lastBasis = s.basis; s.n = (document.querySelector('input[name="n"]:checked')||{}).value; }
+  if (s.basis !== lastBasis){
+    if (lastBasis !== null){ document.querySelector('input[name="fsuffix"]').checked = false; document.querySelector('input[name="snsuffix"]').checked = false; s.f = s.sn = false; }
+    buildN(s.basis); lastBasis = s.basis; s.n = (document.querySelector('input[name="n"]:checked')||{}).value || null;
+  }
   $('basis-note').textContent = s.basis === 'c' ? t.noteC : s.basis === 'p' ? t.noteP : t.noteY;
   $('yp-box').hidden = !yp;
   $('n-hint').textContent = s.basis === 'c' ? t.nHintC : t.nHintP;
@@ -871,14 +892,16 @@ function renderCore(){
   $('pm-box').hidden = s.m === 'M0';
   $('suffix-f').hidden = s.basis !== 'c'; $('suffix-sn').hidden = s.basis === 'c';
   const tsz = tFromSize(s.size);
-  $('sizeout').textContent = (!s.tcat && tsz) ? `${t.toSize} ${tsz} (${t.tLabel[tsz]})` : '';
+  const so = $('sizeout'); so.classList.toggle('bad', !s.tcat && (s.sizeBad || s.size > 20));
+  so.textContent = s.tcat ? '' : s.sizeBad ? '' : tsz ? `${UNIT === 'mm' ? '= ' + fmtCm(s.size) + ' ' : ''}${t.toSize} ${tsz} (${t.tLabel[tsz]})${s.size > 20 ? ' · ' + t.sizeWarn : ''}` : '';
   $('res-lbl').textContent = yp ? t.resLblY : t.resLbl;
   $('stage').classList.toggle('small', yp);
   document.querySelector('.ladder').hidden = yp; document.querySelector('.ladder-l').hidden = yp;
 
   const err = $('err'), k = codes(s);
   const clear = msg => { $('stage').textContent = '–'; $('mini-stage').textContent = '–'; $('tnm').textContent = ''; $('mini-tnm').textContent = ''; $('why').innerHTML = ''; $('summary').textContent = ''; $('copy').disabled = true; err.textContent = msg; err.hidden = !msg; for (let i=0;i<5;i++) $('ld'+i).classList.remove('on'); };
-  if (!k){ clear(t.errNoT); return; }
+  if (!k){ clear(!s.tcat && s.sizeBad ? t.errSize : t.errNoT); return; }
+  if (!s.n){ clear(t.errNoN); return; }
   const tnm = `${k.tTxt} ${k.nTxt} ${k.mTxt}`;
   const res = stageFor(k.T, s.n, s.m === 'M0' ? 'M0' : 'M1');
 
@@ -887,7 +910,7 @@ function renderCore(){
     $('stage').textContent = `${k.tTxt} ${k.nTxt}${s.m !== 'M0' ? ' ' + k.mTxt : ''}`; $('mini-stage').textContent = $('stage').textContent;
     const sep = lang === 'fr' ? ' : ' : ': ';
     $('tnm').textContent = `${t.ypNote}${sep}${s.initStage || t.initNone}`; $('mini-tnm').textContent = s.initStage ? s.initStage : '';
-    $('why').innerHTML = `<div>${t.ypRule}</div>`;
+    $('why').innerHTML = `<div>${t.ypRule}</div>` + (s.initStage === 'IV' && s.m === 'M0' ? `<div style="margin-top:8px;font-weight:700">${t.ypIV}</div>` : '');
     $('summary').textContent = `${t.title} – ${t.bY.toLowerCase()}${sep}${$('stage').textContent} · ${t.ypNote}${sep}${s.initStage || t.initNone}`;
     return;
   }
@@ -929,7 +952,7 @@ function copySummary(){
   try { navigator.clipboard.writeText(txt).then(done, () => fallback(txt, done)); } catch(e){ fallback(txt, done); }
 }
 function fallback(txt, done){ const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch(e){} ta.remove(); }
-function resetForm(){ $('f').reset(); lastBasis = null; render(); window.scrollTo({top:0, behavior:'smooth'}); }
+function resetForm(){ $('f').reset(); UNIT = 'cm'; $('u-cm').setAttribute('aria-pressed', true); $('u-mm').setAttribute('aria-pressed', false); lastBasis = null; render(); window.scrollTo({top:0, behavior:'smooth'}); }
 
 $('size').addEventListener('input', () => { document.querySelectorAll('input[name="tcat"]').forEach(r => r.checked = false); render(); });
 function symBtn(){ $('sym-btn').textContent = $('sym').open ? T[lang].symClose : T[lang].symOpen; }

@@ -296,7 +296,7 @@ footer strong{color:var(--ink)}
         <p class="hint" data-i="s2h"></p>
         <div class="opts">
           <label class="opt"><input type="checkbox" name="pleural"><span class="t"><span data-i="pleural"></span><span class="code">IVA · M1a</span></span></label>
-          <label class="opt"><input type="checkbox" name="parench"><span class="t"><span data-i="parench"></span><span class="code">IVB · M1b</span></span></label>
+          <label class="opt"><input type="checkbox" name="parench"><span class="t"><span data-i="parench"></span><span class="code">IVB · M1b</span><span class="sub" data-i="parenchS"></span></span></label>
           <label class="opt"><input type="checkbox" name="extraorg"><span class="t"><span data-i="extraorg"></span><span class="code">IVB · M1b</span></span></label>
           <label class="opt"><input type="checkbox" name="extraln"><span class="t"><span data-i="extraln"></span><span class="code">IVB · M1b</span></span></label>
           <label class="opt"><input type="checkbox" name="bowel"><span class="t"><span data-i="bowel"></span><span class="code">IVB · M1b</span><span class="sub" data-i="bowelS"></span></span></label>
@@ -320,10 +320,10 @@ footer strong{color:var(--ink)}
         <legend><span class="step">4</span><span data-i="s4"></span></legend>
         <p class="hint" data-i="s4h"></p>
         <div class="opts">
-          <label class="opt"><input type="radio" name="ln" value="neg" checked><span class="t"><span data-i="lnNeg"></span><span class="code">N0</span></span></label>
+          <label class="opt"><input type="radio" name="ln" value="neg"><span class="t"><span data-i="lnNeg"></span><span class="code">N0</span></span></label>
           <label class="opt"><input type="radio" name="ln" value="le10"><span class="t"><span data-i="lnLe10"></span><span class="code">IIIA1(i) · N1a</span></span></label>
           <label class="opt"><input type="radio" name="ln" value="gt10"><span class="t"><span data-i="lnGt10"></span><span class="code">IIIA1(ii) · N1b</span></span></label>
-          <label class="opt"><input type="radio" name="ln" value="nx"><span class="t"><span data-i="lnNx"></span><span class="code">NX</span></span></label>
+          <label class="opt"><input type="radio" name="ln" value="nx" checked><span class="t"><span data-i="lnNx"></span><span class="code">NX</span></span></label>
         </div>
       </fieldset>
 
@@ -409,13 +409,14 @@ footer strong{color:var(--ink)}
 /* ---------- Text (EN / FR) ---------- */
 const T = {
  en:{
+  parenchS:"Isolated metastasis inside the organ. Direct extension from the omentum to the liver or spleen remains IIIC (FIGO 2014).", ypRes:"“No viable residual tumour” cannot be combined with the residual disease entered above (nodes, peritoneum, pelvis, IC criteria or metastases): untick one of them.", pPeritT:"Primary peritoneal carcinoma is at least T2 (UICC p. 176): the T category is shown as T2 because no extent above or below the pelvic brim was entered.", provis:"provisional",
   cNote:"Enough for the tumour board. Confirm or complete it at surgery.",
   install:"Install the app", iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.", andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).", trapsT:"Pitfalls to avoid",
   traps:[["<b>Pleural effusion</b>: IVA only if cytology is positive.","FIGO 2014"],
-   ["<b>Capsule</b> of liver or spleen = stage III (IIIC).|<b>Parenchyma</b> = IVB.","UICC p. 177"],
+   ["<b>Capsule</b> of liver or spleen, or direct extension from the omentum = stage III (IIIC).|<b>Isolated parenchymal metastasis</b> = IVB.","FIGO 2014 · UICC p. 177"],
    ["<b>Omentum and bowel serosa</b> = peritoneum (stage III).|<b>Transmural</b> bowel infiltration = IVB.","FIGO 2014"],
    ["<b>Greater omental nodes</b> = regional (N1).|<b>Inguinal</b> or extra-abdominal nodes = IVB.","UICC p. 175, 177"],
-   ["<b>Node size</b> = greatest dimension of the metastasis, not of the node.","UICC p. 177"],
+   ["<b>Node size</b> = greatest dimension of the metastasis, not of the node.","UICC p. 7"],
    ["<b>IC1</b> = rupture during surgery.|<b>IC2</b> = rupture before surgery, or surface tumour.","UICC p. 176"],
    ["<b>Primary peritoneal carcinoma</b> is never stage I.","UICC p. 176"],
    ["<b>In doubt</b> between two categories: choose the less advanced one.","UICC rule 4, p. 4"]],
@@ -434,7 +435,7 @@ const T = {
   s3:"Peritoneum beyond the pelvic brim", s3h:"Above the pelvic brim, confirmed by cytology or histology, including bowel outside the pelvis.",
   periNone:"No extrapelvic peritoneal involvement", periMicro:"Microscopic extrapelvic peritoneal involvement only",
   periLe2:"Macroscopic peritoneal metastasis ≤ 2 cm", periGt2:"Macroscopic peritoneal metastasis > 2 cm",
-  periGt2s:"Includes extension to the capsule of liver or spleen without parenchymal involvement.",
+  periGt2s:"Includes extension to the capsule of liver or spleen without parenchymal involvement (FIGO 2014; some summaries apply the 2 cm threshold here too).",
   s4:"Retroperitoneal lymph nodes", s4h:"Iliac, obturator, lateral sacral, para-aortic and retroperitoneal nodes, including greater omental nodes. Fewer than 10 nodes, all negative: pN0.",
   lnNeg:"Negative", lnLe10:"Positive, metastasis ≤ 10 mm", lnGt10:"Positive, metastasis > 10 mm", lnNx:"Not assessed",
   s5:"Pelvic extension (below the pelvic brim)", pelNone:"None", pelA:"Extension and/or implants on uterus and/or fallopian tubes and/or ovaries", pelB:"Extension to other pelvic tissues, including bowel within the pelvis",
@@ -461,13 +462,14 @@ const T = {
   hn:{hgsc:"high-grade serous carcinoma", lgsc:"low-grade serous carcinoma", endo:"endometrioid carcinoma", clear:"clear cell carcinoma", muc:"mucinous carcinoma", other:"carcinoma (other type)", bord:"borderline tumour", strom:"malignant sex cord-stromal tumour"}
  },
  fr:{
+  parenchS:"Métastase isolée dans l'organe. L'extension directe de l'épiploon au foie ou à la rate reste IIIC (FIGO 2014).", ypRes:"« Pas de tumeur résiduelle viable » est incompatible avec les atteintes saisies plus haut (ganglions, péritoine, pelvis, critères IC ou métastases) : décochez l'un ou l'autre.", pPeritT:"Le carcinome péritonéal primitif est au moins T2 (UICC p. 176) : la catégorie T affichée est T2, car aucune extension n'a été saisie.", provis:"provisoire",
   cNote:"Suffisant pour la RCP. À confirmer ou compléter par la chirurgie.",
   install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", trapsT:"Pièges à éviter",
   traps:[["<b>Épanchement pleural</b> : IVA seulement si la cytologie est positive.","FIGO 2014"],
-   ["<b>Capsule</b> du foie ou de la rate = stade III (IIIC).|<b>Parenchyme</b> = IVB.","UICC p. 177"],
+   ["<b>Capsule</b> du foie ou de la rate, ou extension directe depuis l'épiploon = stade III (IIIC).|<b>Métastase isolée du parenchyme</b> = IVB.","FIGO 2014 · UICC p. 177"],
    ["<b>Épiploon et séreuse intestinale</b> = péritoine (stade III).|Infiltration <b>transmurale</b> de l'intestin = IVB.","FIGO 2014"],
    ["<b>Ganglions du grand épiploon</b> = régionaux (N1).|Ganglions <b>inguinaux</b> ou hors de l'abdomen = IVB.","UICC p. 175, 177"],
-   ["<b>Taille ganglionnaire</b> = plus grand diamètre de la métastase, pas du ganglion.","UICC p. 177"],
+   ["<b>Taille ganglionnaire</b> = plus grand diamètre de la métastase, pas du ganglion.","UICC p. 7"],
    ["<b>IC1</b> = rupture pendant la chirurgie.|<b>IC2</b> = rupture avant la chirurgie, ou tumeur en surface.","UICC p. 176"],
    ["<b>Carcinome péritonéal primitif</b> : jamais stade I.","UICC p. 176"],
    ["<b>En cas de doute</b> entre deux catégories : retenir la moins avancée.","UICC, règle 4, p. 4"]],
@@ -486,7 +488,7 @@ const T = {
   s3:"Péritoine au-dessus du détroit supérieur", s3h:"Au-dessus du détroit supérieur, confirmée en cytologie ou en histologie, y compris l'intestin hors du pelvis.",
   periNone:"Pas d'atteinte péritonéale extrapelvienne", periMicro:"Atteinte péritonéale extrapelvienne microscopique seulement",
   periLe2:"Métastase péritonéale macroscopique ≤ 2 cm", periGt2:"Métastase péritonéale macroscopique > 2 cm",
-  periGt2s:"Inclut l'extension à la capsule du foie ou de la rate sans atteinte parenchymateuse.",
+  periGt2s:"Inclut l'extension à la capsule du foie ou de la rate sans atteinte du parenchyme (FIGO 2014 ; certains résumés appliquent ici aussi le seuil de 2 cm).",
   s4:"Ganglions rétropéritonéaux", s4h:"Ganglions iliaques, obturateurs, sacrés latéraux, para-aortiques et rétropéritonéaux, y compris ceux du grand épiploon. Moins de 10 ganglions, tous négatifs : pN0.",
   lnNeg:"Négatifs", lnLe10:"Positifs, métastase ≤ 10 mm", lnGt10:"Positifs, métastase > 10 mm", lnNx:"Non évalués",
   s5:"Extension pelvienne (sous le détroit supérieur)", pelNone:"Aucune", pelA:"Extension et/ou implants sur l'utérus et/ou les trompes et/ou les ovaires", pelB:"Extension aux autres tissus pelviens, y compris l'intestin dans le pelvis",
@@ -535,6 +537,9 @@ function computeStage(s){
   }
   const localOnlyT1 = Tcat.startsWith('T1');
   const error = (s.site === 'peritoneum' && localOnlyT1 && M === 'M0') ? 'errPerit' : null;
+  // Primary peritoneal carcinoma is at least T2 (UICC p. 176): never print a T1 category for it
+  const peritT2 = s.site === 'peritoneum' && localOnlyT1 && M !== 'M0';
+  if (peritT2){ Tcat = 'T2'; ic = []; }
 
   let stage, group, reasons = [];
   if (M === 'M1b'){ stage='IVB'; group=4; reasons = IVB.slice(); }
@@ -554,7 +559,7 @@ function computeStage(s){
   const icLabel = ic.length > 1 ? ic.map(k => ({spill:'IC1',surface:'IC2',cyto:'IC3'})[k]).join(' + ') : null;
   // Which input sections no longer affect the stage
   const ignore = { peri: group === 4, pelvis: group === 4 || Tcat.startsWith('T3'), local: group === 4 || !localOnlyT1 };
-  return { stage, group, T:Tcat, N, M, reasons, icMulti: ic.length > 1, icLabel, error, ignore, nx: N === 'NX' };
+  return { stage, group, T:Tcat, N, M, reasons, icMulti: ic.length > 1, icLabel, error, ignore, nx: N === 'NX', peritT2 };
 }
 
 /* ---------- UI ---------- */
@@ -582,7 +587,8 @@ function buildSummary(s, r){
   }
   const stageTxt = r.icLabel ? `IC (${r.icLabel})` : r.stage;
   const px = s.basis || 'p';
-  return `${head} – FIGO 2014 ${lang==='fr'?'stade':'stage'} ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M})`;
+  const prov = s.basis === 'c' ? ' ' + t.provis : '';
+  return lang === 'fr' ? `${head} – FIGO 2014 stade${prov} ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M})` : `${head} – FIGO 2014${prov} stage ${stageTxt} (${px}${r.T} ${px}${r.N} ${r.M})`;
 }
 
 const ROMAN = ['', 'I', 'II', 'III', 'IV'];
@@ -603,7 +609,11 @@ function render(){
   $('stage').classList.toggle('long', !yp && !!r.stage && r.stage.length > 5);
   document.querySelector('.ladder').hidden = yp; document.querySelector('.ladder-l').hidden = yp;
   $('res-lbl').textContent = yp ? t.resLblY : t.resLbl;
-  if (r.error && !(yp && s.pcr)){
+  const ypConflict = yp && s.pcr && (s.peri !== 'none' || s.pelvis !== 'none' || s.ln === 'le10' || s.ln === 'gt10' || r.M !== 'M0' || s.spill || s.surface || s.cyto);
+  if (ypConflict){
+    $('stage').textContent = '–'; $('mini-stage').textContent = '–'; $('tnm').textContent = ''; $('mini-tnm').textContent = '';
+    $('why').innerHTML = ''; $('summary').textContent = ''; err.textContent = t.ypRes; err.hidden = false; $('copy').disabled = true;
+  } else if (r.error && !(yp && s.pcr)){
     $('stage').textContent = '–'; $('mini-stage').textContent = '–';
     $('tnm').textContent = ''; $('mini-tnm').textContent = '';
     $('why').innerHTML = ''; $('summary').textContent = '';
@@ -632,6 +642,7 @@ function render(){
     const notes = [];
     if (r.icMulti) notes.push(t.icMulti);
     if (r.nx) notes.push(t.nxNote);
+    if (r.peritT2) notes.push(t.pPeritT);
     if (notes.length) html += `<div style="margin-top:8px">${notes.join('<br>')}</div>`;
     $('why').innerHTML = html;
     $('summary').textContent = buildSummary(s, r);

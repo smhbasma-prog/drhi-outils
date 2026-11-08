@@ -1,5 +1,5 @@
 /* FIGO ovaire – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'figo-v3.6';
+const VERSION = 'figo-v3.7';
 const PREFIX = 'figo-';
 const FILES = [
   "./",

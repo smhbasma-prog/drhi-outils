@@ -1,5 +1,5 @@
 /* TNM sein – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'tnm-v2.16';
+const VERSION = 'tnm-v2.17';
 const PREFIX = 'tnm-';
 const FILES = [
   "./",
