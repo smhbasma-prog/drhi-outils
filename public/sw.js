@@ -1,5 +1,5 @@
 /* Dr Hi – all tools – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'drhi-v4';
+const VERSION = 'drhi-v5';
 const PREFIX = 'drhi-';
 const FILES = [
   "./",
