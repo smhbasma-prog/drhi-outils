@@ -163,7 +163,10 @@ html[dir="rtl"] .result .stage{font-family:'IBM Plex Sans Arabic',var(--sans);fo
 .ladder-l{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;font-size:14px;color:var(--muted)}
 .defn{margin-top:18px;padding-top:16px;border-top:1px solid var(--sand);font-family:var(--serif);font-size:17px;line-height:1.5;color:var(--ink)}
 html[dir="rtl"] .defn{font-family:'IBM Plex Sans Arabic',var(--sans);font-size:16px}
-.limnote{margin-top:14px;font-size:15.5px;line-height:1.5;color:var(--ink-2);border-inline-start:3px solid var(--ink-2);padding-inline-start:12px}
+.choose{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.choose[hidden]{display:none}
+.choose button{flex:1 1 120px;min-height:52px;border-radius:14px;border:1.5px solid var(--ink);background:var(--ivory);color:var(--ink);font:inherit;font-size:17px;font-weight:700;cursor:pointer}
+.choose button:hover{background:var(--paper)}
+.limnote{white-space:pre-line;margin-top:14px;font-size:15.5px;line-height:1.5;color:var(--ink-2);border-inline-start:3px solid var(--ink-2);padding-inline-start:12px}
 .path{font-size:13.5px;color:var(--muted);margin-top:12px}
 .summary{margin-top:14px;font-size:15px;line-height:1.45;background:var(--paper);border-radius:12px;padding:10px 12px;color:var(--ink);word-break:break-word;direction:ltr;text-align:left}
 .summary:empty{display:none}
@@ -299,6 +302,7 @@ html[dir="rtl"] h2.h,html[dir="rtl"] .brand h1,html[dir="rtl"] .qtext,html[dir="
         <div class="ladder-l" aria-hidden="true"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
         <div class="defn" id="defn"></div>
         <div class="limnote" id="limnote" hidden></div>
+        <div class="choose" id="choose" hidden></div>
         <div class="summary" id="summary"></div>
         <div class="actions">
           <button type="button" class="btn primary" id="copy" onclick="copySummary()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg><span id="copyLbl"></span></button>
@@ -387,11 +391,9 @@ const T = {
    q3b:["Passe-t-il plus de la moitié de la journée hors du lit, sans rester au fauteuil pour se reposer ?","Se reposer au lit ou au fauteuil (fatigue, maladie) compte comme « au lit ». Être assis pour une activité (repas, lecture, travail de bureau) compte comme « hors du lit ». Du réveil au coucher."],
    q4:["Fait-il encore seul une partie de ses soins, par exemple manger ?","Un seul soin fait seul suffit : manger seul, se laver le visage."],
    q5:["Est-il au lit ou au fauteuil toute la journée ?","Il ne quitte ni le lit ni le fauteuil pendant ses heures d'éveil."]},
-  limW:"limite",
-  lim23c:"Cas limite : ne fait aucun soin personnel seul, mais passe plus de la moitié de la journée hors du lit (situation rare, par ex. troubles cognitifs). Les critères d'Oken sont très discordants : l'app propose PS 3. Décrivez le patient dans le dossier.", rule23:"règle de l'app : critère du temps", rule23c:"règle de l'app : aucun soin personnel", rule34:"règle de l'app : critère des soins personnels", okenDef:"définitions d'Oken 1982",
-  lim23:"Cas limite PS 2–3 : les deux critères d'Oken ne vont pas dans le même sens (soins personnels / temps au lit ou au fauteuil). L'app retient le critère du temps : s'il passe plus de la moitié de la journée au lit ou au fauteuil pour se reposer, PS 3 ; s'il en passe moins, PS 2. C'est une aide à la décision, pas une règle officielle d'Oken : décrivez le patient dans le dossier.",
-  lim34b:"Cas limite PS 3–4 : ne fait plus aucun soin seul, sans être au lit ou au fauteuil toute la journée. L'app retient le critère des soins personnels : aucun soin personnel = PS 4 (Oken 1982). Décrivez le patient dans le dossier.",
-  lim34:"Cas limite PS 3–4 : au lit ou au fauteuil toute la journée, mais fait encore une partie de ses soins. Le PS 4 exige l'absence de tout soin personnel (Oken 1982), donc PS 3.",
+  limW:"limite", okenDef:"définitions d'Oken 1982",
+  discT:"Critères discordants", discAsk:"Les définitions d'Oken ne permettent pas de trancher, et il n'existe pas de règle internationale pour ce cas. Choisissez selon votre jugement clinique (cause de l'alitement, évolution, cause réversible comme l'anémie ou la douleur) et notez-le dans le dossier.", disc:{d1:"Fait tous ses soins personnels (critère du PS 2), mais reste au lit ou au fauteuil plus de la moitié de la journée (critère du PS 3).", d2:"Ne fait qu'une partie de ses soins (critère du PS 3), mais est hors du lit plus de la moitié de la journée (critère du PS 2).", d2n:"Ne fait aucun soin personnel (critère du PS 4), mais est hors du lit plus de la moitié de la journée (critère du PS 2).", d3:"Ne fait aucun soin personnel (critère du PS 4), mais n'est pas au lit ou au fauteuil toute la journée (le PS 4 exige les deux)."}, chooseBtn:"Retenir PS {p}", chosen:"Choix du clinicien : PS {p}.", sumDisc:"critères d'Oken discordants entre {a} et {b}, choix du clinicien",
+  lim34:"Au lit ou au fauteuil toute la journée, mais fait encore une partie de ses soins : c'est la définition du PS 3. Le PS 4 exige l'absence de tout soin personnel (Oken 1982).",
   yes:"Oui", no:"Non", back:"← Retour", restart:"Recommencer l'évaluation", done:"Évaluation terminée. Vous pouvez aussi vérifier la carte correspondante ci-dessous.",
   scaleT:"Échelle illustrée", scaleIntro:"Ou choisissez directement le grade. Définitions d'Oken et al. (1982), traduites de l'anglais.", barLeg:"Barre sous les images : du réveil ☀ au coucher ☾ = les heures d'éveil (la nuit ne compte pas). Jaune = hors du lit et actif, gris = au lit ou au fauteuil pour se reposer.",
   g:["Pleinement actif, capable de mener toutes les activités d'avant la maladie, sans restriction.",
@@ -428,11 +430,9 @@ const T = {
    q3b:["Is the patient out of bed for more than half of the day, without staying in a chair to rest?","Resting in bed or in a chair (fatigue, illness) counts as “in bed”. Sitting for an activity (meals, reading, desk work) counts as “out of bed”. From waking to bedtime."],
    q4:["Does the patient still do part of their self-care alone, for example eating?","One self-care task done alone is enough: eating alone, washing the face."],
    q5:["Is the patient in bed or chair all day?","Does not leave the bed or the chair during waking hours."]},
-  limW:"borderline",
-  lim23c:"Borderline: no self-care done alone, yet out of bed for more than half of the day (rare, e.g. cognitive impairment). Oken's criteria strongly disagree: the app proposes PS 3. Describe the patient in the record.", rule23:"app rule: time criterion", rule23c:"app rule: no self-care", rule34:"app rule: self-care criterion", okenDef:"Oken 1982 definitions",
-  lim23:"Borderline PS 2–3: Oken's two criteria disagree (self-care / time in bed or chair). The app uses the time criterion: resting in bed or chair for more than half of waking hours gives PS 3; less than half gives PS 2. This is a decision aid, not an official Oken rule: describe the patient in the record.",
-  lim34b:"Borderline PS 3–4: no self-care at all, although not in bed or chair all day. The app uses the self-care criterion: no self-care at all = PS 4 (Oken 1982). Describe the patient in the record.",
-  lim34:"Borderline PS 3–4: in bed or chair all day, but still does part of their self-care. PS 4 requires no self-care at all (Oken 1982), hence PS 3.",
+  limW:"borderline", okenDef:"Oken 1982 definitions",
+  discT:"Criteria disagree", discAsk:"Oken's definitions do not settle this case, and there is no international rule for it. Choose using your clinical judgement (why the patient is resting, trajectory, reversible causes such as anaemia or pain) and record it.", disc:{d1:"Does all self-care (PS 2 criterion), but stays in bed or chair more than half of the day (PS 3 criterion).", d2:"Does only part of the self-care (PS 3 criterion), but is out of bed more than half of the day (PS 2 criterion).", d2n:"Does no self-care at all (PS 4 criterion), but is out of bed more than half of the day (PS 2 criterion).", d3:"Does no self-care at all (PS 4 criterion), but is not in bed or chair all day (PS 4 requires both)."}, chooseBtn:"Choose PS {p}", chosen:"Clinician's choice: PS {p}.", sumDisc:"Oken criteria discordant between {a} and {b}, clinician's choice",
+  lim34:"In bed or chair all day, but still does part of the self-care: this is the definition of PS 3. PS 4 requires no self-care at all (Oken 1982).",
   yes:"Yes", no:"No", back:"← Back", restart:"Restart the assessment", done:"Assessment complete. You can also check the matching card below.",
   scaleT:"Illustrated scale", scaleIntro:"Or choose the grade directly. Definitions from Oken et al., 1982.", barLeg:"Bar under the pictures: from waking ☀ to bedtime ☾ = waking hours (night does not count). Yellow = up and about, grey = resting in bed or chair.",
   g:["Fully active, able to carry on all pre-disease performance without restriction.",
@@ -469,11 +469,9 @@ const T = {
    q3b:["هل يقضي أكثر من نصف ساعات اليقظة خارج السرير، دون أن يبقى على الكرسي للراحة؟","الراحة في السرير أو على الكرسي (بسبب التعب أو المرض) تُعدّ «في السرير». أما الجلوس للقيام بنشاط (الأكل، القراءة، العمل المكتبي) فيُعدّ «خارج السرير». من الاستيقاظ إلى النوم."],
    q4:["هل ما زال يقوم وحده بجزء من عنايته، مثل الأكل؟","يكفي أن يقوم وحده بعمل واحد من أعمال العناية الشخصية: الأكل وحده، غسل الوجه."],
    q5:["هل يبقى في السرير أو على الكرسي طوال اليوم؟","لا يغادر السرير ولا الكرسي خلال ساعات اليقظة."]},
-  limW:"حدّي",
-  lim23c:"حالة حدّية: لا يقوم بأي عناية شخصية وحده، لكنه يقضي أكثر من نصف ساعات اليقظة خارج السرير (حالة نادرة، مثل الاضطرابات المعرفية). معايير أوكن متعارضة بشدة، لذلك يقترح التطبيق الدرجة 3. صِف حالة المريض في الملف.", rule23:"قاعدة التطبيق: معيار الوقت", rule23c:"قاعدة التطبيق: غياب العناية الشخصية", rule34:"قاعدة التطبيق: معيار العناية الشخصية", okenDef:"تعريفات Oken 1982",
-  lim23:"حالة حدّية بين الدرجتين 2 و3: معيارا أوكن متعارضان هنا (العناية الشخصية والوقت المقضي في السرير أو على الكرسي). يعتمد التطبيق معيار الوقت: إذا قضى المريض أكثر من نصف ساعات اليقظة في السرير أو على الكرسي للراحة فهو في الدرجة 3، وإذا قضى أقل من ذلك فهو في الدرجة 2. هذه قاعدة مساعدة من التطبيق وليست من تعريفات أوكن: صِف حالة المريض في الملف.",
-  lim34b:"حالة حدّية بين الدرجتين 3 و4: لا يقوم بأي عناية شخصية وحده، مع أنه لا يلازم السرير أو الكرسي طوال اليوم. يعتمد التطبيق معيار العناية الشخصية: غياب أي عناية شخصية يعني الدرجة 4 (أوكن 1982). صِف حالة المريض في الملف.",
-  lim34:"حالة حدّية بين الدرجتين 3 و4: في السرير أو على الكرسي طوال اليوم، لكنه ما زال يقوم بجزء من عنايته الشخصية. الدرجة 4 تتطلب غياب أي عناية شخصية (أوكن 1982)، لذلك فهو في الدرجة 3.",
+  limW:"حدّي", okenDef:"تعريفات Oken 1982",
+  discT:"معايير متعارضة", discAsk:"تعريفات أوكن لا تحسم هذه الحالة، ولا توجد قاعدة دولية لها. اختر حسب تقديرك السريري (سبب بقاء المريض في السرير، تطوّر حالته، الأسباب القابلة للعلاج مثل فقر الدم أو الألم) وسجّل ذلك في الملف.", disc:{d1:"يقوم بكل عنايته الشخصية (معيار الدرجة 2)، لكنه يبقى في السرير أو على الكرسي أكثر من نصف اليوم (معيار الدرجة 3).", d2:"لا يقوم إلا بجزء من عنايته الشخصية (معيار الدرجة 3)، لكنه خارج السرير أكثر من نصف اليوم (معيار الدرجة 2).", d2n:"لا يقوم بأي عناية شخصية (معيار الدرجة 4)، لكنه خارج السرير أكثر من نصف اليوم (معيار الدرجة 2).", d3:"لا يقوم بأي عناية شخصية (معيار الدرجة 4)، لكنه لا يلازم السرير أو الكرسي طوال اليوم (الدرجة 4 تتطلب الأمرين معاً)."}, chooseBtn:"اختيار الدرجة {p}", chosen:"اختيار الطبيب: الدرجة {p}.", sumDisc:"Oken criteria discordant between {a} and {b}, clinician's choice",
+  lim34:"في السرير أو على الكرسي طوال اليوم، لكنه ما زال يقوم بجزء من عنايته الشخصية: هذا هو تعريف الدرجة 3. الدرجة 4 تتطلب غياب أي عناية شخصية (أوكن 1982).",
   yes:"نعم", no:"لا", back:"رجوع ←", restart:"إعادة التقييم", done:"انتهى التقييم. يمكنك أيضاً مراجعة البطاقة المقابلة أدناه.",
   scaleT:"السُّلَّم المصوَّر", scaleIntro:"أو اختر الدرجة مباشرة. تعريفات Oken وزملائه (1982)، مترجمة عن الإنجليزية.", barLeg:"الشريط أسفل الصور: من الاستيقاظ ☀ إلى النوم ☾ = ساعات اليقظة (الليل لا يُحتسب). الأصفر = خارج السرير ونشِط، الرمادي = في السرير أو على الكرسي للراحة.",
   g:["نشط تماماً، قادر على ممارسة جميع أنشطته كما كان قبل المرض دون أي قيود.",
@@ -498,14 +496,12 @@ const T = {
 
 /* ---------- Guided assessment logic (pure) ---------- */
 // a: answers keyed by question id (true = yes, false = no).
-// Returns {ask:id} for the next question, or {ps, lim?, why?} once decided.
+// Returns {ask:id} for the next question, {ps, info?} once decided, or {choose:[grades], disc} when Oken's criteria disagree.
 // Oken 1982: PS 2 = ALL self-care AND up and about >50% of waking hours; PS 3 = limited self-care AND bed/chair >50%;
-// PS 4 = NO self-care AND totally confined to bed or chair. Discordant criteria: see the rules inside ecogGuide().
+// PS 4 = NO self-care AND totally confined to bed or chair.
 function ecogGuide(a){
-  // Oken 1982. Discordant criteria are settled by one explicit rule per boundary (decision aid, stated in the result):
-  //  PS 2 vs 3 -> the time criterion (more than half of waking hours resting in bed or chair = PS 3)
-  //  PS 3 vs 4 -> the self-care criterion (no self-care at all = PS 4)
-  //  A patient with no self-care at all is never left at PS 2 (rare: out of bed most of the day but doing no self-care -> PS 3, flagged)
+  // Literal Oken 1982. When a patient meets one criterion of a grade and one of another, Oken gives no rule and
+  // there is no international rule either: the app shows the discordance and the clinician chooses ({choose:[…]}).
   if (a.q1 === undefined) return {ask:'q1'};
   if (a.q1) return {ps:0};
   if (a.q2 === undefined) return {ask:'q2'};
@@ -513,14 +509,14 @@ function ecogGuide(a){
   if (a.q3a === undefined) return {ask:'q3a'};
   if (a.q3b === undefined) return {ask:'q3b'};
   if (a.q3a && a.q3b) return {ps:2};
-  if (a.q3a && !a.q3b) return {ps:3, lim:'2-3'};
+  if (a.q3a && !a.q3b) return {choose:[2,3], disc:'d1'};          // all self-care, but resting in bed or chair > 50%
   if (a.q4 === undefined) return {ask:'q4'};
-  if (a.q3b) return a.q4 ? {ps:2, lim:'2-3'} : {ps:3, lim:'2-3', why:'c'};
+  if (a.q3b) return a.q4 ? {choose:[2,3], disc:'d2'} : {choose:[2,3,4], disc:'d2n'};   // out of bed > 50%, self-care limited / none
   if (a.q5 === undefined) return {ask:'q5'};
   if (a.q4 && !a.q5) return {ps:3};
-  if (a.q4 && a.q5) return {ps:3, lim:'3-4', why:'a'};   // bed or chair all day, but still some self-care
+  if (a.q4 && a.q5) return {ps:3, info:'a'};                      // in bed or chair all day but some self-care: PS 3 by definition
   if (!a.q4 && a.q5) return {ps:4};
-  return {ps:4, lim:'3-4', why:'b'};                      // no self-care at all, but not in bed or chair all day
+  return {choose:[3,4], disc:'d3'};                               // no self-care, but not in bed or chair all day
 }
 const STAGE_OF = {q1:1, q2:2, q3a:3, q3b:3, q4:4, q5:4};
 
@@ -541,13 +537,13 @@ function buildCards(){
 }
 function renderQ(){
   const t = T[lang], r = ecogGuide(ans);
-  const finished = fromGuide && ps !== null;
+  const finished = fromGuide && (ps !== null || !!(res && res.choose));
   const stage = finished ? 4 : STAGE_OF[r.ask];
   for (let k = 1; k <= 4; k++) $('p'+k).classList.toggle('on', k <= stage);
   $('qbox').hidden = finished; $('qend').hidden = !finished;
   if (!finished){ const q = t.Q[r.ask]; $('qtext').textContent = q[0]; $('qhint').textContent = q[1]; $('b-yes').textContent = q[2] || t.yes; $('b-no').textContent = q[3] || t.no; $('b-back').hidden = order.length === 0; $('qbox').classList.toggle('tie', r.ask[0] === 't'); }
 }
-function limNote(t, r){ if (!r || !r.lim) return ''; return r.why === 'c' ? t.lim23c : r.lim === '2-3' ? t.lim23 : (r.why === 'b' ? t.lim34b : t.lim34); }
+function choosePS(i){ if (!res || !res.choose) return; ps = i; res.chosen = i; renderQ(); renderResult(); }
 function renderResult(){
   const t = T[lang];
   const root = document.documentElement.style;
@@ -560,16 +556,24 @@ function renderResult(){
   if (ps === null || !pic) flip(false);
   for (let i = 0; i < 6; i++){ $('ld'+i).classList.toggle('on', ps !== null && i <= ps); const c = $('c'+i); if (c) c.setAttribute('aria-pressed', ps === i); }
   const r = fromGuide ? res : null;
-  $('lim').hidden = !(r && r.lim); $('limnote').hidden = !(r && r.lim);
+  const disc = r && r.choose, rng = disc ? `${r.choose[0]}–${r.choose[r.choose.length - 1]}` : '';
+  $('lim').hidden = !disc; $('limnote').hidden = !(disc || (r && r.info)); $('choose').hidden = !(disc && ps === null);
+  if (disc){ $('lim').textContent = `${t.discT} \u2066${rng}\u2069`; $('limnote').textContent = t.disc[r.disc] + '\n' + (ps === null ? t.discAsk : t.chosen.replace('{p}', ps)); }
+  else if (r && r.info) $('limnote').textContent = t.lim34;
+  if (disc && ps === null){
+    $('choose').innerHTML = r.choose.map(i => `<button type="button" onclick="choosePS(${i})">${t.chooseBtn.replace('{p}', i)}</button>`).join('');
+    $('stage').hidden = false; $('empty').hidden = true; $('stage').textContent = `${t.grade} \u2066${rng}\u2069`; $('gname').textContent = '';
+    $('kps').textContent = ''; $('defn').textContent = ''; $('summary').textContent = ''; $('copy').disabled = true;
+    $('mini-stage').textContent = `ECOG ${rng} ?`; $('mini-kps').textContent = ''; return;
+  }
   $('stage').hidden = ps === null; $('empty').hidden = ps !== null;
   if (ps === null){ $('stage').textContent = '–'; $('kps').textContent = ''; $('defn').textContent = ''; $('summary').textContent = ''; $('copy').disabled = true; $('mini-stage').textContent = '–'; $('mini-kps').textContent = ''; return; }
-  $('stage').textContent = `${t.grade} ${ps}`; $('mini-stage').textContent = `ECOG ${ps}` + (r && r.lim ? ` (${r.lim.replace('-','–')})` : '');
+  $('stage').textContent = `${t.grade} ${ps}`; $('mini-stage').textContent = `ECOG ${ps}` + (disc ? ` (${rng})` : '');
   $('kps').textContent = `${t.kpsEq} ${KPS[ps]}`; $('mini-kps').textContent = `KPS ${KPS[ps]}`;
-  if (r && r.lim){ $('lim').textContent = `${t.limW} \u2066${r.lim.replace('-','–')}\u2069`; $('limnote').textContent = limNote(t, r); }
   $('defn').textContent = t.g[ps];
     let sum = `ECOG PS ${ps} (KPS ≈ ${KPS[ps]})`;
   const ts = lang === 'ar' ? T.en : t;   // the copied summary stays in Latin script (LTR, monospace)
-  if (r && r.lim) sum = `ECOG PS ${ps} (${ts.limW} ${r.lim.replace('-','–')}${ts === T.fr ? ' ; ' : '; '}${r.why === 'c' ? ts.rule23c : r.lim === '2-3' ? ts.rule23 : ts.rule34})`;
+  if (disc) sum = `ECOG PS ${ps} (${ts.sumDisc.replace('{a}', r.choose[0]).replace('{b}', r.choose[r.choose.length - 1])})`;
   $('summary').textContent = sum + ' – ' + ts.okenDef;
   $('copy').disabled = false;
 }
@@ -579,7 +583,7 @@ function flip(on){
   $('front').inert = on; $('back').inert = !on;
   if (on !== was) (on ? $('backBtn') : ($('rpicBtn').hidden ? $('copy') : $('rpicBtn'))).focus({preventScroll:true});
 }
-function answer(yes){ flip(false); const r = ecogGuide(ans); if (!r.ask) return; ans[r.ask] = yes; order.push(r.ask); const n = ecogGuide(ans); if (n.ask === undefined){ ps = n.ps; res = n; fromGuide = true; } renderQ(); renderResult(); if (n.ask === undefined && window.innerWidth < 960) $('result').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); }
+function answer(yes){ flip(false); const r = ecogGuide(ans); if (!r.ask) return; ans[r.ask] = yes; order.push(r.ask); const n = ecogGuide(ans); if (n.ask === undefined){ ps = n.choose ? null : n.ps; res = n; fromGuide = true; } renderQ(); renderResult(); if (n.ask === undefined && window.innerWidth < 960) $('result').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); }
 function back(){ const k = order.pop(); if (k) delete ans[k]; renderQ(); }
 function restart(toTop){ order = []; ans = {}; fromGuide = false; res = null; ps = null; renderQ(); renderResult(); if (toTop) window.scrollTo({top:0, behavior:'smooth'}); }   // both buttons clear the previous result
 function pick(i){ flip(false); ps = i; fromGuide = false; res = null; order = []; ans = {}; renderQ(); renderResult(); if (window.innerWidth < 920) $('result').scrollIntoView({behavior:'smooth'}); }
