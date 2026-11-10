@@ -128,6 +128,7 @@ const T = {
       how:"<b>Une seule installation pour les trois outils</b> : touchez « Installer l'app » en haut de la page. Ils fonctionnent ensuite sans internet.",
       install:"Installer l'app", offline:"✓ Les trois outils sont disponibles hors connexion sur cet appareil",
       iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis «\u00a0Sur l'écran d'accueil\u00a0».",
+      deskHint:"Sur ordinateur : dans Chrome ou Edge, cliquez sur l'icône d'installation à droite de la barre d'adresse (ou menu ⋮ → « Installer… »). Firefox et Safari sur ordinateur n'installent pas les applications web : ajoutez la page à vos favoris.",
       andHint:"Ouvrez la page dans Chrome, puis le menu\u00a0⋮ et «\u00a0Installer l'application\u00a0» (ou «\u00a0Ajouter à l'écran d'accueil\u00a0»).",
       disclaimer:"Outils pédagogiques d'aide à la décision : ils ne remplacent ni la RCP ni le jugement clinique. Gratuits, sans publicité, sans collecte de données.",
       madeby:"Conçu par", affil:"Résidente en oncologie médicale, CPMC, Alger, Algérie" },
@@ -139,6 +140,7 @@ const T = {
       how:"<b>One installation for all three tools</b>: tap “Install the app” at the top of the page. They then work offline.",
       install:"Install the app", offline:"✓ All three tools are available offline on this device",
       iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.",
+      deskHint:"On a computer: in Chrome or Edge, click the install icon at the right of the address bar (or ⋮ menu → “Install…”). Firefox and desktop Safari do not install web apps: bookmark the page instead.",
       andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).",
       disclaimer:"Educational decision-support tools: they do not replace the tumour board or clinical judgement. Free, no ads, no data collected.",
       madeby:"Designed by", affil:"Resident in Medical Oncology, CPMC, Algiers, Algeria" }
@@ -161,9 +163,9 @@ const isStandalone = matchMedia('(display-mode: standalone)').matches || navigat
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const isMobile = isIOS || /android|mobile/i.test(navigator.userAgent);
 const instBtn = document.getElementById('install'), instHint = document.getElementById('ios-hint');
-function hintText(){ instHint.textContent = T[document.documentElement.lang === 'en' ? 'en' : 'fr'][isIOS ? 'iosHint' : 'andHint']; }
+function hintText(){ instHint.textContent = T[document.documentElement.lang === 'en' ? 'en' : 'fr'][isIOS ? 'iosHint' : isMobile ? 'andHint' : 'deskHint']; }
 hintText(); document.getElementById('l-fr').addEventListener('click', hintText); document.getElementById('l-en').addEventListener('click', hintText);
-if (!isStandalone && isMobile && /^https?:$/.test(location.protocol)) instBtn.hidden = false;
+if (!isStandalone && /^https?:$/.test(location.protocol)) instBtn.hidden = false;   // every device: phone, tablet or computer
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) instBtn.hidden = false; });
 window.addEventListener('appinstalled', () => { instBtn.hidden = true; instHint.hidden = true; });
 function installApp(){

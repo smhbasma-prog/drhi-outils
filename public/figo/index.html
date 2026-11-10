@@ -416,7 +416,7 @@ const T = {
   residLbl:"Viable residual tumour after treatment?", residYes:"Yes: describe it in the steps below", ypChoose:"Say whether viable residual tumour remains (yes, or complete response).", ypIV:"Stage IV at diagnosis: the reference FIGO stage remains IV (UICC rule 3); the yp categories only describe what is found now.", lnProof:"Clinical node status: FIGO 2014 requires cytological or histological proof of nodal metastasis for IIIA1.", nxShort:"nodes not assessed",
   parenchS:"Isolated metastasis inside the organ. Direct extension from the omentum to the liver or spleen remains IIIC (FIGO 2014).", ypRes:"“No viable residual tumour” cannot be combined with the residual disease entered above (nodes, peritoneum, pelvis, IC criteria or metastases): untick one of them.", pPeritT:"Primary peritoneal carcinoma is at least T2 (UICC p. 176): the T category is shown as T2 because no extent above or below the pelvic brim was entered.", provis:"provisional",
   cNote:"Enough for the tumour board. Confirm or complete it at surgery.",
-  install:"Install the app", iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.", andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).", trapsT:"Pitfalls to avoid",
+  install:"Install the app", iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.", deskHint:"On a computer: in Chrome or Edge, click the install icon at the right of the address bar (or ⋮ menu → “Install…”). Firefox and desktop Safari do not install web apps: bookmark the page instead.", andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).", trapsT:"Pitfalls to avoid",
   traps:[["<b>Pleural effusion</b>: IVA only if cytology is positive.","FIGO 2014"],
    ["<b>Capsule</b> of liver or spleen, or direct extension from the omentum = stage III (IIIC).|<b>Isolated parenchymal metastasis</b> = IVB.","FIGO 2014 · UICC p. 177"],
    ["<b>Omentum and bowel serosa</b> = peritoneum (stage III).|<b>Transmural</b> bowel infiltration = IVB.","FIGO 2014"],
@@ -470,7 +470,7 @@ const T = {
   residLbl:"Reste-t-il une tumeur viable après traitement ?", residYes:"Oui : décrivez-la dans les étapes ci-dessous", ypChoose:"Indiquez s'il reste une tumeur viable (oui, ou réponse complète).", ypIV:"Stade IV au diagnostic : le stade FIGO de référence reste IV (UICC, règle 3) ; les catégories yp décrivent seulement ce qui est retrouvé maintenant.", lnProof:"Statut ganglionnaire clinique : la FIGO 2014 exige une preuve cytologique ou histologique de l'atteinte ganglionnaire pour le stade IIIA1.", nxShort:"ganglions non évalués",
   parenchS:"Métastase isolée dans l'organe. L'extension directe de l'épiploon au foie ou à la rate reste IIIC (FIGO 2014).", ypRes:"« Pas de tumeur résiduelle viable » est incompatible avec les atteintes saisies plus haut (ganglions, péritoine, pelvis, critères IC ou métastases) : décochez l'un ou l'autre.", pPeritT:"Le carcinome péritonéal primitif est au moins T2 (UICC p. 176) : la catégorie T affichée est T2, car aucune extension n'a été saisie.", provis:"provisoire",
   cNote:"Suffisant pour la RCP. À confirmer ou compléter par la chirurgie.",
-  install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", trapsT:"Pièges à éviter",
+  install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", deskHint:"Sur ordinateur : dans Chrome ou Edge, cliquez sur l'icône d'installation à droite de la barre d'adresse (ou menu ⋮ → « Installer… »). Firefox et Safari sur ordinateur n'installent pas les applications web : ajoutez la page à vos favoris.", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", trapsT:"Pièges à éviter",
   traps:[["<b>Épanchement pleural</b> : IVA seulement si la cytologie est positive.","FIGO 2014"],
    ["<b>Capsule</b> du foie ou de la rate, ou extension directe depuis l'épiploon = stade III (IIIC).|<b>Métastase isolée du parenchyme</b> = IVB.","FIGO 2014 · UICC p. 177"],
    ["<b>Épiploon et séreuse intestinale</b> = péritoine (stade III).|Infiltration <b>transmurale</b> de l'intestin = IVB.","FIGO 2014"],
@@ -829,9 +829,9 @@ const isStandalone = matchMedia('(display-mode: standalone)').matches || navigat
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const isMobile = isIOS || /android|mobile/i.test(navigator.userAgent);
 const instBtn = document.getElementById('install'), instHint = document.getElementById('ios-hint');
-instHint.setAttribute('data-i', isIOS ? 'iosHint' : 'andHint');
+instHint.setAttribute('data-i', isIOS ? 'iosHint' : isMobile ? 'andHint' : 'deskHint');
 instHint.textContent = T[lang][instHint.getAttribute('data-i')] || '';
-if (!isStandalone && isMobile && /^https?:$/.test(location.protocol)) instBtn.hidden = false;
+if (!isStandalone && /^https?:$/.test(location.protocol)) instBtn.hidden = false;   // every device: phone, tablet or computer
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) instBtn.hidden = false; });
 window.addEventListener('appinstalled', () => { instBtn.hidden = true; instHint.hidden = true; });
 function installApp(){

@@ -375,7 +375,7 @@ const KPS = ['100–90', '80–70', '60–50', '40–30', '20–10', '0'];
 const COLORS = ['var(--g0)','var(--g1)','var(--g2)','var(--g3)','var(--g4)','var(--g5)'];
 const TCOL = ['#3F7F14','#00754A','#A06A00','#B4540C','#C0272E','#5B6068']; // darker text shades of each grade colour (readable on white)
 const T = {
- fr:{ install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", title:"Indice de performance ECOG", offline:"✓ Disponible hors connexion sur cet appareil", seeImg:"Voir l'illustration expliquée", seeBtn:"Voir l'image", imgT:"Ce que montre l'image", backRes:"↺ Touchez la carte pour revenir au résultat",
+ fr:{ install:"Installer l'app", iosHint:"Sur iPhone ou iPad : ouvrez la page dans Safari, touchez Partager, puis « Sur l'écran d'accueil ».", deskHint:"Sur ordinateur : dans Chrome ou Edge, cliquez sur l'icône d'installation à droite de la barre d'adresse (ou menu ⋮ → « Installer… »). Firefox et Safari sur ordinateur n'installent pas les applications web : ajoutez la page à vos favoris.", andHint:"Ouvrez la page dans Chrome, puis le menu ⋮ et « Installer l'application » (ou « Ajouter à l'écran d'accueil »).", title:"Indice de performance ECOG", offline:"✓ Disponible hors connexion sur cet appareil", seeImg:"Voir l'illustration expliquée", seeBtn:"Voir l'image", imgT:"Ce que montre l'image", backRes:"↺ Touchez la carte pour revenir au résultat",
   expl:[["<b>Il court dans un parc</b> : efforts physiques intenses possibles, sans aucune restriction."],
         ["<b>Il fait ses courses avec un panier léger</b> : ambulatoire et actif.","<b>Il prépare son repas</b> : capable d'un travail léger, comme le ménage léger.","<b>Le pictogramme barré (porter une lourde charge)</b> : efforts physiques intenses impossibles."],
         ["<b>Il se brosse les dents seul dans sa salle de bain</b> : autonome pour ses soins personnels.","<b>Il marche avec son thé</b> : ambulatoire.","<b>Le porte-documents barré</b> : incapable de travailler.","<b>La barre aux deux tiers jaune</b> : hors du lit et actif plus de 50 % de ses heures d'éveil."],
@@ -414,7 +414,7 @@ const T = {
   kpsH:"Équivalence avec le Karnofsky", copy:"Copier le résumé", copied:"Copié ✓", copyS:"Copier", reset:"Réinitialiser",
   refs:"Références", madeby:"Conçu par", name:"Dr Ismahene Haraoubia", affil:"Résidente en oncologie médicale, service d'oncologie médicale, CPMC, Alger, Algérie",
   illus:"Illustrations et logo : Dr Hi.", allTools:"← Tous les outils Dr Hi", version:"Mis à jour en novembre 2026", summ:"ECOG PS" },
- en:{ install:"Install the app", iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.", andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).", title:"ECOG Performance Status", offline:"✓ Available offline on this device", seeImg:"See the explained illustration", seeBtn:"Picture", imgT:"What the picture shows", backRes:"↺ Tap the card to go back to the result",
+ en:{ install:"Install the app", iosHint:"On iPhone or iPad: open the page in Safari, tap Share, then “Add to Home Screen”.", deskHint:"On a computer: in Chrome or Edge, click the install icon at the right of the address bar (or ⋮ menu → “Install…”). Firefox and desktop Safari do not install web apps: bookmark the page instead.", andHint:"Open the page in Chrome, then the ⋮ menu and “Install app” (or “Add to Home screen”).", title:"ECOG Performance Status", offline:"✓ Available offline on this device", seeImg:"See the explained illustration", seeBtn:"Picture", imgT:"What the picture shows", backRes:"↺ Tap the card to go back to the result",
   expl:[["<b>Running in a park</b>: strenuous physical activity possible, without any restriction."],
         ["<b>Shopping with a light basket</b>: ambulatory and active.","<b>Preparing his meal</b>: able to do light work, such as light housework.","<b>The crossed-out icon (carrying a heavy load)</b>: no strenuous physical activity."],
         ["<b>Brushing his teeth alone in his bathroom</b>: capable of self-care.","<b>Walking with his tea</b>: ambulatory.","<b>The crossed-out briefcase</b>: unable to work.","<b>The bar two-thirds yellow</b>: up and about more than 50% of waking hours."],
@@ -453,7 +453,7 @@ const T = {
   kpsH:"Karnofsky equivalence", copy:"Copy summary", copied:"Copied ✓", copyS:"Copy", reset:"Reset",
   refs:"References", madeby:"Designed by", name:"Dr Ismahene Haraoubia", affil:"Resident in Medical Oncology, Medical Oncology Department, CPMC, Algiers, Algeria",
   illus:"Illustrations and logo: Dr Hi.", allTools:"← All Dr Hi tools", version:"Updated November 2026", summ:"ECOG PS" },
- ar:{ install:"تثبيت التطبيق", iosHint:"على iPhone أو iPad: افتح الصفحة في Safari، اضغط على «مشاركة» ثم «إضافة إلى الشاشة الرئيسية».", andHint:"افتح الصفحة في Chrome، ثم القائمة ⋮ واختر «تثبيت التطبيق» (أو «إضافة إلى الشاشة الرئيسية»).", title:"مقياس الحالة الوظيفية ECOG", offline:"✓ متاح دون اتصال على هذا الجهاز", seeImg:"عرض الرسم مع الشرح", seeBtn:"عرض الصورة", imgT:"ماذا تُظهر الصورة", backRes:"↺ المس البطاقة للعودة إلى النتيجة",
+ ar:{ install:"تثبيت التطبيق", iosHint:"على iPhone أو iPad: افتح الصفحة في Safari، اضغط على «مشاركة» ثم «إضافة إلى الشاشة الرئيسية».", deskHint:"على الحاسوب: في Chrome أو Edge، انقر على أيقونة التثبيت يمين شريط العنوان (أو القائمة ⋮ ← «تثبيت…»). لا يدعم Firefox وSafari على الحاسوب تثبيت تطبيقات الويب: أضف الصفحة إلى المفضلة.", andHint:"افتح الصفحة في Chrome، ثم القائمة ⋮ واختر «تثبيت التطبيق» (أو «إضافة إلى الشاشة الرئيسية»).", title:"مقياس الحالة الوظيفية ECOG", offline:"✓ متاح دون اتصال على هذا الجهاز", seeImg:"عرض الرسم مع الشرح", seeBtn:"عرض الصورة", imgT:"ماذا تُظهر الصورة", backRes:"↺ المس البطاقة للعودة إلى النتيجة",
   expl:[["<b>يركض في حديقة</b>: قادر على الجهد البدني الشاق دون أي قيود."],
         ["<b>يتسوّق حاملاً سلة خفيفة</b>: يتنقل وما زال نشيطاً.","<b>يحضّر طعامه</b>: قادر على عمل خفيف، مثل الأعمال المنزلية الخفيفة.","<b>الرمز المشطوب (حمل ثقل كبير)</b>: غير قادر على الجهد البدني الشاق."],
         ["<b>ينظّف أسنانه وحده في الحمّام</b>: مستقل في عنايته الشخصية.","<b>يمشي حاملاً كوب الشاي</b>: يتنقل وحده.","<b>الحقيبة المشطوبة</b>: غير قادر على العمل.","<b>الشريط أصفر بنسبة الثلثين</b>: خارج السرير ونشِط أكثر من 50٪ من ساعات اليقظة."],
@@ -616,9 +616,9 @@ const isStandalone = matchMedia('(display-mode: standalone)').matches || navigat
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const isMobile = isIOS || /android|mobile/i.test(navigator.userAgent);
 const instBtn = document.getElementById('install'), instHint = document.getElementById('ios-hint');
-instHint.setAttribute('data-i', isIOS ? 'iosHint' : 'andHint');
+instHint.setAttribute('data-i', isIOS ? 'iosHint' : isMobile ? 'andHint' : 'deskHint');
 instHint.textContent = T[lang][instHint.getAttribute('data-i')] || '';
-if (!isStandalone && isMobile && /^https?:$/.test(location.protocol)) instBtn.hidden = false;
+if (!isStandalone && /^https?:$/.test(location.protocol)) instBtn.hidden = false;   // every device: phone, tablet or computer
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; if (!isStandalone) instBtn.hidden = false; });
 window.addEventListener('appinstalled', () => { instBtn.hidden = true; instHint.hidden = true; });
 function installApp(){
