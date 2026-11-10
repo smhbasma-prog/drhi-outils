@@ -1,9 +1,13 @@
 /* Dr Hi – all tools – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'drhi-v8';
+const VERSION = 'drhi-v9';
 const PREFIX = 'drhi-';
 const FILES = [
   "./",
+  "manifest.webmanifest",
   "img/drhi.png",
+  "img/icon-192.png",
+  "img/icon-512.png",
+  "img/apple-touch-icon.png",
   "fonts/serif-400.woff2",
   "fonts/serif-600.woff2",
   "fonts/serif-700.woff2",
