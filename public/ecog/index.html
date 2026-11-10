@@ -523,7 +523,7 @@ const STAGE_OF = {q1:1, q2:2, q3a:3, q3b:3, q4:4, q5:4};
 /* ---------- UI ---------- */
 const $ = id => document.getElementById(id);
 let lang = 'fr', order = [], ans = {}, ps = null, res = null, fromGuide = false;
-try { const s = localStorage.getItem('drhi-lang'); if (s) lang = s; else { const n = (navigator.language||''); lang = n.startsWith('ar') ? 'ar' : n.startsWith('en') ? 'en' : 'fr'; } } catch(e){}
+try { const s = localStorage.getItem('drhi-lang'); if (s === 'fr' || s === 'en' || s === 'ar') lang = s; else { const n = (navigator.language||''); lang = n.startsWith('ar') ? 'ar' : n.startsWith('en') ? 'en' : 'fr'; } } catch(e){}
 
 function buildCards(){
   const t = T[lang];

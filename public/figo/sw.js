@@ -1,5 +1,5 @@
 /* FIGO ovaire – Dr Hi: offline cache. Bump VERSION whenever any cached file changes. */
-const VERSION = 'figo-v3.8';
+const VERSION = 'figo-v3.10';
 const PREFIX = 'figo-';
 const FILES = [
   "./",
@@ -39,10 +39,11 @@ self.addEventListener('fetch', e => {
         if (r.ok){ const copy = await clean(r.clone()); (await caches.open(VERSION)).put(key, copy); }
         return r;
       } catch (err) {
-        return (await caches.match(key)) || (await caches.match(key + '/')) || (await caches.match(new URL('./', self.registration.scope).href)) || Response.error();
+        const c = await caches.open(VERSION);   // only this version's own copies, never a stale cache left by another version
+        return (await c.match(key)) || (await c.match(key + '/')) || (await c.match(new URL('./', self.registration.scope).href)) || Response.error();
       }
     })());
     return;
   }
-  e.respondWith(caches.match(req, {ignoreSearch: true}).then(hit => hit || fetch(req)));
+  e.respondWith(caches.open(VERSION).then(c => c.match(req, {ignoreSearch: true})).then(hit => hit || fetch(req)));
 });

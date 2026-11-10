@@ -838,7 +838,7 @@ function renderGuide(){
 
 /* ---------- UI ---------- */
 let lang = 'en';
-try { const saved = localStorage.getItem('drhi-lang'); if (saved) lang = saved; else if ((navigator.language||'').startsWith('fr')) lang = 'fr'; } catch(e){ if ((navigator.language||'').startsWith('fr')) lang = 'fr'; }
+try { const saved = localStorage.getItem('drhi-lang'); if (saved === 'fr' || saved === 'en') lang = saved; else if (saved === 'ar') lang = 'fr'; else if ((navigator.language||'').startsWith('fr')) lang = 'fr'; } catch(e){ if ((navigator.language||'').startsWith('fr')) lang = 'fr'; }
 const $ = id => document.getElementById(id);
 let lastBasis = null;
 
