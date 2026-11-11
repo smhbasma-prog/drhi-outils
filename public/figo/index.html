@@ -316,7 +316,8 @@ footer strong{color:var(--ink)}
           <label class="opt"><input type="radio" name="peri" value="none" checked><span class="t" data-i="periNone"></span></label>
           <label class="opt"><input type="radio" name="peri" value="micro"><span class="t"><span data-i="periMicro"></span><span class="code">IIIA2 · T3a</span></span></label>
           <label class="opt"><input type="radio" name="peri" value="le2"><span class="t"><span data-i="periLe2"></span><span class="code">IIIB · T3b</span></span></label>
-          <label class="opt"><input type="radio" name="peri" value="gt2"><span class="t"><span data-i="periGt2"></span><span class="code">IIIC · T3c</span><span class="sub" data-i="periGt2s"></span></span></label>
+          <label class="opt"><input type="radio" name="peri" value="gt2"><span class="t"><span data-i="periGt2"></span><span class="code">IIIC · T3c</span></span></label>
+          <label class="opt" style="margin-top:10px"><input type="checkbox" name="capsule"><span class="t"><span data-i="capsule"></span><span class="code">IIIC · T3c</span><span class="sub" data-i="capsuleS"></span></span></label>
         </div>
       </fieldset>
 
@@ -413,6 +414,7 @@ footer strong{color:var(--ink)}
 /* ---------- Text (EN / FR) ---------- */
 const T = {
  en:{
+  capsule:"Extension to the capsule of the liver or spleen, without parenchymal involvement", capsuleS:"Tick only if present. FIGO 2014 places it in IIIC; some summaries apply the 2 cm threshold here too.",
   residLbl:"Viable residual tumour after treatment?", residYes:"Yes: describe it in the steps below", ypChoose:"Say whether viable residual tumour remains (yes, or complete response).", ypIV:"Stage IV at diagnosis: the reference FIGO stage remains IV (UICC rule 3); the yp categories only describe what is found now.", lnProof:"Clinical node status: FIGO 2014 requires cytological or histological proof of nodal metastasis for IIIA1.", nxShort:"nodes not assessed",
   parenchS:"Isolated metastasis inside the organ. Direct extension from the omentum to the liver or spleen remains IIIC (FIGO 2014).", ypRes:"“No viable residual tumour” cannot be combined with the residual disease entered above (nodes, peritoneum, pelvis, IC criteria or metastases): untick one of them.", pPeritT:"Primary peritoneal carcinoma is at least T2 (UICC p. 176): the T category is shown as T2 because no extent above or below the pelvic brim was entered.", provis:"provisional",
   cNote:"Enough for the tumour board. Confirm or complete it at surgery.",
@@ -440,7 +442,7 @@ const T = {
   s3:"Peritoneum beyond the pelvic brim", s3h:"Above the pelvic brim, confirmed by cytology or histology, including bowel outside the pelvis.",
   periNone:"No extrapelvic peritoneal involvement", periMicro:"Microscopic extrapelvic peritoneal involvement only",
   periLe2:"Macroscopic peritoneal metastasis ≤ 2 cm", periGt2:"Macroscopic peritoneal metastasis > 2 cm",
-  periGt2s:"Includes extension to the capsule of liver or spleen without parenchymal involvement (FIGO 2014; some summaries apply the 2 cm threshold here too).",
+
   s4:"Retroperitoneal lymph nodes", s4h:"Iliac, obturator, lateral sacral, para-aortic and retroperitoneal nodes, including greater omental nodes. Fewer than 10 nodes, all negative: pN0.",
   lnNeg:"Negative", lnLe10:"Positive, metastasis ≤ 10 mm", lnGt10:"Positive, metastasis > 10 mm", lnNx:"Not assessed",
   s5:"Pelvic extension (below the pelvic brim)", pelNone:"None", pelA:"Extension and/or implants on uterus and/or fallopian tubes and/or ovaries", pelB:"Extension to other pelvic tissues, including bowel within the pelvis",
@@ -458,7 +460,7 @@ const T = {
   icMulti:"Several IC criteria: FIGO asks to record every IC subset present (FIGO 2014).",
   refs:"References", madeby:"Designed by", affil:"Resident in Medical Oncology, Medical Oncology Department, CPMC, Algiers, Algeria", version:"Updated November 2026",
   r:{ pleural:"pleural effusion with positive cytology", parench:"parenchymal liver/spleen metastasis", extraorg:"metastasis to an extra-abdominal organ", extraln:"inguinal or extra-abdominal lymph node metastasis", bowel:"transmural bowel infiltration", umbilical:"umbilical deposit",
-      gt2:"macroscopic extrapelvic peritoneal metastasis > 2 cm", le2:"macroscopic extrapelvic peritoneal metastasis ≤ 2 cm", micro:"microscopic extrapelvic peritoneal involvement",
+      gt2:"macroscopic extrapelvic peritoneal metastasis > 2 cm", capsule:"extension to the capsule of the liver or spleen", le2:"macroscopic extrapelvic peritoneal metastasis ≤ 2 cm", micro:"microscopic extrapelvic peritoneal involvement",
       le10:"retroperitoneal node metastasis ≤ 10 mm", gt10:"retroperitoneal node metastasis > 10 mm",
       pa:"extension/implants on uterus, tubes or ovaries", pb:"extension to other pelvic tissues (including bowel within the pelvis)",
       uni:"tumour limited to one ovary/tube", bi:"tumour involving both ovaries/tubes", intact:"capsule intact, no surface tumour, negative cytology",
@@ -467,6 +469,7 @@ const T = {
   hn:{hgsc:"high-grade serous carcinoma", lgsc:"low-grade serous carcinoma", endo:"endometrioid carcinoma", clear:"clear cell carcinoma", muc:"mucinous carcinoma", other:"carcinoma (other type)", bord:"borderline tumour", strom:"malignant sex cord-stromal tumour"}
  },
  fr:{
+  capsule:"Extension à la capsule du foie ou de la rate, sans atteinte du parenchyme", capsuleS:"À cocher seulement si elle est présente. La FIGO 2014 la classe en IIIC ; certains résumés appliquent ici aussi le seuil de 2 cm.",
   residLbl:"Reste-t-il une tumeur viable après traitement ?", residYes:"Oui : décrivez-la dans les étapes ci-dessous", ypChoose:"Indiquez s'il reste une tumeur viable (oui, ou réponse complète).", ypIV:"Stade IV au diagnostic : le stade FIGO de référence reste IV (UICC, règle 3) ; les catégories yp décrivent seulement ce qui est retrouvé maintenant.", lnProof:"Statut ganglionnaire clinique : la FIGO 2014 exige une preuve cytologique ou histologique de l'atteinte ganglionnaire pour le stade IIIA1.", nxShort:"ganglions non évalués",
   parenchS:"Métastase isolée dans l'organe. L'extension directe de l'épiploon au foie ou à la rate reste IIIC (FIGO 2014).", ypRes:"« Pas de tumeur résiduelle viable » est incompatible avec les atteintes saisies plus haut (ganglions, péritoine, pelvis, critères IC ou métastases) : décochez l'un ou l'autre.", pPeritT:"Le carcinome péritonéal primitif est au moins T2 (UICC p. 176) : la catégorie T affichée est T2, car aucune extension n'a été saisie.", provis:"provisoire",
   cNote:"Suffisant pour la RCP. À confirmer ou compléter par la chirurgie.",
@@ -494,7 +497,7 @@ const T = {
   s3:"Péritoine au-dessus du détroit supérieur", s3h:"Au-dessus du détroit supérieur, confirmée en cytologie ou en histologie, y compris l'intestin hors du pelvis.",
   periNone:"Pas d'atteinte péritonéale extrapelvienne", periMicro:"Atteinte péritonéale extrapelvienne microscopique seulement",
   periLe2:"Métastase péritonéale macroscopique ≤ 2 cm", periGt2:"Métastase péritonéale macroscopique > 2 cm",
-  periGt2s:"Inclut l'extension à la capsule du foie ou de la rate sans atteinte du parenchyme (FIGO 2014 ; certains résumés appliquent ici aussi le seuil de 2 cm).",
+
   s4:"Ganglions rétropéritonéaux", s4h:"Ganglions iliaques, obturateurs, sacrés latéraux, para-aortiques et rétropéritonéaux, y compris ceux du grand épiploon. Moins de 10 ganglions, tous négatifs : pN0.",
   lnNeg:"Négatifs", lnLe10:"Positifs, métastase ≤ 10 mm", lnGt10:"Positifs, métastase > 10 mm", lnNx:"Non évalués",
   s5:"Extension pelvienne (sous le détroit supérieur)", pelNone:"Aucune", pelA:"Extension et/ou implants sur l'utérus et/ou les trompes et/ou les ovaires", pelB:"Extension aux autres tissus pelviens, y compris l'intestin dans le pelvis",
@@ -512,7 +515,7 @@ const T = {
   icMulti:"Plusieurs critères IC : la FIGO demande de noter chaque sous-groupe IC présent (FIGO 2014).",
   refs:"Références", madeby:"Conçu par", affil:"Résidente en oncologie médicale, service d'oncologie médicale, CPMC, Alger, Algérie", version:"Mis à jour en novembre 2026",
   r:{ pleural:"épanchement pleural à cytologie positive", parench:"métastase parenchymateuse hépatique/splénique", extraorg:"métastase d'un organe extra-abdominal", extraln:"métastase ganglionnaire inguinale ou extra-abdominale", bowel:"infiltration transmurale de l'intestin", umbilical:"nodule ombilical",
-      gt2:"métastase péritonéale extrapelvienne macroscopique > 2 cm", le2:"métastase péritonéale extrapelvienne macroscopique ≤ 2 cm", micro:"atteinte péritonéale extrapelvienne microscopique",
+      gt2:"métastase péritonéale extrapelvienne macroscopique > 2 cm", capsule:"extension à la capsule du foie ou de la rate", le2:"métastase péritonéale extrapelvienne macroscopique ≤ 2 cm", micro:"atteinte péritonéale extrapelvienne microscopique",
       le10:"métastase ganglionnaire rétropéritonéale ≤ 10 mm", gt10:"métastase ganglionnaire rétropéritonéale > 10 mm",
       pa:"extension/implants sur l'utérus, les trompes ou les ovaires", pb:"extension aux autres tissus pelviens (y compris l'intestin pelvien)",
       uni:"tumeur limitée à un ovaire/une trompe", bi:"tumeur des deux ovaires/trompes", intact:"capsule intacte, surface indemne, cytologie négative",
@@ -530,7 +533,7 @@ function computeStage(s){
 
   // T category from local / peritoneal extent
   let Tcat, ic = [];
-  if (s.peri === 'gt2') Tcat = 'T3c';
+  if (s.peri === 'gt2' || s.capsule) Tcat = 'T3c';   // FIGO 2014 IIIC row includes capsule of liver/spleen
   else if (s.peri === 'le2') Tcat = 'T3b';
   else if (s.peri === 'micro') Tcat = 'T3a';
   else if (s.pelvis === 'b') Tcat = 'T2b';
@@ -550,7 +553,7 @@ function computeStage(s){
   let stage, group, reasons = [];
   if (M === 'M1b'){ stage='IVB'; group=4; reasons = IVB.slice(); if (s.pleural) reasons.push('pleural'); }
   else if (M === 'M1a'){ stage='IVA'; group=4; reasons=['pleural']; }
-  else if (Tcat === 'T3c'){ stage='IIIC'; group=3; reasons=['gt2']; }
+  else if (Tcat === 'T3c'){ stage='IIIC'; group=3; reasons = (s.peri === 'gt2' ? ['gt2'] : []).concat(s.capsule ? ['capsule'] : []); }
   else if (Tcat === 'T3b'){ stage='IIIB'; group=3; reasons=['le2']; }
   else if (Tcat === 'T3a'){ stage='IIIA2'; group=3; reasons=['micro']; }
   else if (N === 'N1a'){ stage='IIIA1(i)'; group=3; reasons=['le10']; }
@@ -577,7 +580,7 @@ function readState(){
   const f = $('f'), v = n => (f.querySelector(`input[name="${n}"]:checked`)||{}).value;
   const c = n => f.querySelector(`input[name="${n}"]`).checked;
   return { basis:v('basis'), site:v('site'), histo:$('histo').value, pleural:c('pleural'), parench:c('parench'), extraorg:c('extraorg'), extraln:c('extraln'), bowel:c('bowel'), umbilical:c('umbilical'),
-           peri:v('peri'), ln:v('ln'), pelvis:v('pelvis'), lat:v('lat'), spill:c('spill'), surface:c('surface'), cyto:c('cyto'), resid:v('resid')||null, pcr:v('resid') === 'no', initStage:$('initStage').value };
+           peri:v('peri'), capsule:c('capsule'), ln:v('ln'), pelvis:v('pelvis'), lat:v('lat'), spill:c('spill'), surface:c('surface'), cyto:c('cyto'), resid:v('resid')||null, pcr:v('resid') === 'no', initStage:$('initStage').value };
 }
 
 function buildSummary(s, r){
@@ -616,7 +619,7 @@ function render(){
   $('stage').classList.toggle('long', !yp && !!r.stage && r.stage.length > 5);
   document.querySelector('.ladder').hidden = yp; document.querySelector('.ladder-l').hidden = yp;
   $('res-lbl').textContent = yp ? t.resLblY : t.resLbl;
-  const ypConflict = yp && s.pcr && (s.peri !== 'none' || s.pelvis !== 'none' || s.ln === 'le10' || s.ln === 'gt10' || r.M !== 'M0' || s.spill || s.surface || s.cyto);
+  const ypConflict = yp && s.pcr && (s.peri !== 'none' || s.capsule || s.pelvis !== 'none' || s.ln === 'le10' || s.ln === 'gt10' || r.M !== 'M0' || s.spill || s.surface || s.cyto);
   if (yp && !s.resid){
     $('stage').textContent = '–'; $('mini-stage').textContent = '–'; $('tnm').textContent = ''; $('mini-tnm').textContent = '';
     $('why').innerHTML = ''; $('summary').textContent = ''; err.textContent = t.ypChoose; err.hidden = false; $('copy').disabled = true;
@@ -701,7 +704,7 @@ function drawFigo(s, r){
   // ---- aorta and retroperitoneal nodes
   L.push(`<path d="M170 166 L170 296 M170 296 L150 328 M170 296 L190 328" fill="none" stroke="#D9A9A0" stroke-width="5" stroke-linecap="round" stroke-opacity=".75"/>`);
   // ---- liver & spleen (capsule = III if > 2 cm, parenchyma = IVB)
-  const cap = !pcr && s.peri === 'gt2';
+  const cap = !pcr && s.capsule;
   const liver = 'M88 172 C112 150 160 152 198 168 C190 190 160 208 116 222 C98 214 88 196 88 172 Z';
   L.push(`<path d="${liver}" fill="${NEU.org}" stroke="${cap ? SC[3] : NEU.orgL}" stroke-width="${cap ? 5 : 1.4}"${cap ? o(dimR) : ''}/>`);
   L.push(`<ellipse cx="236" cy="184" rx="15" ry="25" transform="rotate(32 236 184)" fill="${NEU.org}" stroke="${cap ? SC[3] : NEU.orgL}" stroke-width="${cap ? 5 : 1.4}"${cap ? o(dimR) : ''}/>`);
@@ -730,7 +733,7 @@ function drawFigo(s, r){
   L.push(txt(140, 274, fm.umb, 'end', NEU.txt, 500, 13.5));
   // ---- extrapelvic peritoneum (stage III)
   if (!pcr && s.peri !== 'none'){
-    const P = [[124,262],[216,262],[198,286],[116,296],[226,300],[150,244],[196,244],[134,312]];
+    const P = [[128,250],[214,256],[204,292],[122,302],[228,304],[156,242],[192,240],[140,314]];
     if (s.peri === 'micro'){
       P.forEach(([x,y]) => [[0,0],[5,3],[-4,4],[3,-4],[-3,-3]].forEach(([dx,dy]) => L.push(`<circle cx="${x+dx}" cy="${y+dy}" r="1.5" fill="${SINK[3]}"${o(dimR)}/>`)));
     } else {
