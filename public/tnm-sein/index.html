@@ -152,6 +152,12 @@ input[type="number"]{width:100%;max-width:220px;padding:10px 12px;min-height:48p
 .t4leg li b{color:var(--pink-ink)}
 .t4leg li.on{color:var(--ink);font-weight:600}
 .gnote{margin:10px 0 0;font-size:14.5px;color:var(--muted)}
+.tchips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0 0}
+.tchips .lab{font-size:14px;font-weight:600;color:var(--muted);margin-inline-end:2px}
+.tchips span.c{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid var(--pink-line);background:var(--ivory);font-size:14.5px;font-weight:700;color:var(--ink-2)}
+.tchips span.c.on{background:var(--pink);border-color:var(--pink);color:#fff}
+.tchips svg{display:block}
+#paget-box[hidden]{display:none}
 .gnote:empty{display:none}
 .nanat{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
 .side{display:inline-flex;align-self:start;justify-self:start;padding:3px;gap:2px;background:var(--paper);border:1px solid var(--sand);border-radius:999px}
@@ -325,7 +331,7 @@ footer strong{color:var(--ink)}
         <div class="opts">
           <label class="opt"><input type="radio" name="tcat" value="Tis(DCIS)"><span class="t"><span data-i="tDCIS"></span><span class="code">Tis (DCIS)</span></span></label>
           <label class="opt"><input type="radio" name="tcat" value="Tis(LCIS)"><span class="t"><span data-i="tLCIS"></span><span class="code">Tis (LCIS)</span><span class="sub" data-i="tLCISs"></span></span></label>
-          <label class="opt"><input type="radio" name="tcat" value="Tis(Paget)"><span class="t"><span data-i="tPaget"></span><span class="code">Tis (Paget)</span></span></label>
+          <label class="opt"><input type="radio" name="tcat" value="Tis(Paget)"><span class="t"><span data-i="tPaget"></span><span class="code">Tis (Paget)</span><span class="sub" data-i="tPagetS"></span></span></label>
           <label class="opt"><input type="radio" name="tcat" value="T0"><span class="t"><span data-i="t0"></span><span class="code">T0</span></span></label>
           <label class="opt"><input type="radio" name="tcat" value="T4a"><span class="t"><span data-i="t4a"></span><span class="code">T4a</span><span class="sub" data-i="t4as"></span></span></label>
           <label class="opt"><input type="radio" name="tcat" value="T4b"><span class="t"><span data-i="t4b"></span><span class="code">T4b</span><span class="sub" data-i="t4bs"></span></span></label>
@@ -334,6 +340,7 @@ footer strong{color:var(--ink)}
           <label class="opt"><input type="radio" name="tcat" value="TX"><span class="t"><span data-i="tX"></span><span class="code">TX</span></span></label>
         </div>
         <label class="chk"><input type="checkbox" name="multi"><span data-i="multi"></span></label>
+        <label class="chk" id="paget-box"><input type="checkbox" name="pagetAssoc"><span data-i="pagetAssoc"></span></label>
       </fieldset>
 
       <fieldset>
@@ -381,6 +388,7 @@ footer strong{color:var(--ink)}
       <figure class="gcard" id="g-t">
         <figcaption><span class="gl">T</span><span data-i="gTt"></span></figcaption>
         <svg id="gauge" viewBox="-16 -4 572 230" role="img" aria-labelledby="gauge-t"><title id="gauge-t" data-i="gTt"></title></svg>
+        <div class="tchips" id="tchips"></div>
         <ul class="t4leg" id="t4leg"></ul>
         <p class="gnote" id="g-tnote"></p>
       </figure>
@@ -446,7 +454,7 @@ const T = window.T = {
   gT:"Visual guide", gLead:"The diagrams follow what you enter.", gTt:"Primary tumour", gNt:"Regional lymph nodes", gMt:"Distant metastasis",
   gCredit:"Diagram concept and design: Dr Hi. Content: UICC TNM 9th edition (2025).",
   gCm:"cm", gExt:"extension", gSize:"size (cm)", gT4:[["a","Chest wall"],["b","Skin: ulceration,|nodules, peau d'orange"],["c","a + b"],["d","Inflammatory"]],
-  gTis:"Tis: carcinoma in situ, no size to measure.", gT0:"T0: no evidence of primary tumour.", gTX:"TX: tumour cannot be assessed.",
+  gTis:"Tis: carcinoma in situ, no size to measure.", gPaget:"Tis (Paget): Paget disease of the nipple with no carcinoma underneath. If a carcinoma lies underneath, classify that carcinoma instead.", gT0:"T0: no evidence of primary tumour.", gTX:"TX: tumour cannot be assessed.",
   gCn:"cN", gCnS:"clinical", gPn:"pN", gPnS:"after surgery",
   gNc:[["0",[["N0","none"]]],["1",[["N1","movable level I–II axillary"]]],["2",[["N2a","fixed level I–II axillary"],["N2b","internal mammary only, clinically detected"]]],["3",[["N3a","infraclavicular (level III)"],["N3b","internal mammary + axillary"],["N3c","supraclavicular"]]]],
   gNp:[["0",[["N0","none"],["N0(i+)","isolated cells ≤ 0.2 mm"]]],["1",[["N1mi","micrometastases > 0.2 to 2 mm"],["N1a","1 to 3 axillary"],["N1b","non-clinical internal mammary (sentinel)"],["N1c","N1a + N1b"]]],["2",[["N2a","4 to 9 axillary"],["N2b","clinical internal mammary, no axillary"]]],["3",[["N3a","≥ 10 axillary, or infraclavicular (level III)"],["N3b","clinical IM + positive axillary, or > 3 axillary + IM (sentinel)"],["N3c","supraclavicular"]]]],
@@ -479,6 +487,7 @@ const T = window.T = {
   sizeHint:"Invasive component only, not the in situ component. Several foci: the one with the highest T category, not the sum. Check the unit: pathology reports often give mm.",
   orCat:"Or choose a specific category",
   tDCIS:"Ductal carcinoma in situ", tLCIS:"Lobular carcinoma in situ", tLCISs:"Included by the UICC; the AJCC 8th excludes LCIS.",
+  tPagetS:"Only if there is no carcinoma underneath. With an underlying invasive carcinoma or DCIS/LCIS: classify that carcinoma (size or Tis) and tick “Associated Paget disease” below (UICC p. 152).", pagetAssoc:"Paget disease of the nipple associated with the carcinoma classified above (the T does not change, but Paget is noted, UICC p. 152)", pagetNote:"Associated Paget disease of the nipple: the T is that of the underlying carcinoma; the presence of Paget disease is noted (UICC p. 152).", pagetSum:"associated Paget disease of the nipple", gNoSize:"No size:",
   tPaget:"Paget disease of the nipple without underlying invasive carcinoma or DCIS/LCIS", t0:"No evidence of primary tumour",
   t4a:"Extension to chest wall", t4as:"Ribs, intercostal muscles, serratus anterior. Pectoral muscle invasion alone is NOT T4a.",
   t4b:"Ulceration, ipsilateral satellite skin nodules or skin oedema (incl. peau d'orange)", t4bs:"Invasion of the dermis alone, dimpling or nipple retraction do NOT qualify as T4.",
@@ -535,7 +544,7 @@ const T = window.T = {
   gT:"Guide visuel", gLead:"Les schémas suivent votre saisie.", gTt:"Tumeur primitive", gNt:"Ganglions régionaux", gMt:"Métastases à distance",
   gCredit:"Concept et design des schémas : Dr Hi. Contenu : UICC TNM 9e édition (2025).",
   gCm:"cm", gExt:"extension", gSize:"taille (cm)", gT4:[["a","Paroi thoracique"],["b","Peau : ulcération,|nodules, peau d'orange"],["c","a + b"],["d","Inflammatoire"]],
-  gTis:"Tis : carcinome in situ, pas de taille à mesurer.", gT0:"T0 : pas de tumeur primitive décelable.", gTX:"TX : tumeur non évaluable.",
+  gTis:"Tis : carcinome in situ, pas de taille à mesurer.", gPaget:"Tis (Paget) : maladie de Paget du mamelon sans carcinome sous-jacent. S'il existe un carcinome sous-jacent, c'est lui qu'on classe.", gT0:"T0 : pas de tumeur primitive décelable.", gTX:"TX : tumeur non évaluable.",
   gCn:"cN", gCnS:"clinique", gPn:"pN", gPnS:"après chirurgie",
   gNc:[["0",[["N0","aucun"]]],["1",[["N1","axillaires I–II mobiles"]]],["2",[["N2a","axillaires I–II fixés"],["N2b","mammaires internes seuls, cliniquement détectés"]]],["3",[["N3a","sous-claviculaires (niveau III)"],["N3b","mammaires internes + axillaires"],["N3c","sus-claviculaires"]]]],
   gNp:[["0",[["N0","aucun"],["N0(i+)","cellules isolées ≤ 0,2 mm"]]],["1",[["N1mi","micrométastases > 0,2 à 2 mm"],["N1a","1 à 3 axillaires"],["N1b","mammaires internes non cliniques (sentinelle)"],["N1c","N1a + N1b"]]],["2",[["N2a","4 à 9 axillaires"],["N2b","mammaires internes cliniques, sans axillaire"]]],["3",[["N3a","≥ 10 axillaires, ou sous-claviculaires (niveau III)"],["N3b","MI cliniques + axillaires positifs, ou > 3 axillaires + MI (sentinelle)"],["N3c","sus-claviculaires"]]]],
@@ -568,6 +577,7 @@ const T = window.T = {
   sizeHint:"Composante infiltrante seule, pas la composante in situ. Plusieurs foyers : celui de catégorie T la plus élevée, pas la somme. Vérifiez l'unité : les comptes rendus d'anatomopathologie donnent souvent des mm.",
   orCat:"Ou choisissez une catégorie particulière",
   tDCIS:"Carcinome canalaire in situ", tLCIS:"Carcinome lobulaire in situ", tLCISs:"Inclus par l'UICC ; l'AJCC 8e exclut le CLIS.",
+  tPagetS:"Seulement s'il n'y a aucun carcinome sous-jacent. Avec un carcinome infiltrant ou un CCIS/CLIS sous-jacent : classez ce carcinome (taille ou Tis) et cochez « Maladie de Paget associée » plus bas (UICC p. 152).", pagetAssoc:"Maladie de Paget du mamelon associée au carcinome classé ci-dessus (le T ne change pas, mais la Paget est notée, UICC p. 152)", pagetNote:"Maladie de Paget du mamelon associée : le T est celui du carcinome sous-jacent ; la présence de la Paget est notée (UICC p. 152).", pagetSum:"maladie de Paget du mamelon associée", gNoSize:"Sans taille :",
   tPaget:"Maladie de Paget du mamelon sans carcinome infiltrant ni CCIS/CLIS sous-jacent", t0:"Pas de tumeur primitive décelable",
   t4a:"Extension à la paroi thoracique", t4as:"Côtes, muscles intercostaux, grand dentelé. L'atteinte du seul muscle pectoral n'est PAS un T4a.",
   t4b:"Ulcération, nodules cutanés satellites homolatéraux ou œdème cutané (y compris peau d'orange)", t4bs:"L'envahissement du derme seul, une rétraction cutanée ou du mamelon ne sont PAS un T4.",
@@ -743,7 +753,11 @@ function drawGauge(T, cm){
   h += `<circle cx="${GC.cx}" cy="${GC.cy}" r="21" fill="${ink}"/><text x="${GC.cx}" y="${GC.cy + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${T && !/^(Tis|T0|TX)/.test(T) ? T : ''}</text>`;
   g.innerHTML = h;
   $('t4leg').innerHTML = narrow ? t.gT4.map(([k, v]) => `<li class="${T === 'T4' + k ? 'on' : ''}"><svg viewBox="-6 0 32 22" width="32" height="22" aria-hidden="true">${t4Icon(k, 0, 1)}</svg><b>T4${k}</b> ${v.replace('|', ' ')}</li>`).join('') : '';
-  $('g-tnote').textContent = !T ? '' : T.startsWith('Tis') ? t.gTis : T === 'T0' ? t.gT0 : T === 'TX' ? t.gTX : '';
+  $('g-tnote').textContent = !T ? '' : T === 'Tis(Paget)' ? t.gPaget : T.startsWith('Tis') ? t.gTis : T === 'T0' ? t.gT0 : T === 'TX' ? t.gTX : '';
+  // categories without a size: shown as chips under the gauge (Paget with a nipple icon)
+  const nipple = on => `<svg viewBox="0 0 22 16" width="22" height="16" aria-hidden="true"><path d="M1 15 C3 6 9 2 11 2 C13 2 19 6 21 15" fill="none" stroke="${on ? '#fff' : '#C2185B'}" stroke-width="1.6"/><circle cx="11" cy="9.5" r="3.6" fill="${on ? '#fff' : '#F8D0DE'}" stroke="${on ? '#fff' : '#C2185B'}" stroke-width="1.2"/><circle cx="11" cy="9.5" r="1.5" fill="${on ? '#C2185B' : '#A3124A'}"/><path d="M6.5 7.5l1.2 1M15.5 7.5l-1.2 1M8 12.8l1-.8M14 12.8l-1-.8" stroke="${on ? '#fff' : '#A3124A'}" stroke-width="1.1" stroke-linecap="round"/></svg>`;
+  $('tchips').innerHTML = `<span class="lab">${t.gNoSize}</span>` + [['Tis(DCIS)','Tis (DCIS)'],['Tis(LCIS)','Tis (LCIS)'],['Tis(Paget)','Tis (Paget)'],['T0','T0'],['TX','TX']]
+    .map(([v, lab]) => `<span class="c${T === v ? ' on' : ''}">${v === 'Tis(Paget)' ? nipple(T === v) : ''}${lab}</span>`).join('');
 }
 function drawN(basis, n){
   const t = window.T[lang], clin = basis === 'c';
@@ -870,7 +884,7 @@ function fmtCm(cm){ return `${fmtNum(cm)} cm = ${fmtNum(cm * 10)} mm`; }
 function readState(){
   const f = $('f'), v = n => (f.querySelector(`input[name="${n}"]:checked`)||{}).value, c = n => f.querySelector(`input[name="${n}"]`).checked;
   const sz = parseSize($('size').value);
-  return { basis:v('basis'), size:sz.cm, sizeBad:sz.bad, noUnit:!!sz.noUnit, tcat:v('tcat')||null, multi:c('multi'), n:v('n')||null, f:c('fsuffix'), sn:c('snsuffix'), m:v('m'), pm:c('pm'), initStage:$('initStage').value };
+  return { basis:v('basis'), size:sz.cm, sizeBad:sz.bad, noUnit:!!sz.noUnit, tcat:v('tcat')||null, multi:c('multi'), paget:c('pagetAssoc') && v('tcat') !== 'Tis(Paget)', n:v('n')||null, f:c('fsuffix'), sn:c('snsuffix'), m:v('m'), pm:c('pm'), initStage:$('initStage').value };
 }
 
 function codes(s){
@@ -897,6 +911,7 @@ function renderCore(){
   $('n-hint').textContent = s.basis === 'c' ? t.nHintC : t.nHintP;
   $('n-alert').innerHTML = t.nAlert; $('n-alert').hidden = s.basis !== 'c';
   $('pm-box').hidden = s.m === 'M0';
+  $('paget-box').hidden = s.tcat === 'Tis(Paget)';
   if (s.m === 'M0' && s.pm){ document.querySelector('input[name="pm"]').checked = false; s.pm = false; }
   $('suffix-f').hidden = s.basis !== 'c'; $('suffix-sn').hidden = s.basis === 'c';
   const tsz = tFromSize(s.size);
@@ -923,6 +938,7 @@ function renderCore(){
     return;
   }
   if (res.error){ clear(t[res.reason]); $('tnm').textContent = tnm; return; }
+  const pg = s.paget ? `<div style="margin-top:8px">${t.pagetNote}</div>` : '';
   err.hidden = true; err.textContent = ''; $('copy').disabled = !res.stage;
   $('tnm').textContent = tnm; $('mini-tnm').textContent = tnm;
   if (!res.stage){
@@ -935,8 +951,8 @@ function renderCore(){
   for (let i=0;i<5;i++) $('ld'+i).classList.toggle('on', res.group >= i);
   const tDesc = t.tLabel[k.T] ? ` (${t.tLabel[k.T]})` : '';
   const nRow = (s.basis==='c' ? t.nC : t.nP).find(r => r[0] === s.n);
-  $('why').innerHTML = `<b>${t.why}${lang==='fr' ? ' :' : ':'}</b><ul><li>${k.tTxt}${tDesc}</li><li>${k.nTxt}${lang==='fr' ? ' : ' : ': '}${nRow ? nRow[2].charAt(0).toLowerCase() + nRow[2].slice(1) : ''}</li><li>${k.mTxt}</li></ul><div style="margin-top:8px">${t.progNote}</div>` + (res.warn ? `<div style="margin-top:8px;font-weight:700">${t[res.warn]}</div>` : '');
-  $('summary').textContent = `${t.title} – ${tnm} – ${t.resLbl.toLowerCase()} ${res.stage} (${lang==='fr' ? 'UICC 9e / AJCC 8e' : 'UICC 9th / AJCC 8th'})`;
+  $('why').innerHTML = `<b>${t.why}${lang==='fr' ? ' :' : ':'}</b><ul><li>${k.tTxt}${tDesc}</li><li>${k.nTxt}${lang==='fr' ? ' : ' : ': '}${nRow ? nRow[2].charAt(0).toLowerCase() + nRow[2].slice(1) : ''}</li><li>${k.mTxt}</li></ul><div style="margin-top:8px">${t.progNote}</div>` + pg + (res.warn ? `<div style="margin-top:8px;font-weight:700">${t[res.warn]}</div>` : '');
+  $('summary').textContent = `${t.title} – ${tnm}${s.paget ? ', ' + t.pagetSum : ''} – ${t.resLbl.toLowerCase()} ${res.stage} (${lang==='fr' ? 'UICC 9e / AJCC 8e' : 'UICC 9th / AJCC 8th'})`;
 }
 
 function setLang(l){
