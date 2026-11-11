@@ -178,6 +178,7 @@ input[type="number"]{width:100%;max-width:220px;padding:10px 12px;min-height:48p
 .nleg tr.dim{opacity:.45}
 .nleg .memo{margin:4px 0 0;font-style:italic;color:var(--muted)}
 @media (max-width: 760px){ .nleg .lcols{grid-template-columns:minmax(0,1fr);gap:0} .nleg table{border-spacing:0 2px} }
+@media (max-width: 400px){ .nleg td{padding:4px 3px} .nleg{font-size:13.5px} }
 .nmap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ncol{border-radius:14px;padding:10px;background:var(--paper);transition:opacity .25s}
 .ncol.off{opacity:.45}
@@ -359,7 +360,7 @@ footer strong{color:var(--ink)}
           <label class="opt"><input type="radio" name="m" value="M1"><span class="t"><span data-i="m1c"></span><span class="code">M1</span></span></label>
         </div>
         <label class="chk" id="pm-box" hidden><input type="checkbox" name="pm"><span data-i="m1p"></span></label>
-        <p class="note" data-i="mNote"></p>
+        <p class="note"><span data-i="mNote"></span><br><span data-i="mNote2" style="white-space:nowrap;font-size:min(1em,3.3vw)"></span></p>
       </fieldset>
     </form>
 
@@ -501,7 +502,8 @@ const T = window.T = {
   snsuf:"Nodal status from sentinel node biopsy only → suffix (sn). In ypTNM: only if the sentinel biopsy was done after treatment (UICC p. 155).",
   s4:"M – Distant metastasis",
   m0:"No distant metastasis", m1c:"Distant metastasis, on examination or imaging (stage IV)", m1p:"Confirmed under the microscope (biopsy or cytology) → pM1 instead of cM1 (still stage IV)",
-  mNote:"Any other node is M1 (cervical, contralateral internal mammary). Intramammary nodes = axillary level I.",
+  mNote:"Any other node is M1 (cervical, contralateral internal mammary).",
+  mNote2:"Intramammary nodes = axillary level I.",
   resLbl:"Anatomic stage group", resLblY:"Residual disease after treatment",
   copy:"Copy summary", copied:"Copied ✓", reset:"Reset", why:"Determined by",
   errNoT:"Enter the size of the invasive component or choose a T category.", errSize:"Invalid size: use digits only, e.g. 1.5 or 1,5.", errUnit:"Choose the unit of the size: cm or mm (pathology and imaging reports often give mm).", sizeWarn:"Unusually large: check the unit (cm or mm).", errNoN:"Choose the N category: a clinical N does not translate into a pathological N (and vice versa).", ypIV:"Stage IV at diagnosis: the reference stage remains IV (UICC rule 3). ypM only describes what is found now.",
@@ -591,7 +593,8 @@ const T = window.T = {
   snsuf:"Statut ganglionnaire obtenu par ganglion sentinelle seul → suffixe (sn). En ypTNM : seulement si le sentinelle a été prélevé après le traitement (UICC p. 155).",
   s4:"M – Métastases à distance",
   m0:"Pas de métastase à distance", m1c:"Métastase à distance, à l'examen ou à l'imagerie (stade IV)", m1p:"Confirmée au microscope (biopsie ou cytologie) → pM1 au lieu de cM1 (toujours stade IV)",
-  mNote:"Tout autre ganglion est M1 (cervical, mammaire interne controlatéral). Ganglions intramammaires = axillaires de niveau I.",
+  mNote:"Tout autre ganglion est M1 (cervical, mammaire interne controlatéral).",
+  mNote2:"Ganglions intramammaires = axillaires de niveau I.",
   resLbl:"Stade anatomique", resLblY:"Maladie résiduelle après traitement",
   copy:"Copier le résumé", copied:"Copié ✓", reset:"Réinitialiser", why:"Déterminé par",
   errNoT:"Saisissez la taille de la composante infiltrante ou choisissez une catégorie T.", errSize:"Taille non valide : utilisez uniquement des chiffres, par ex. 1,5 ou 1.5.", errUnit:"Choisissez l'unité de la taille : cm ou mm (les comptes rendus d'anatomopathologie et d'imagerie donnent souvent des mm).", sizeWarn:"Taille inhabituelle : vérifiez l'unité (cm ou mm).", errNoN:"Choisissez la catégorie N : un N clinique ne se transpose pas en N pathologique (et inversement).", ypIV:"Stade IV au diagnostic : le stade de référence reste IV (UICC, règle 3). Le ypM décrit seulement ce qui est retrouvé maintenant.",
